@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="126" id="KGk-i7-Jjw" customClass="HHSNewsCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="55"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="240" text="Label More Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="218" translatesAutoresizingMaskIntoConstraints="NO" id="rzi-WB-8QA">
+                        <rect key="frame" x="61" y="2" width="218" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hpo-fT-0ja">
+                        <rect key="frame" x="61" y="36" width="218" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="ay7-e4-Zan"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eob-Jg-r4H">
+                        <rect key="frame" x="3" y="3" width="50" height="50"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="HNJ-ym-AdP"/>
+                            <constraint firstAttribute="height" constant="50" id="JrA-K8-dEk"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="rzi-WB-8QA" firstAttribute="leading" secondItem="eob-Jg-r4H" secondAttribute="trailing" constant="8" id="21D-HX-Vlv"/>
+                    <constraint firstAttribute="trailing" secondItem="rzi-WB-8QA" secondAttribute="trailing" constant="8" id="55n-iH-PBC"/>
+                    <constraint firstItem="rzi-WB-8QA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="9cj-72-oFK"/>
+                    <constraint firstItem="Hpo-fT-0ja" firstAttribute="leading" secondItem="eob-Jg-r4H" secondAttribute="trailing" constant="8" id="HHd-he-0eT"/>
+                    <constraint firstItem="Hpo-fT-0ja" firstAttribute="top" secondItem="rzi-WB-8QA" secondAttribute="bottom" constant="1" id="IF7-9Q-dwR"/>
+                    <constraint firstAttribute="centerY" secondItem="eob-Jg-r4H" secondAttribute="centerY" id="Ikg-gA-Hgj"/>
+                    <constraint firstItem="eob-Jg-r4H" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="3" id="h8i-ES-77c"/>
+                    <constraint firstAttribute="bottom" secondItem="Hpo-fT-0ja" secondAttribute="bottom" constant="2" id="pFU-EL-hlv"/>
+                    <constraint firstAttribute="trailing" secondItem="Hpo-fT-0ja" secondAttribute="trailing" constant="8" id="y6z-PJ-V3h"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="dateLabel" destination="Hpo-fT-0ja" id="J2s-1c-DgB"/>
+                <outlet property="imageViewHeightConstraint" destination="JrA-K8-dEk" id="Q0r-7t-ETB"/>
+                <outlet property="thumbnailView" destination="eob-Jg-r4H" id="m2L-rW-OQ0"/>
+                <outlet property="titleLabel" destination="rzi-WB-8QA" id="Rmb-gl-9p7"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

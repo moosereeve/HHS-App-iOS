@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HHSScheduleDetailsViewController">
+            <connections>
+                <outlet property="dateLabel" destination="0ka-co-X5c" id="ejl-RI-5cT"/>
+                <outlet property="detailsTextView" destination="XZ1-xQ-hqc" id="baJ-Sx-u6l"/>
+                <outlet property="iconView" destination="mz9-IA-6wX" id="WEg-2X-aoh"/>
+                <outlet property="titleLabel" destination="Uec-Tk-EoM" id="QmA-Sk-5ha"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dateLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ka-co-X5c">
+                    <rect key="frame" x="78" y="79" width="222" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uec-Tk-EoM">
+                    <rect key="frame" x="78" y="112" width="222" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XZ1-xQ-hqc">
+                    <rect key="frame" x="20" y="137" width="280" height="431"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <dataDetectorType key="dataDetectorTypes" phoneNumber="YES"/>
+                </textView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mz9-IA-6wX">
+                    <rect key="frame" x="20" y="79" width="50" height="50"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="eCa-zV-Dx1"/>
+                        <constraint firstAttribute="width" constant="50" id="xhD-yM-nFr"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="XZ1-xQ-hqc" secondAttribute="trailing" constant="20" id="5NR-YM-1hO"/>
+                <constraint firstItem="Uec-Tk-EoM" firstAttribute="top" secondItem="0ka-co-X5c" secondAttribute="bottom" constant="13" id="6nV-Xl-d0y"/>
+                <constraint firstItem="0ka-co-X5c" firstAttribute="leading" secondItem="mz9-IA-6wX" secondAttribute="trailing" constant="8" id="BOH-b2-f4H"/>
+                <constraint firstAttribute="trailing" secondItem="0ka-co-X5c" secondAttribute="trailing" constant="20" id="Cgm-oI-axu"/>
+                <constraint firstAttribute="bottom" secondItem="XZ1-xQ-hqc" secondAttribute="bottom" id="Dj9-cF-zAh"/>
+                <constraint firstItem="Uec-Tk-EoM" firstAttribute="leading" secondItem="mz9-IA-6wX" secondAttribute="trailing" constant="8" id="Nhl-tB-Bry"/>
+                <constraint firstItem="mz9-IA-6wX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="79" id="Wmc-uZ-An8"/>
+                <constraint firstItem="XZ1-xQ-hqc" firstAttribute="top" secondItem="Uec-Tk-EoM" secondAttribute="bottom" constant="8" id="ZwR-44-2JA"/>
+                <constraint firstItem="XZ1-xQ-hqc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="hhY-rt-TRg"/>
+                <constraint firstItem="0ka-co-X5c" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="79" id="oJL-H7-JrN"/>
+                <constraint firstAttribute="trailing" secondItem="Uec-Tk-EoM" secondAttribute="trailing" constant="20" id="t4Q-cY-SNp"/>
+                <constraint firstItem="mz9-IA-6wX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="zyv-UR-efR"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

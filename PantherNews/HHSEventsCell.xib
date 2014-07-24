@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="75" id="KGk-i7-Jjw" customClass="HHSEventsCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="287" height="74"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sHq-yp-Twy">
+                        <rect key="frame" x="8" y="2" width="90" height="70"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="90" id="Q0j-Mn-AzR"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="173" translatesAutoresizingMaskIntoConstraints="NO" id="jMJ-EJ-epw">
+                        <rect key="frame" x="106" y="2" width="173" height="70"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="sHq-yp-Twy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="CLB-ZN-G21"/>
+                    <constraint firstAttribute="bottom" secondItem="sHq-yp-Twy" secondAttribute="bottom" constant="2" id="Ikp-9B-2Qv"/>
+                    <constraint firstItem="sHq-yp-Twy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="Vjk-da-yQ1"/>
+                    <constraint firstAttribute="bottom" secondItem="jMJ-EJ-epw" secondAttribute="bottom" constant="2" id="ZRc-Ma-P0t"/>
+                    <constraint firstItem="jMJ-EJ-epw" firstAttribute="leading" secondItem="sHq-yp-Twy" secondAttribute="trailing" constant="8" id="b8a-62-IoZ"/>
+                    <constraint firstAttribute="trailing" secondItem="jMJ-EJ-epw" secondAttribute="trailing" constant="8" id="oQY-3v-QAt"/>
+                    <constraint firstItem="jMJ-EJ-epw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="yEz-BT-vA1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="timeLabel" destination="sHq-yp-Twy" id="jqV-OA-Dp7"/>
+                <outlet property="titleLabel" destination="jMJ-EJ-epw" id="Lan-Ju-Wn2"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
