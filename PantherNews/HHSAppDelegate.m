@@ -8,7 +8,7 @@
 
 #import "HHSAppDelegate.h"
 #import "HHSNavViewController.h"
-#import "HHSScheduleTableViewController.h"
+#import "HHSHomeViewController.h"
 #import "HHSArticleStore.h"
 
 @interface HHSAppDelegate ()
@@ -23,38 +23,31 @@
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    
-    /*HHSNavViewController *nvc = [[HHSNavViewController alloc] init];
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:nvc];
-    
-    self.window.rootViewController = navController;
-    */
     
     _nvc = [[HHSNavViewController alloc] init];
     UINavigationController *masternav = [[UINavigationController alloc] initWithRootViewController:_nvc];
     
-    HHSScheduleTableViewController *stvc = [[HHSScheduleTableViewController alloc] init];
-    stvc.articleStore = [[HHSArticleStore alloc] initWithType:[HHSArticleStore HHSArticleStoreTypeSchedules]];
+    //HHSScheduleTableViewController *stvc = [[HHSScheduleTableViewController alloc] init];
+    //stvc.articleStore = [[HHSArticleStore alloc] initWithType:[HHSArticleStore HHSArticleStoreTypeSchedules]];
     
     //HHSTableViewController *tablevc;
+    HHSHomeViewController *home = [[HHSHomeViewController alloc] init];
     
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         
-        UINavigationController *detailNav = [[UINavigationController alloc] initWithRootViewController:stvc];
+        UINavigationController *detailNav = [[UINavigationController alloc] initWithRootViewController:home];
         
         UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
         if(orientation == UIInterfaceOrientationPortrait)
-        /*{    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
+        { /*   UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
             barButton.title = @"<< Main Menu";
             stvc.navigationItem.leftBarButtonItem = barButton;
-        }*/
+        */}
         
         _splitvc = [[UISplitViewController alloc] init];
         
         //set delegate of splitview to detail vc
-        _splitvc.delegate = stvc;
+        _splitvc.delegate = home;
         
         _splitvc.viewControllers = @[masternav, detailNav];
         

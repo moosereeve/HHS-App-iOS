@@ -7,6 +7,7 @@
 //
 
 #import "HHSNavViewController.h"
+#import "HHSHomeViewController.h"
 #import "HHSScheduleTableViewController.h"
 #import "HHSDailyAnnTableViewController.h"
 #import "HHSEventsTableViewController.h"
@@ -16,11 +17,6 @@
 #import "HHSNavigationControllerForSplitView.h"
 
 @interface HHSNavViewController ()
-@property (nonatomic, strong) HHSScheduleTableViewController *schedulesTVC;
-@property (nonatomic, strong) HHSEventsTableViewController *eventsTVC;
-@property (nonatomic, strong) HHSNewsTableViewController *newsTVC;
-@property (nonatomic, strong) HHSDailyAnnTableViewController *dailyAnnTVC;
-
 @property (nonatomic, strong) UIPopoverController *currentPopover;
 @property (nonatomic, strong) UIAlertView *alert;
 
@@ -68,6 +64,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self goToHome:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -75,6 +72,33 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (IBAction)goToHome:(id)sender
+{
+    
+    HHSHomeViewController *view = [[HHSHomeViewController alloc] init];
+    view.schedulesStore = _schedulesTVC.articleStore;
+    view.newsStore = _newsTVC.articleStore;
+    view.dailyAnnStore = _dailyAnnTVC.articleStore;
+    view.eventsStore = _eventsTVC.articleStore;
+    
+    if( self.splitViewController) {
+        self.splitViewController.delegate = view;
+        HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
+        HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
+        view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
+        self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        if (self.currentPopover) {
+            [self.currentPopover dismissPopoverAnimated:YES];
+        }
+    }
+    else {
+        [self.navigationController pushViewController:view animated:YES];
+    }
+    
+    
+}
+
 
 - (IBAction)goToSchedules:(id)sender
 {

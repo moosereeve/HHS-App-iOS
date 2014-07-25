@@ -42,8 +42,15 @@
         } else {
             NSArray *storeArticles = [self.articleStore allArticles] ;
             
-            [self addArticlesToList:storeArticles];
+            NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+            NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+            NSArray *sortedArray = [storeArticles sortedArrayUsingDescriptors:descriptors];
+            NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
+            [self.articleStore replaceAllArticlesWith:reversedArray];
+            
+            [self addArticlesToList:reversedArray];
         }
+
         
     }
 
@@ -66,12 +73,6 @@
  The NSOperation "ParseOperation" calls addArticlesToList: via NSNotification, on the main thread which in turn calls this method, with batches of parsed objects.
  */
 - (void)addArticlesToList:(NSArray *)articles {
-    
-    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-    NSArray *sortedArray = [articles sortedArrayUsingDescriptors:descriptors];
-    articles = [[sortedArray reverseObjectEnumerator] allObjects];
-    
     
     [self.articlesList removeAllObjects];
     [self.tableView reloadData];
@@ -166,39 +167,6 @@
     //Use filtered NSDate object to set dateLabel contents
     cell.dateLabel.text = formattedTitle;
     cell.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    
-    //cell.thumbnailView.image = item.thumbnail;
-    
-    //__weak BNRItemCell *weakCell = cell;
-    
-    //cell.actionBlock = ^{NSLog(@"Going to show image for %@", item);
-    
-    //BNRItemCell *strongCell = weakCell;
-    
-    //if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-    //NSString *itemKey = item.itemKey;
-    
-    ////If there is no image, we don't need to display anything
-    //UIImage *img = [[BNRImageStore sharedStore] imageForKey:itemKey];
-    //if (!img) {
-    //    return;
-    //}
-    
-    //Make a rectangle for the frame of the thumbnail relative to table view
-    //CGRect rect = [self.view convertRect:strongCell.thumbnailView.bounds
-    //                            fromView:strongCell.thumbnailView];
-    
-    ////Create a new BNRImageViewController and set its image
-    //BNRImageViewController *ivc = [[BNRImageViewController alloc] init];
-    //ivc.image = img;
-    
-    ////Present a 600x600 popover from the rect
-    //self.imagePopover = [[UIPopoverController alloc] initWithContentViewController:ivc];
-    //self.imagePopover.delegate = self;
-    //self.imagePopover.popoverContentSize = CGSizeMake(600, 600);
-    //[self.imagePopover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    //} ;
-    //};
     
     return cell;
 }

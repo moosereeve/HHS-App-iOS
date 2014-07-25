@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="5056"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HHSHomeViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1fw-nG-5tv">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Djb-Gv-siW">
+                            <rect key="frame" x="10" y="30" width="300" height="200"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" red="0.99079936729999996" green="1" blue="0.60684520689999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="200" id="Aov-BX-y71"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Djb-Gv-siW" firstAttribute="top" secondItem="1fw-nG-5tv" secondAttribute="top" constant="30" id="YEt-SU-eOU"/>
+                        <constraint firstItem="Djb-Gv-siW" firstAttribute="leading" secondItem="1fw-nG-5tv" secondAttribute="leading" constant="10" id="bw9-qn-ObN"/>
+                        <constraint firstAttribute="trailing" secondItem="Djb-Gv-siW" secondAttribute="trailing" constant="10" id="giD-LI-Lcy"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="1fw-nG-5tv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Auw-7K-YE1"/>
+                <constraint firstAttribute="trailing" secondItem="1fw-nG-5tv" secondAttribute="trailing" id="QEH-76-MOc"/>
+                <constraint firstAttribute="bottom" secondItem="1fw-nG-5tv" secondAttribute="bottom" id="bGW-SF-SPI"/>
+                <constraint firstItem="1fw-nG-5tv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="sUa-nL-1PF"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>

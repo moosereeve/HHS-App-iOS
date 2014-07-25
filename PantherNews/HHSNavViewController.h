@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "HHSTableViewController.h"
+#import "HHSScheduleTableViewController.h"
+#import "HHSDailyAnnTableViewController.h"
+#import "HHSEventsTableViewController.h"
+#import "HHSNewsTableViewController.h"
 
 @class HHSTableViewController;
 
@@ -18,6 +22,12 @@
 @property (nonatomic) BOOL eventsDownloaded;
 @property (nonatomic) BOOL newsDownloaded;
 @property (nonatomic) BOOL dailAynnDownloaded;
+
+@property (nonatomic, strong) HHSScheduleTableViewController *schedulesTVC;
+@property (nonatomic, strong) HHSEventsTableViewController *eventsTVC;
+@property (nonatomic, strong) HHSNewsTableViewController *newsTVC;
+@property (nonatomic, strong) HHSDailyAnnTableViewController *dailyAnnTVC;
+
 
 -(void)refreshDone:(int)type;
 -(void)fetchNewDataWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;

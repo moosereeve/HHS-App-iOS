@@ -47,6 +47,9 @@
             NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
             NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
             NSArray *sortedArray = [storeArticles sortedArrayUsingDescriptors:descriptors];
+            
+            [self.articleStore replaceAllArticlesWith:sortedArray];
+            
             [self addArticlesToList:sortedArray];
         }
         

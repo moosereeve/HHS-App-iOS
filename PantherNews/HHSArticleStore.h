@@ -22,6 +22,7 @@
 -(void)removeItem:(HHSArticle *)item;
 -(BOOL)saveChanges;
 -(int)getType;
+-(void)replaceAllArticlesWith:(NSArray *)articleList;
 
 +(int)HHSArticleStoreTypeSchedules;
 +(int)HHSArticleStoreTypeEvents;

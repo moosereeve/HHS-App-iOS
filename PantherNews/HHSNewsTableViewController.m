@@ -49,6 +49,8 @@
             NSArray *sortedArray = [storeArticles sortedArrayUsingDescriptors:descriptors];
             NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
             [self addArticlesToList:reversedArray];
+            
+            [self.articleStore replaceAllArticlesWith:reversedArray];
         }
         
     }

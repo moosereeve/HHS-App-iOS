@@ -68,6 +68,19 @@
     self.privateItems[article.articleKey] = article;
 }
 
+-(void)replaceAllArticlesWith:(NSArray *)articleList
+{
+    //NSDictionary *backupOfItems = [[NSDictionary alloc] initWithDictionary:self.privateItems copyItems:YES];
+    
+    [self.privateItems removeAllObjects];
+    for (HHSArticle *article in articleList) {
+        [self registerArticleInStore:article];
+    }
+    
+    [self saveChanges];
+    
+}
+
 - (HHSArticle *)findArticle:(HHSArticle *)articleToCheck
 {
     HHSArticle *resultArticle = [[HHSArticle alloc] init];
@@ -132,6 +145,18 @@
 - (BOOL)saveChanges
 {
     NSString *path = self.articleArchivePath;
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSError *error;
+    BOOL success = [fileManager removeItemAtPath:path error:&error];
+    if (success) {
+        NSLog(@"Delete file -:%@ ",path);
+    }
+    else
+    {
+        NSLog(@"Could not delete file -:%@ ",[error localizedDescription]);
+    }
     
     //Returns YES on success
     return [NSKeyedArchiver archiveRootObject:self.privateItems toFile:path];

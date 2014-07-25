@@ -171,6 +171,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(addArticles:)
                                                  name:_mAddArticlesNotificationName object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(articlesError:)
                                                  name:_mArticlesErrorNotificationName object:nil];
