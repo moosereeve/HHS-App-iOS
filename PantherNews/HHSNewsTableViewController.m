@@ -25,34 +25,6 @@
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"School News";
         
-        self.articleStore = [[HHSArticleStore alloc] initWithType:[HHSArticleStore HHSArticleStoreTypeNews]];
-        
-        //these are values that the parser will scan for
-        NSDictionary *parserNames = @{@"entry" : @"entry",
-                                      @"date" : @"updated",
-                                      @"startTime" : @"",
-                                      @"title" : @"title",
-                                      @"link" : @"link",
-                                      @"details" : @"content",
-                                      @"keepHtmlTags" : @"keep"};
-        self.parserElementNames = parserNames;
-        
-        self.feedUrlString = @"https://sites.google.com/a/holliston.k12.ma.us/holliston-high-school/general-info/news/posts.xml";
-        
-        if ([[self.articleStore allArticles] count] == 0) {
-            [self getArticlesFromFeed];
-        } else {
-            NSArray *storeArticles = [self.articleStore allArticles] ;
-            
-            NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-            NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-            NSArray *sortedArray = [storeArticles sortedArrayUsingDescriptors:descriptors];
-            NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
-            [self addArticlesToList:reversedArray];
-            
-            [self.articleStore replaceAllArticlesWith:reversedArray];
-        }
-        
     }
     return self;
 }
@@ -67,35 +39,52 @@
     //Register this NIB, which contains the cell
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSNewsCell"];
     
+    if ([[self.articleStore allArticles] count] >0) {
+        [self retrieveArticles];
+    } else {
+        [self.articleStore getArticlesFromFeed];
+    }
 }
 
-/**
- The NSOperation "ParseOperation" calls addArticlesToList: via NSNotification, on the main thread which in turn calls this method, with batches of parsed objects.
- */
-
-- (void)addArticlesToList:(NSArray *)articles {
+- (void)retrieveArticles {
     
-    [self.articlesList removeAllObjects];
-    [self.tableView reloadData];
-    
-    NSInteger startingRow = [self.articlesList count];
-    NSInteger articleCount = [articles count];
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:articleCount];
-    
-    for (NSInteger row = startingRow; row < (startingRow + articleCount); row++) {
+    if ([[self.articleStore allArticles] count] == 0) {
+        [self.articleStore getArticlesFromFeed];
+    } else {
+        NSArray *storeArticles = [self.articleStore allArticles] ;
         
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-        [indexPaths addObject:indexPath];
+        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+        NSArray *sortedArray = [storeArticles sortedArrayUsingDescriptors:descriptors];
+        NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
+        [self.articleStore replaceAllArticlesWith:reversedArray];
+        
+        [self.articlesList removeAllObjects];
+        NSArray *articles = [[NSArray alloc] initWithArray:reversedArray];
+        
+        [self.tableView reloadData];
+        
+        NSInteger startingRow = [self.articlesList count];
+        NSInteger articleCount = [articles count];
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:articleCount];
+        
+        for (NSInteger row = startingRow; row < (startingRow + articleCount); row++) {
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+            [indexPaths addObject:indexPath];
+        }
+        
+        [self.articlesList addObjectsFromArray:articles];
+        
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        
+        [self.articleStore saveChanges];
+        
+        [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeNews]];
+        [self.activityView stopAnimating];
+        
+
     }
-    
-    [self.articlesList addObjectsFromArray:articles];
-    
-    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-    
-    [self.articleStore saveChanges];
-    
-    [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeNews]];
-    [self.activityView stopAnimating];
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,7 +119,7 @@
     
     //Configure the cell with the BNRItem
     cell.titleLabel.text = article.title;
-    cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
     static NSDateFormatter *dateFormatter;
     if (!dateFormatter) {
@@ -141,7 +130,7 @@
     
     //Use filtered NSDate object to set dateLabel contents
     cell.dateLabel.text = [dateFormatter stringFromDate:article.date];
-    cell.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    //cell.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
     cell.thumbnailView.image = article.thumbnail;
     

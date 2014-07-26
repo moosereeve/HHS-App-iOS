@@ -30,7 +30,7 @@
 
 - (void)updateInterfaceForDynamicTypeSize
 {
-    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    /*UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     self.titleLabel.font = font;
     self.dateLabel.font = font;
     self.detailTextLabel.font = font;
@@ -51,6 +51,7 @@
     
     NSNumber *imageSize = imageSizeDictionary[userSize];
     self.imageViewHeightConstraint.constant = imageSize.floatValue;
+     */
 }
 
 - (void)dealloc

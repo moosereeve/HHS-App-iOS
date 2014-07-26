@@ -25,34 +25,6 @@
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Schedules";
         
-        self.articleStore = [[HHSArticleStore alloc] initWithType:[HHSArticleStore HHSArticleStoreTypeSchedules]];
-        
-        //these are values that the parser will scan for
-        NSDictionary *parserNames = @{@"entry" : @"entry",
-                                      @"date" : @"gd:when",
-                                      @"startTime" : @"startTime",
-                                      @"title" : @"title",
-                                      @"link" : @"link",
-                                      @"details" : @"content",
-                                      @"keepHtmlTags" : @"skip"};
-        self.parserElementNames = parserNames;
-        
-        self.feedUrlString = @"http://www.google.com/calendar/feeds/sulsp2f8e4npqtmdp469o8tmro%40group.calendar.google.com/private-fe49e26b4b5bd4579c74fd9c94e2d445/full?orderby=starttime&sortorder=a&futureevents=true&singleevents=true&ctz=America/New_York";
-        
-        if ([[self.articleStore allArticles] count] == 0) {
-            [self getArticlesFromFeed];
-        } else {
-            NSArray *storeArticles = [self.articleStore allArticles] ;
-            
-            NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-            NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-            NSArray *sortedArray = [storeArticles sortedArrayUsingDescriptors:descriptors];
-            
-            [self.articleStore replaceAllArticlesWith:sortedArray];
-            
-            [self addArticlesToList:sortedArray];
-        }
-        
         UIImage *a = [UIImage imageNamed:@"a"];
         UIImage *b = [UIImage imageNamed:@"b"];
         UIImage *c = [UIImage imageNamed:@"c"];
@@ -80,74 +52,91 @@
     //Register this NIB, which contains the cell
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSScheduleCell"];
     
+    if ([[self.articleStore allArticles] count] >0) {
+        [self retrieveArticles];
+    } else {
+        [self.articleStore getArticlesFromFeed];
     }
+}
 
-/**
- The NSOperation "ParseOperation" calls addArticlesToList: via NSNotification, on the main thread which in turn calls this method, with batches of parsed objects.
- */
-- (void)addArticlesToList:(NSArray *)articles {
+- (void)retrieveArticles {
     
-    [self.articlesList removeAllObjects];
-    [self.tableView reloadData];
-    
-    for (int i = 0; i< [self.tableView numberOfSections]; i++) {
-        NSIndexSet *is = [[NSIndexSet alloc] initWithIndex:0];
-        [self.tableView deleteSections:is withRowAnimation:UITableViewRowAnimationNone];
-    }
-    
-    int currentWeek = -1;
-    int numSections = (int)[self.articlesList count];
-    int numRows = 0;
-    if (numSections >0){
-        numRows = (int)[self.articlesList[numSections-1] count];
+    if ([[self.articleStore allArticles] count] == 0) {
+        [self.articleStore getArticlesFromFeed];
+        return;
+    } else {
+        NSArray *storeArticles = [self.articleStore allArticles] ;
         
-        HHSArticle *lastArticle = self.articlesList[numSections-1][numRows-1];
-        if(lastArticle){
+        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+        NSArray *sortedArray = [storeArticles sortedArrayUsingDescriptors:descriptors];
+        NSArray *articles = [[NSArray alloc] initWithArray:sortedArray];
+        
+        [self.articleStore replaceAllArticlesWith:sortedArray];
+        
+        [self.articlesList removeAllObjects];
+        
+        [self.tableView reloadData];
+        
+        /*for (int i = 0; i< [self.tableView numberOfSections]; i++) {
+           NSIndexSet *is = [[NSIndexSet alloc] initWithIndex:0];
+            [self.tableView deleteSections:is withRowAnimation:UITableViewRowAnimationNone];
+        }*/
+        
+        int currentWeek = -1;
+        int numSections = (int)[self.articlesList count];
+        int numRows = 0;
+        if (numSections >0){
+            numRows = (int)[self.articlesList[numSections-1] count];
             
-            NSCalendar *lastcal = [NSCalendar currentCalendar];
-            NSDateComponents *lastcomponents = [lastcal components:NSWeekOfYearCalendarUnit fromDate:lastArticle.date];
-            currentWeek = (int)[lastcomponents weekOfYear];
+            HHSArticle *lastArticle = self.articlesList[numSections-1][numRows-1];
+            if(lastArticle){
+                
+                NSCalendar *lastcal = [NSCalendar currentCalendar];
+                NSDateComponents *lastcomponents = [lastcal components:NSWeekOfYearCalendarUnit fromDate:lastArticle.date];
+                currentWeek = (int)[lastcomponents weekOfYear];
+                numRows++;
+            }
+        }
+        
+        [self.tableView beginUpdates];
+        
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        
+        for (HHSArticle *art in articles) {
+            
+            NSDate *date= art.date;
+            NSCalendar *cal = [NSCalendar currentCalendar];
+            NSDateComponents *components = [cal components:NSWeekOfYearCalendarUnit fromDate:date];
+            int weekOfYear = (int)[components weekOfYear];
+            
+            if(weekOfYear != currentWeek) {
+                [self.articlesList addObject:[[NSMutableArray alloc] init]];
+                numSections++;
+                numRows=1;
+                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:numSections-1] withRowAnimation:UITableViewRowAnimationNone];
+                
+            }
+            currentWeek = weekOfYear;
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numRows-1 inSection:numSections-1];
+            [indexPaths addObject:indexPath];
             numRows++;
-        }
-    }
-    
-    [self.tableView beginUpdates];
-    
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    
-    for (HHSArticle *art in articles) {
-        
-        NSDate *date= art.date;
-        NSCalendar *cal = [NSCalendar currentCalendar];
-        NSDateComponents *components = [cal components:NSWeekOfYearCalendarUnit fromDate:date];
-        int weekOfYear = (int)[components weekOfYear];
-        
-        if(weekOfYear != currentWeek) {
-            [self.articlesList addObject:[[NSMutableArray alloc] init]];
-            numSections++;
-            numRows=1;
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:numSections-1] withRowAnimation:UITableViewRowAnimationNone];
             
+            [self.articlesList[numSections-1] addObject:art];
         }
-        currentWeek = weekOfYear;
-
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numRows-1 inSection:numSections-1];
-        [indexPaths addObject:indexPath];
-        numRows++;
-
-        [self.articlesList[numSections-1] addObject:art];
+        
+        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+        
+        [self.tableView endUpdates];
+        [self.activityView stopAnimating];
+        
+        [self.articleStore saveChanges];
+        
+        [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeSchedules]];
+        
     }
-    
-    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-
-    [self.tableView endUpdates];
-    [self.activityView stopAnimating];
-    
-    [self.articleStore saveChanges];
-    
-    [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeSchedules]];
-    
-    }
+}
 
 #pragma mark - Table view data source
 
@@ -177,7 +166,7 @@
     
     //Configure the cell with the BNRItem
     cell.titleLabel.text = article.title;
-    cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
     static NSDateFormatter *dateFormatter;
     if (!dateFormatter) {
@@ -189,7 +178,7 @@
     
     //Use filtered NSDate object to set dateLabel contents
     cell.dateLabel.text = [dateFormatter stringFromDate:article.date];
-    cell.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //cell.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
     NSString *initial = [article.title substringToIndex:1];
     if ([initial isEqualToString:@"A"]) {

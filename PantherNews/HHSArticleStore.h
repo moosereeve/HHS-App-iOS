@@ -8,12 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "HHSArticle.h"
+@class HHSTableViewController;
 
 @interface HHSArticleStore : NSObject
 
 @property (nonatomic, readonly, copy) NSDictionary *Articles;
+//values that the parser should scan for
 
--(instancetype)initWithType:(int)type;
+-(instancetype)initWithType:(int)type
+                parserNames:(NSDictionary *)parserNames
+              feedUrlString:(NSString *)feedUrlString
+                     owners:(NSArray *)owners;
 
 -(HHSArticle *)createItem;
 -(void)registerArticleInStore:(HHSArticle *)article;
@@ -23,6 +28,7 @@
 -(BOOL)saveChanges;
 -(int)getType;
 -(void)replaceAllArticlesWith:(NSArray *)articleList;
+-(void)getArticlesFromFeed;
 
 +(int)HHSArticleStoreTypeSchedules;
 +(int)HHSArticleStoreTypeEvents;

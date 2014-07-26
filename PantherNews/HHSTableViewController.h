@@ -29,15 +29,11 @@
 @property (nonatomic) NSDictionary *parserElementNames;
 @property (nonatomic, strong) NSMutableArray *sectionGroups;
 @property (nonatomic) NSMutableArray *articlesList;
-
-//values that the parser should scan for
-@property (nonatomic, strong) NSString *feedUrlString;
 @property (nonatomic) int numberOfSections;
-
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 
-- (void)getArticlesFromFeed;
 - (void)updateTableViewForDynamicTypeSize;
-
+- (void)retrieveArticles;
+- (void)refreshTable;
 
 @end

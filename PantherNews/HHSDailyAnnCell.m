@@ -24,10 +24,10 @@
 
 - (void)updateInterfaceForDynamicTypeSize
 {
-    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     //self.titleLabel.font = font;
-    self.dateLabel.font = font;
-    self.detailTextLabel.font = font;
+    //self.dateLabel.font = font;
+    //self.detailTextLabel.font = font;
     
     //static NSDictionary *imageSizeDictionary;
     

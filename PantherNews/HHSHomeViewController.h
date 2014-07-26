@@ -14,7 +14,7 @@
 #import <UIKit/UIKit.h>
 #import "HHSArticleStore.h"
 
-@interface HHSHomeViewController : UIViewController <UITableViewDelegate, UISplitViewControllerDelegate>
+@interface HHSHomeViewController : UIViewController <UITableViewDelegate, UISplitViewControllerDelegate, HHSTableViewControllerDelegate>
 {
     UIPopoverController *popoverController;
 }
@@ -37,5 +37,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *dailyAnnTitle;
 
 @property (weak, nonatomic) IBOutlet UITableView *eventsTable;
+
+-(void) fillAll;
 
 @end

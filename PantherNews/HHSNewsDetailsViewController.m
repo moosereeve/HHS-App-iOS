@@ -21,8 +21,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-        [defaultCenter addObserver:self selector:@selector(updateFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
+        //NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+        //[defaultCenter addObserver:self selector:@selector(updateFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
     }
     return self;
 }
@@ -83,7 +83,7 @@
     //Use that image to put on the screen in the imageView
     //self.imageView.image = imageToDisplay;
     
-    [self updateFonts];
+    //[self updateFonts];
     
 }
 

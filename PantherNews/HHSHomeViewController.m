@@ -61,13 +61,27 @@
         for (int i = 0; i<4; i++)
         {
             
-        _mAddArticlesNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, i];
-        _mArticleResultsKey = [NSString stringWithFormat:@"%@%i", kArticleResultsKey, i];        _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, i];
-        _mArticlesMessageErrorKey = [NSString stringWithFormat:@"%@%i", kArticlesMessageErrorKey, i];
-        
+        NSString *schedNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [HHSArticleStore HHSArticleStoreTypeSchedules]];
+        NSString *eventsNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [HHSArticleStore HHSArticleStoreTypeEvents]];
+        NSString *newsNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [HHSArticleStore HHSArticleStoreTypeNews]];
+        NSString *dailyAnnNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [HHSArticleStore HHSArticleStoreTypeDailyAnns]];
+    
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(fillAll)
-                                                     name:_mAddArticlesNotificationName object:nil];
+                                                 selector:@selector(fillSchedule)
+                                                     name:schedNotificationName
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(fillEvents)
+                                                     name:eventsNotificationName
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(fillNews)
+                                                     name:newsNotificationName
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(fillDailyAnn)
+                                                     name:dailyAnnNotificationName
+                                                   object:nil];
     }
 
     }
@@ -106,10 +120,7 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self fillSchedule];
-    [self fillNews];
-    [self fillDailyAnn];
-    [self fillEvents];
+    [self fillAll];
     
     CGRect eventsFrame = eventsTable.frame;
     eventsFrame.size.height = 600;//eventsTable.contentSize.height;
@@ -130,7 +141,7 @@
 
 - (void)fillSchedule
 {
-    NSArray *articleList = [_schedulesStore allArticles];
+    NSArray *articleList = [[NSArray alloc] initWithArray:[_schedulesStore allArticles]];
 
     NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
     NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
@@ -139,7 +150,7 @@
     HHSArticle *article = sortedArray[0];
 
     self.schedTitle.text = article.title;
-    self.schedTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //self.schedTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
     static NSDateFormatter *dateFormatter;
     if (!dateFormatter) {
@@ -151,7 +162,7 @@
     
     //Use filtered NSDate object to set dateLabel contents
     self.schedDate.text = [dateFormatter stringFromDate:article.date];
-    self.schedDate.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //self.schedDate.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
     NSString *initial = [article.title substringToIndex:1];
     if ([initial isEqualToString:@"A"]) {
@@ -173,27 +184,28 @@
 
 - (void)fillNews
 {
-    NSArray *articleList = [_newsStore allArticles];
+    if ( [[_newsStore allArticles] count] >0) {
+        NSArray *articleList = [[NSArray alloc ] initWithArray:[_newsStore allArticles]];
     
-    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-    NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
-    NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
+        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+        NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
+        NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
     
-    HHSArticle *article = reversedArray[0];
+        HHSArticle *article = reversedArray[0];
     
-    self.newsTitle.text = article.title;
-    self.newsTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        self.newsTitle.text = article.title;
+        //self.newsTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
-    self.newsImage.image = article.thumbnail;
+        self.newsImage.image = article.thumbnail;
     
-    //__weak HHSNewsCell *weakCell = cell;
-    
+        //__weak HHSNewsCell *weakCell = cell;
+    }
 }
 
 - (void)fillDailyAnn
 {
-    NSArray *articleList = [_dailyAnnStore allArticles];
+    NSArray *articleList = [[NSArray alloc] initWithArray:[_dailyAnnStore allArticles]];
     
     NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
     NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
@@ -244,14 +256,14 @@
     
     //Use filtered NSDate object to set dateLabel contents
     self.dailyAnnTitle.text = formattedTitle;
-    self.dailyAnnTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //self.dailyAnnTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
 
 }
 
 - (void) fillEvents
 {
-    NSArray *articles = [_eventsStore allArticles];
+    NSArray *articles = [[NSArray alloc] initWithArray:[_eventsStore allArticles]];
     
     self.eventsArticles = [[NSMutableArray alloc] init];
     
@@ -351,7 +363,7 @@
     
     //Configure the cell with the BNRItem
     cell.titleLabel.text = article.title;
-    cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     static NSDateFormatter *dateFormatter;
     if (!dateFormatter) {
         dateFormatter = [[NSDateFormatter alloc] init];
@@ -361,7 +373,7 @@
     
     //Use filtered NSDate object to set dateLabel contents
     cell.timeLabel.text = [dateFormatter stringFromDate:article.date];
-    cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    //cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
     return cell;
 }
@@ -407,7 +419,7 @@
     
     [label setText:dateString];
     [view addSubview:label];
-    label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     [label setFont:[UIFont boldSystemFontOfSize:16]];
     //[view setBackgroundColor:[UIColor colorWithRed:166/255.0 green:177/255.0 blue:186/255.0 alpha:1.0]]; //your background color...
     return view;

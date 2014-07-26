@@ -23,8 +23,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-        [defaultCenter addObserver:self selector:@selector(updateFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
     }
     return self;
 }
@@ -68,7 +66,7 @@
     //Use that image to put on the screen in the imageView
     //self.imageView.image = imageToDisplay;
     
-    [self updateFonts];
+    //[self updateFonts];
     
 }
 
@@ -80,9 +78,9 @@
 
 - (void)updateFonts
 {
-    self.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    //self.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     //self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.detailsTextView.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    //self.detailsTextView.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
 }
 @end

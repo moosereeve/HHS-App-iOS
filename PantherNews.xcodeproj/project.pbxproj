@@ -65,6 +65,8 @@
 		6D52B50A195A4F220021A2BB /* c-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D52B505195A4F220021A2BB /* c-50.png */; };
 		6D52B50B195A4F220021A2BB /* b-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D52B506195A4F220021A2BB /* b-50.png */; };
 		6D52B50C195A4F220021A2BB /* a-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D52B507195A4F220021A2BB /* a-50.png */; };
+		6DA0778919808C0200E28346 /* HHSHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DA0778719808C0200E28346 /* HHSHomeViewController.m */; };
+		6DA0778A19808C0200E28346 /* HHSHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DA0778819808C0200E28346 /* HHSHomeViewController.xib */; };
 		6DB15C98197A1A2D007B93F3 /* HHSNavigationControllerForSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB15C97197A1A2D007B93F3 /* HHSNavigationControllerForSplitView.m */; };
 		6DB730201957999E00B55798 /* HHSEventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB7301E1957999E00B55798 /* HHSEventsCell.m */; };
 		6DB730211957999E00B55798 /* HHSEventsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DB7301F1957999E00B55798 /* HHSEventsCell.xib */; };
@@ -169,6 +171,9 @@
 		6D52B505195A4F220021A2BB /* c-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "c-50.png"; sourceTree = "<group>"; };
 		6D52B506195A4F220021A2BB /* b-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "b-50.png"; sourceTree = "<group>"; };
 		6D52B507195A4F220021A2BB /* a-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "a-50.png"; sourceTree = "<group>"; };
+		6DA0778619808C0200E28346 /* HHSHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSHomeViewController.h; sourceTree = "<group>"; };
+		6DA0778719808C0200E28346 /* HHSHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHSHomeViewController.m; sourceTree = "<group>"; };
+		6DA0778819808C0200E28346 /* HHSHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HHSHomeViewController.xib; sourceTree = "<group>"; };
 		6DB15C96197A1A2D007B93F3 /* HHSNavigationControllerForSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSNavigationControllerForSplitView.h; sourceTree = "<group>"; };
 		6DB15C97197A1A2D007B93F3 /* HHSNavigationControllerForSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHSNavigationControllerForSplitView.m; sourceTree = "<group>"; };
 		6DB7301D1957999E00B55798 /* HHSEventsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSEventsCell.h; sourceTree = "<group>"; };
@@ -256,6 +261,9 @@
 				6D1576181955DC65007AAE8C /* Parser */,
 				6DB730401958EFBC00B55798 /* HHSTableViewController.h */,
 				6DB730411958EFBC00B55798 /* HHSTableViewController.m */,
+				6DA0778619808C0200E28346 /* HHSHomeViewController.h */,
+				6DA0778719808C0200E28346 /* HHSHomeViewController.m */,
+				6DA0778819808C0200E28346 /* HHSHomeViewController.xib */,
 				6D1575FF1954CF64007AAE8C /* HHSNavViewController.h */,
 				6D1576001954CF64007AAE8C /* HHSNavViewController.m */,
 				6D1576011954CF64007AAE8C /* HHSNavViewController.xib */,
@@ -534,6 +542,7 @@
 				6D52B4EF1959C5880021A2BB /* hhs-icon-57.png in Resources */,
 				6DB730361957B53300B55798 /* ic_hhs.png in Resources */,
 				6D52B50B195A4F220021A2BB /* b-50.png in Resources */,
+				6DA0778A19808C0200E28346 /* HHSHomeViewController.xib in Resources */,
 				6D52B4F51959C5880021A2BB /* hhs-icon-72@2x.png in Resources */,
 				6D15762A19564BA4007AAE8C /* HHSDailyAnnDetailsViewController.xib in Resources */,
 				6D52B4F21959C5880021A2BB /* hhs-icon-60.png in Resources */,
@@ -571,6 +580,7 @@
 				6DB730201957999E00B55798 /* HHSEventsCell.m in Sources */,
 				6D1576081954CF64007AAE8C /* HHSArticleStore.m in Sources */,
 				6D15762919564BA4007AAE8C /* HHSDailyAnnDetailsViewController.m in Sources */,
+				6DA0778919808C0200E28346 /* HHSHomeViewController.m in Sources */,
 				6D157611195541F9007AAE8C /* APLParseOperation.m in Sources */,
 				6D1576091954CF64007AAE8C /* HHSImageStore.m in Sources */,
 				6D15762E1956623D007AAE8C /* HHSNewsTableViewController.m in Sources */,
@@ -706,14 +716,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PantherNews/Holliston High School.temp_caseinsensitive_rename-Prefix.pch";
 				INFOPLIST_FILE = "PantherNews/Holliston High School-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "Holliston High School";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "61592651-E8AB-4E39-B91D-4346A27ED664";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -731,7 +741,7 @@
 				INFOPLIST_FILE = "PantherNews/Holliston High School-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "Holliston High School";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "61592651-E8AB-4E39-B91D-4346A27ED664";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

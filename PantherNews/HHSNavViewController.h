@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "HHSTableViewController.h"
+#import "HHSHomeViewController.h"
 #import "HHSScheduleTableViewController.h"
 #import "HHSDailyAnnTableViewController.h"
 #import "HHSEventsTableViewController.h"
@@ -23,6 +24,12 @@
 @property (nonatomic) BOOL newsDownloaded;
 @property (nonatomic) BOOL dailAynnDownloaded;
 
+@property (nonatomic, strong) HHSArticleStore *schedulesStore;
+@property (nonatomic, strong) HHSArticleStore *eventsStore;
+@property (nonatomic, strong) HHSArticleStore *newsStore;
+@property (nonatomic, strong) HHSArticleStore *dailyAnnStore;
+
+@property (nonatomic, strong) HHSHomeViewController *homeVC;
 @property (nonatomic, strong) HHSScheduleTableViewController *schedulesTVC;
 @property (nonatomic, strong) HHSEventsTableViewController *eventsTVC;
 @property (nonatomic, strong) HHSNewsTableViewController *newsTVC;
