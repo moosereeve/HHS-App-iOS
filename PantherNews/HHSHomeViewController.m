@@ -141,44 +141,46 @@
 
 - (void)fillSchedule
 {
-    NSArray *articleList = [[NSArray alloc] initWithArray:[_schedulesStore allArticles]];
+    if ( [[_schedulesStore allArticles] count] >0) {
+        NSArray *articleList = [[NSArray alloc] initWithArray:[_schedulesStore allArticles]];
 
-    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-    NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
+        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+        NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
 
-    HHSArticle *article = sortedArray[0];
+        HHSArticle *article = sortedArray[0];
 
-    self.schedTitle.text = article.title;
-    //self.schedTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        self.schedTitle.text = article.title;
+        //self.schedTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
-    static NSDateFormatter *dateFormatter;
-    if (!dateFormatter) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"EEE, MMM d";
-        //dateFormatter.timeStyle = NSDateFormatterNoStyle;
-    }
+        static NSDateFormatter *dateFormatter;
+        if (!dateFormatter) {
+            dateFormatter = [[NSDateFormatter alloc] init];
+            dateFormatter.dateFormat = @"EEE, MMM d";
+            //dateFormatter.timeStyle = NSDateFormatterNoStyle;
+        }
     
     
-    //Use filtered NSDate object to set dateLabel contents
-    self.schedDate.text = [dateFormatter stringFromDate:article.date];
-    //self.schedDate.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        //Use filtered NSDate object to set dateLabel contents
+        self.schedDate.text = [dateFormatter stringFromDate:article.date];
+        //self.schedDate.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
-    NSString *initial = [article.title substringToIndex:1];
-    if ([initial isEqualToString:@"A"]) {
-        self.schedIcon.image = _images[@"a"];
-    }
-    else if ([initial isEqualToString:@"B"]) {
-        self.schedIcon.image = _images[@"b"];
-    }
-    else if ([initial isEqualToString:@"C"]) {
-        self.schedIcon.image = _images[@"c"];
-    }
-    else if ([initial isEqualToString:@"D"]) {
-        self.schedIcon.image = _images[@"d"];
-    }
-    else {
-        self.schedIcon.image = _images[@"star"];
+        NSString *initial = [article.title substringToIndex:1];
+        if ([initial isEqualToString:@"A"]) {
+            self.schedIcon.image = _images[@"a"];
+        }
+        else if ([initial isEqualToString:@"B"]) {
+            self.schedIcon.image = _images[@"b"];
+        }
+        else if ([initial isEqualToString:@"C"]) {
+            self.schedIcon.image = _images[@"c"];
+        }
+        else if ([initial isEqualToString:@"D"]) {
+            self.schedIcon.image = _images[@"d"];
+        }
+        else {
+            self.schedIcon.image = _images[@"star"];
+        }
     }
 }
 
@@ -205,138 +207,140 @@
 
 - (void)fillDailyAnn
 {
-    NSArray *articleList = [[NSArray alloc] initWithArray:[_dailyAnnStore allArticles]];
+    if ( [[_dailyAnnStore allArticles] count] >0) {
+        NSArray *articleList = [[NSArray alloc] initWithArray:[_dailyAnnStore allArticles]];
     
-    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-    NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
-    
-    NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
-    
-    HHSArticle *article = reversedArray[0];
-    
-    NSString *titleString = article.title;
-    titleString = [titleString stringByReplacingOccurrencesOfString:@"Daily Announcements" withString:@""];
-    titleString = [titleString stringByReplacingOccurrencesOfString:@"DAILY ANNOUNCEMENTS" withString:@""];
-    
-    NSDate *titleDate;
-    NSString *formattedTitle = [[NSString alloc] init];
-    
-    static NSDateFormatter *displayFormat;
-    if (displayFormat == nil) {
-        displayFormat = [[NSDateFormatter alloc] init];
-        displayFormat.dateFormat = @"EEEE, MMMM d";
-    }
-    
-    static NSDateFormatter *testFormat;
-    if (testFormat == nil) {
-        testFormat= [[NSDateFormatter alloc] init];
-        testFormat.dateFormat = @"MMMM d, yyyy";
-        [testFormat setLenient:YES];
-    }
-    
-    static NSDateFormatter *testFormat2;
-    if (testFormat2 == nil) {
-        testFormat2= [[NSDateFormatter alloc] init];
-        testFormat2.dateFormat = @"EEEE, MMMM d";
-        [testFormat2 setLenient:YES];
-    }
-    
-    titleDate = [testFormat dateFromString:titleString];
-    formattedTitle = [displayFormat stringFromDate:titleDate];
-    
-    if (formattedTitle == nil) {
+        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+        NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
+        
+        NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
+        
+        HHSArticle *article = reversedArray[0];
+        
+        NSString *titleString = article.title;
+        titleString = [titleString stringByReplacingOccurrencesOfString:@"Daily Announcements" withString:@""];
+        titleString = [titleString stringByReplacingOccurrencesOfString:@"DAILY ANNOUNCEMENTS" withString:@""];
+        
+        NSDate *titleDate;
+        NSString *formattedTitle = [[NSString alloc] init];
+        
+        static NSDateFormatter *displayFormat;
+        if (displayFormat == nil) {
+            displayFormat = [[NSDateFormatter alloc] init];
+            displayFormat.dateFormat = @"EEEE, MMMM d";
+        }
+        
+        static NSDateFormatter *testFormat;
+        if (testFormat == nil) {
+            testFormat= [[NSDateFormatter alloc] init];
+            testFormat.dateFormat = @"MMMM d, yyyy";
+            [testFormat setLenient:YES];
+        }
+        
+        static NSDateFormatter *testFormat2;
+        if (testFormat2 == nil) {
+            testFormat2= [[NSDateFormatter alloc] init];
+            testFormat2.dateFormat = @"EEEE, MMMM d";
+            [testFormat2 setLenient:YES];
+        }
+        
         titleDate = [testFormat dateFromString:titleString];
         formattedTitle = [displayFormat stringFromDate:titleDate];
+        
+        if (formattedTitle == nil) {
+            titleDate = [testFormat dateFromString:titleString];
+            formattedTitle = [displayFormat stringFromDate:titleDate];
+        }
+        
+        if (formattedTitle == nil) {
+            formattedTitle = titleString;
+        }
+        
+        //Use filtered NSDate object to set dateLabel contents
+        self.dailyAnnTitle.text = formattedTitle;
+        //self.dailyAnnTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        
     }
-    
-    if (formattedTitle == nil) {
-        formattedTitle = titleString;
-    }
-    
-    //Use filtered NSDate object to set dateLabel contents
-    self.dailyAnnTitle.text = formattedTitle;
-    //self.dailyAnnTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    
-
 }
 
 - (void) fillEvents
 {
-    NSArray *articles = [[NSArray alloc] initWithArray:[_eventsStore allArticles]];
+    if ( [[_eventsStore allArticles] count] >0) {
+        NSArray *articles = [[NSArray alloc] initWithArray:[_eventsStore allArticles]];
     
-    self.eventsArticles = [[NSMutableArray alloc] init];
-    
-    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-    NSArray *sortedArray = [articles sortedArrayUsingDescriptors:descriptors];
-    
-    [self.eventsArticles removeAllObjects];
-    [self.eventsTable reloadData];
-    
-    int currentDay = -1;
-    int numSections = (int)[self.eventsArticles count];
-    int numRows = 0;
-    if (numSections >0){
-        numRows = (int)[self.eventsArticles[numSections-1] count];
+        self.eventsArticles = [[NSMutableArray alloc] init];
         
-        HHSArticle *lastArticle = self.eventsArticles[numSections-1][numRows-1];
-        if(lastArticle){
+        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+        NSArray *sortedArray = [articles sortedArrayUsingDescriptors:descriptors];
+        
+        [self.eventsArticles removeAllObjects];
+        [self.eventsTable reloadData];
+        
+        int currentDay = -1;
+        int numSections = (int)[self.eventsArticles count];
+        int numRows = 0;
+        if (numSections >0){
+            numRows = (int)[self.eventsArticles[numSections-1] count];
             
-            NSCalendar *lastcal = [NSCalendar currentCalendar];
-            NSDateComponents *lastcomponents = [lastcal components:NSDayCalendarUnit fromDate:lastArticle.date];
-            currentDay = (int)[lastcomponents day];
-            numRows++;
-        }
-    }
-    
-    //[self.eventsTable beginUpdates];
-    
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    
-    for (HHSArticle *art in sortedArray) {
-        NSDate *date=art.date;
-        NSCalendar *cal = [NSCalendar currentCalendar];
-        NSDateComponents *components = [cal components:NSDayCalendarUnit fromDate:date];
-        int thisDay = (int)[components day];
-        
-        if(thisDay != currentDay) {
-            numSections++;
-            numRows=1;
-            if (numSections >=3) {
-                break;
+            HHSArticle *lastArticle = self.eventsArticles[numSections-1][numRows-1];
+            if(lastArticle){
+                
+                NSCalendar *lastcal = [NSCalendar currentCalendar];
+                NSDateComponents *lastcomponents = [lastcal components:NSDayCalendarUnit fromDate:lastArticle.date];
+                currentDay = (int)[lastcomponents day];
+                numRows++;
             }
-            [self.eventsArticles addObject:[[NSMutableArray alloc] init]];
-            //[self.eventsTable insertSections:[NSIndexSet indexSetWithIndex:numSections-1] withRowAnimation:UITableViewRowAnimationNone];
-            
         }
-        currentDay = thisDay;
         
-        //NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numRows-1 inSection:numSections-1];
-        //[indexPaths addObject:indexPath];
-        [self.eventsArticles[numSections-1] addObject:art];
-    }
-    
-    [self.eventsTable beginUpdates];
-    for (int i=0 ;  i < [self.eventsArticles count]; i++) {
-        [self.eventsTable insertSections:[NSIndexSet indexSetWithIndex:i] withRowAnimation:UITableViewRowAnimationNone];
-        NSArray *arts = self.eventsArticles[i];
-        for (int j=0; j < [arts count]; j++) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:j inSection:i];
-            [indexPaths addObject:indexPath];
+        //[self.eventsTable beginUpdates];
+        
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        
+        for (HHSArticle *art in sortedArray) {
+            NSDate *date=art.date;
+            NSCalendar *cal = [NSCalendar currentCalendar];
+            NSDateComponents *components = [cal components:NSDayCalendarUnit fromDate:date];
+            int thisDay = (int)[components day];
+            
+            if(thisDay != currentDay) {
+                numSections++;
+                numRows=1;
+                if (numSections >=3) {
+                    break;
+                }
+                [self.eventsArticles addObject:[[NSMutableArray alloc] init]];
+                //[self.eventsTable insertSections:[NSIndexSet indexSetWithIndex:numSections-1] withRowAnimation:UITableViewRowAnimationNone];
+                
+            }
+            currentDay = thisDay;
+            
+            //NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numRows-1 inSection:numSections-1];
+            //[indexPaths addObject:indexPath];
+            [self.eventsArticles[numSections-1] addObject:art];
         }
+        
+        [self.eventsTable beginUpdates];
+        for (int i=0 ;  i < [self.eventsArticles count]; i++) {
+            [self.eventsTable insertSections:[NSIndexSet indexSetWithIndex:i] withRowAnimation:UITableViewRowAnimationNone];
+            NSArray *arts = self.eventsArticles[i];
+            for (int j=0; j < [arts count]; j++) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:j inSection:i];
+                [indexPaths addObject:indexPath];
+            }
+        }
+        [self.eventsTable insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [self.eventsTable endUpdates];
+        
+        [self.eventsTable reloadData];
+        
+        //[self.eventsStore saveChanges];
+        
+        [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeEvents]];
+        //[self.activityView stopAnimating];
     }
-    [self.eventsTable insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-    
-    [self.eventsTable endUpdates];
-    
-    [self.eventsTable reloadData];
-    
-    //[self.eventsStore saveChanges];
-    
-    [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeEvents]];
-    //[self.activityView stopAnimating];
-    
 }
 
 
