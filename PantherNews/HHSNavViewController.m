@@ -302,6 +302,12 @@
 
 }
 
+- (IBAction)goToWebsite:(id)sender
+{
+    NSURL *url = [[NSURL alloc] initWithString:@"https://sites.google.com/a/holliston.k12.ma.us/holliston-high-school/"];
+    [[UIApplication sharedApplication] openURL:url];
+}
+
 -(void)setCurrentPopoverController:(UIPopoverController *)poc
 {
     self.currentPopover = poc;

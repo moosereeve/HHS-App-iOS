@@ -82,6 +82,7 @@
 		6DB730381957B53300B55798 /* ic_refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DB730321957B53300B55798 /* ic_refresh.png */; };
 		6DB730391957B53300B55798 /* ic_schedules.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DB730331957B53300B55798 /* ic_schedules.png */; };
 		6DB730421958EFBC00B55798 /* HHSTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB730411958EFBC00B55798 /* HHSTableViewController.m */; };
+		6DF12AC91989D4C00055B989 /* panther.png in Resources */ = {isa = PBXBuildFile; fileRef = 6DF12AC81989D4C00055B989 /* panther.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -194,6 +195,7 @@
 		6DB730331957B53300B55798 /* ic_schedules.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_schedules.png; sourceTree = "<group>"; };
 		6DB730401958EFBC00B55798 /* HHSTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; name = HHSTableViewController.h; path = PantherNews/HHSTableViewController.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
 		6DB730411958EFBC00B55798 /* HHSTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; name = HHSTableViewController.m; path = PantherNews/HHSTableViewController.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
+		6DF12AC81989D4C00055B989 /* panther.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = panther.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -395,6 +397,7 @@
 		6D52B4BC1959C0520021A2BB /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				6DF12AC81989D4C00055B989 /* panther.png */,
 				6D52B503195A4F220021A2BB /* star-50.png */,
 				6D52B504195A4F220021A2BB /* d-50.png */,
 				6D52B505195A4F220021A2BB /* c-50.png */,
@@ -536,6 +539,7 @@
 				6D52B4EF1959C5880021A2BB /* hhs-icon-57.png in Resources */,
 				6DB730361957B53300B55798 /* ic_hhs.png in Resources */,
 				6D52B50B195A4F220021A2BB /* b-50.png in Resources */,
+				6DF12AC91989D4C00055B989 /* panther.png in Resources */,
 				6DA0778A19808C0200E28346 /* HHSHomeViewController.xib in Resources */,
 				6D52B4F51959C5880021A2BB /* hhs-icon-72@2x.png in Resources */,
 				6D15762A19564BA4007AAE8C /* HHSDailyAnnDetailsViewController.xib in Resources */,
