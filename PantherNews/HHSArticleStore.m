@@ -280,6 +280,8 @@
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:errorMessage delegate:nil cancelButtonTitle:okTitle otherButtonTitles:nil];
     [alertView show];
+    HHSTableViewController *tvc = self.owners[0];
+    [tvc.delegate refreshDone:_type ];
 }
 
 /**
@@ -291,7 +293,7 @@
 
     assert([NSThread isMainThread]);
     HHSTableViewController *tvc = _owners[0];
-    HHSHomeViewController *homeVC = _owners[1];
+    //HHSHomeViewController *homeVC = _owners[1];
     
     [tvc retrieveArticles];
     //[homeVC fillAll];

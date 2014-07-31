@@ -6,17 +6,24 @@
 //  Copyright (c) 2014 Holliston High School. All rights reserved.
 //
 
+@protocol HHSNavViewControllerDelegate <NSObject>
+-(void)refreshDone:(int)type;
+-(void)setCurrentPopoverController:(UIPopoverController *)poc;
+@end
+
 #import <UIKit/UIKit.h>
-#import "HHSTableViewController.h"
-#import "HHSHomeViewController.h"
-#import "HHSScheduleTableViewController.h"
-#import "HHSDailyAnnTableViewController.h"
-#import "HHSEventsTableViewController.h"
-#import "HHSNewsTableViewController.h"
+//#import "HHSTableViewController.h"
+//#import "HHSHomeViewController.h"
+@class HHSArticleStore;
+@class HHSScheduleTableViewController;
+@class HHSDailyAnnTableViewController;
+@class HHSEventsTableViewController;
+@class HHSNewsTableViewController;
 
 @class HHSTableViewController;
+@class HHSHomeViewController;
 
-@interface HHSNavViewController : UIViewController <HHSTableViewControllerDelegate>
+@interface HHSNavViewController : UIViewController 
 @property (nonatomic) HHSTableViewController *tableViewController;
 @property (nonatomic, strong) NSDictionary *tableviews;
 @property (nonatomic) BOOL schedulesDownloaded;

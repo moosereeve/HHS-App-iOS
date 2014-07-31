@@ -44,7 +44,7 @@
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
                                        initWithTitle: @"Menu"
                                        style: UIBarButtonItemStyleBordered
-                                       target: nil action: nil];
+                                      target: nil action: nil];
         
         [self.navigationItem setBackBarButtonItem: backButton];
 
@@ -89,7 +89,7 @@
                        owners:(NSArray *)schedulesOwners];
     
     _schedulesTVC.articleStore = _schedulesStore;
-    _schedulesTVC.delegate = self;
+    _schedulesTVC.delegate = (HHSTableViewController *) self;
     
 }
 
@@ -119,7 +119,7 @@
                       owners:(NSArray *)owners];
     
     _eventsTVC.articleStore = _eventsStore;
-    _eventsTVC.delegate = self;
+    _eventsTVC.delegate = (HHSTableViewController *) self;
 
 }
 
@@ -147,7 +147,7 @@
                        owners:(NSArray *)owners];
     
     _newsTVC.articleStore = _newsStore;
-    _newsTVC.delegate = self;
+    _newsTVC.delegate = (HHSTableViewController *) self;
 
 }
 -(void)setUpDailyAnn
@@ -175,7 +175,7 @@
                        owners:(NSArray *)owners];
     
     _dailyAnnTVC.articleStore = _dailyAnnStore;
-    _dailyAnnTVC.delegate = self;
+    _dailyAnnTVC.delegate = (HHSTableViewController *) self;
 
 }
 -(void)setUpHome
@@ -203,11 +203,17 @@
     view.eventsStore = _eventsTVC.articleStore;
     
     if( self.splitViewController) {
-        self.splitViewController.delegate = view;
-        HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
-        HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
-        view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
-        self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        // prevent redisplaying if already displaying
+        //( this is needed to prevent breaking the back button, although I don't know why)
+        HHSNavigationControllerForSplitView *nvcsv = (HHSNavigationControllerForSplitView *) self.splitViewController.viewControllers[1];
+        HHSHomeViewController *tvc = (HHSHomeViewController *) nvcsv.topViewController;
+        if(tvc != _homeVC) {
+            self.splitViewController.delegate = view;
+            HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
+            HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
+            view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
+            self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        }
         if (self.currentPopover) {
             [self.currentPopover dismissPopoverAnimated:YES];
         }
@@ -222,15 +228,20 @@
 
 - (IBAction)goToSchedules:(id)sender
 {
-    
     HHSScheduleTableViewController *view = _schedulesTVC;
     self.tableViewController = view;
     if( self.splitViewController) {
-        self.splitViewController.delegate = view;
-        HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
-        HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
-        view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
-        self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        // prevent redisplaying if already displaying
+        //( this is needed to prevent breaking the back button, although I don't know why)
+        HHSNavigationControllerForSplitView *nvcsv = (HHSNavigationControllerForSplitView *) self.splitViewController.viewControllers[1];
+        HHSTableViewController *tvc = (HHSTableViewController *) nvcsv.topViewController;
+        if(tvc != _schedulesTVC) {
+            self.splitViewController.delegate = view;
+            HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
+            HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
+            view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
+            self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        }
         if (self.currentPopover) {
             [self.currentPopover dismissPopoverAnimated:YES];
         }
@@ -247,11 +258,17 @@
     HHSDailyAnnTableViewController *view = _dailyAnnTVC;
     self.tableViewController = view;
     if( self.splitViewController) {
-        self.splitViewController.delegate = view;
-        HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
-        HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
-        view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
-        self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        // prevent redisplaying if already displaying
+        //( this is needed to prevent breaking the back button, although I don't know why)
+        HHSNavigationControllerForSplitView *nvcsv = (HHSNavigationControllerForSplitView *) self.splitViewController.viewControllers[1];
+        HHSTableViewController *tvc = (HHSTableViewController *) nvcsv.topViewController;
+        if(tvc != _dailyAnnTVC) {
+            self.splitViewController.delegate = view;
+            HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
+            HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
+            view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
+            self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        }
         if (self.currentPopover) {
             [self.currentPopover dismissPopoverAnimated:YES];
         }
@@ -266,11 +283,17 @@
     HHSNewsTableViewController *view = _newsTVC;
     self.tableViewController = view;
     if( self.splitViewController) {
-        self.splitViewController.delegate = view;
-        HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
-        HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
-        view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
-        self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        // prevent redisplaying if already displaying
+        //( this is needed to prevent breaking the back button, although I don't know why)
+        HHSNavigationControllerForSplitView *nvcsv = (HHSNavigationControllerForSplitView *) self.splitViewController.viewControllers[1];
+        HHSTableViewController *tvc = (HHSTableViewController *) nvcsv.topViewController;
+        if(tvc != _newsTVC) {
+            self.splitViewController.delegate = view;
+            HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
+            HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
+            view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
+            self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        }
         if (self.currentPopover) {
             [self.currentPopover dismissPopoverAnimated:YES];
         }
@@ -287,11 +310,17 @@
     HHSEventsTableViewController *view = _eventsTVC;
     self.tableViewController = view;
     if( self.splitViewController) {
-        self.splitViewController.delegate = view;
-        HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
-        HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
-        view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
-        self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        // prevent redisplaying if already displaying
+        //( this is needed to prevent breaking the back button, although I don't know why)
+        HHSNavigationControllerForSplitView *nvcsv = (HHSNavigationControllerForSplitView *) self.splitViewController.viewControllers[1];
+        HHSTableViewController *tvc = (HHSTableViewController *) nvcsv.topViewController;
+        if(tvc != _eventsTVC) {
+            self.splitViewController.delegate = view;
+            HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
+            HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
+            view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
+            self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
+        }
         if (self.currentPopover) {
             [self.currentPopover dismissPopoverAnimated:YES];
         }
@@ -354,6 +383,9 @@
             break;
     }
     
+    NSLog (@"%@",[NSString stringWithFormat:@"%@%i",
+                  @"refreshDone complete for ArticleStore #", type]);
+    
     if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailAynnDownloaded) {
         [_alert dismissWithClickedButtonIndex:0 animated:YES];
         [_homeVC fillAll];
@@ -364,13 +396,14 @@
 
 -(void)fetchNewDataWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     
-    NSLog(@"Background Fetch activated");
+    NSLog(@"Background Fetch in HHSNavViewController activated");
 
     [_schedulesTVC.articleStore getArticlesFromFeed];
     [_newsTVC.articleStore getArticlesFromFeed];
     [_eventsTVC.articleStore getArticlesFromFeed];
     [_dailyAnnTVC.articleStore getArticlesFromFeed];
-    
+    NSLog(@"4 requests for getArticlesFrom Feed sent to the article stores");
+
     NSLog(@"Background Fetch completed");
 
     completionHandler(UIBackgroundFetchResultNewData);

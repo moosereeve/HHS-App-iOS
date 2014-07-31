@@ -100,7 +100,7 @@
     UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
     HHSNavViewController *viewController = (HHSNavViewController *)[[navController viewControllers] objectAtIndex:0];
     
-    [viewController fetchNewDataWithCompletionHandler:^(UIBackgroundFetchResult result) {
+    [_nvc fetchNewDataWithCompletionHandler:^(UIBackgroundFetchResult result) {
         completionHandler(result);
         
         NSDate *fetchEnd = [NSDate date];

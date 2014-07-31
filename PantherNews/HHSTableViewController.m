@@ -108,7 +108,7 @@
 -(void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
     
     if (barButtonItem == self.navigationItem.leftBarButtonItem) {
-        self.navigationItem.leftBarButtonItem = nil;
+        //self.navigationItem.leftBarButtonItem = nil;
     }
     
     self.popoverController = nil;
@@ -116,9 +116,10 @@
 
 -(void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
     
-    barButtonItem.title = @"<< Main Menu";
-    self.navigationItem.leftBarButtonItem = barButtonItem;
-    
+    if (barButtonItem != self.navigationItem.leftBarButtonItem) {
+        barButtonItem.title = @"<< Main Menu";
+        self.navigationItem.leftBarButtonItem = barButtonItem;
+    }
     self.popoverController = pc;
     UINavigationController *nvc = svc.viewControllers[0];
     HHSNavViewController *hhsnvc = nvc.viewControllers[0];
@@ -145,6 +146,19 @@
 - (void)retrieveArticles {
     //to be overridden
 }
+
+/*-(void)setCurrentPopoverController:(UIPopoverController *)poc
+{
+    //to be overridden
+}
+
+-(void)refreshDone:(int)type
+{
+    NSLog (@"%@",[NSString stringWithFormat:@"%@%i",
+                  @"refreshDone complete for ArticleStore #",
+                  [self.articleStore getType]]);
+    //to be overridden
+}*/
 
 
 

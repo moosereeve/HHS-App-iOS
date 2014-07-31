@@ -6,23 +6,24 @@
 //
 //
 
-@protocol HHSTableViewControllerDelegate <NSObject>
-- (void)refreshDone:(int)type;
--(void)setCurrentPopoverController:(UIPopoverController *)poc;
-@end
+//@protocol HHSTableViewControllerDelegate <NSObject>
+//-(void)refreshDone:(int)type;
+//-(void)setCurrentPopoverController:(UIPopoverController *)poc;
+//@end
 
 #import <UIKit/UIKit.h>
 #import "HHSArticleStore.h"
+#import "HHSNavViewController.h"
 @class HHSArticle;
 
-@interface HHSTableViewController : UITableViewController <UISplitViewControllerDelegate>
+@interface HHSTableViewController : UITableViewController <UISplitViewControllerDelegate, HHSNavViewControllerDelegate>
 {
     UIPopoverController *popoverController;
 }
 @property (nonatomic) UIPopoverController *popoverController;
 
 
-@property (assign) id <HHSTableViewControllerDelegate> delegate;
+@property (assign) id <HHSNavViewControllerDelegate> delegate;
 
 @property (nonatomic, copy) NSArray *articles;
 @property (nonatomic, strong) HHSArticleStore *articleStore;
@@ -34,6 +35,5 @@
 
 - (void)updateTableViewForDynamicTypeSize;
 - (void)retrieveArticles;
-- (void)refreshTable;
 
 @end

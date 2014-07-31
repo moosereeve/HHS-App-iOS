@@ -6,20 +6,18 @@
 //  Copyright (c) 2014 Holliston High School. All rights reserved.
 //
 
-@protocol HHSTableViewControllerDelegate <NSObject>
-- (void)refreshDone:(int)type;
--(void)setCurrentPopoverController:(UIPopoverController *)poc;
-@end
+
 
 #import <UIKit/UIKit.h>
 #import "HHSArticleStore.h"
+#import "HHSTableViewController.h"
 
-@interface HHSHomeViewController : UIViewController <UITableViewDelegate, UISplitViewControllerDelegate, HHSTableViewControllerDelegate>
+@interface HHSHomeViewController : UIViewController <UITableViewDelegate, UISplitViewControllerDelegate, HHSNavViewControllerDelegate>
 {
     UIPopoverController *popoverController;
 }
 @property (nonatomic) UIPopoverController *popoverController;
-@property (assign) id <HHSTableViewControllerDelegate> delegate;
+@property (assign) id <HHSNavViewControllerDelegate> delegate;
 
 @property (nonatomic, weak) HHSArticleStore *schedulesStore;
 @property (nonatomic, weak) HHSArticleStore *newsStore;

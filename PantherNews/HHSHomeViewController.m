@@ -52,6 +52,9 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        UINavigationItem *navItem = self.navigationItem;
+        navItem.title = @"Home";
+        
         // Custom initialization
         self.eventsHeaderHeight = 30;
         self.eventsCellHeight = 50;
@@ -105,7 +108,7 @@
     self.eventsTable = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
     //self.eventsTable.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     self.eventsTable.delegate = self;
-    self.eventsTable.dataSource = self;
+    self.eventsTable.dataSource = (UITableViewController *) self;
     //[self.eventsTable reloadData];
     
     //self.view = self.eventsTable;
@@ -427,7 +430,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *kArticleCellID = @"ArticleCellID";
+    //static NSString *kArticleCellID = @"ArticleCellID";
     HHSEventsCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HHSEventsCell"];
     
     int section = (int)indexPath.section;
@@ -523,9 +526,10 @@
 
 -(void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
     
-    barButtonItem.title = @"<< Main Menu";
-    self.navigationItem.leftBarButtonItem = barButtonItem;
-    
+    if (barButtonItem != self.navigationItem.leftBarButtonItem) {
+        barButtonItem.title = @"<< Main Menu";
+        self.navigationItem.leftBarButtonItem = barButtonItem;
+    }
     self.popoverController = pc;
     UINavigationController *nvc = svc.viewControllers[0];
     HHSNavViewController *hhsnvc = nvc.viewControllers[0];
@@ -548,6 +552,16 @@
         [popoverController dismissPopoverAnimated:YES];
     }
 }
+
+/*-(void)refreshDone:(int)type
+{
+    [self fillAll];
+}
+
+-(void)setCurrentPopoverController:(UIPopoverController *)poc
+{
+    //
+}*/
 
 
 @end
