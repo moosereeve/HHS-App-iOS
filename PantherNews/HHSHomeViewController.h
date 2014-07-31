@@ -36,7 +36,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *dailyAnnTitle;
 
-@property (weak, nonatomic) IBOutlet UITableView *eventsTable;
+@property (weak, nonatomic) IBOutlet UIView *eventsBox;
 
 -(void) fillAll;
 

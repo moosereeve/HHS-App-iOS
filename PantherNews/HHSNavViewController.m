@@ -41,6 +41,13 @@
         
         [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed: (181/255.0) green:(30/255.0) blue:(18/255.0) alpha:(255/255.0)]];
         
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
+                                       initWithTitle: @"Menu"
+                                       style: UIBarButtonItemStyleBordered
+                                       target: nil action: nil];
+        
+        [self.navigationItem setBackBarButtonItem: backButton];
+
         _homeVC = [[HHSHomeViewController alloc] init];
         [self setUpSchedules];
         [self setUpNews];
@@ -189,7 +196,6 @@
 
 - (IBAction)goToHome:(id)sender
 {
-    
     HHSHomeViewController *view = _homeVC;
     view.schedulesStore = _schedulesTVC.articleStore;
     view.newsStore = _newsTVC.articleStore;

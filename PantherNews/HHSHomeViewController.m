@@ -24,7 +24,15 @@
 
 @interface HHSHomeViewController ()
 @property (nonatomic, strong) NSDictionary *images;
+
+@property (nonatomic, weak) HHSArticle *scheduleArticle;
+@property (nonatomic, weak) HHSArticle *newsArticle;
+@property (nonatomic, weak) HHSArticle *dailyAnnArticle;
 @property (nonatomic) NSMutableArray *eventsArticles;
+
+@property (nonatomic, strong) UITableView *eventsTable;
+@property int eventsCellHeight;
+@property int eventsHeaderHeight;
 
 @property (nonatomic, strong)NSString *mAddArticlesNotificationName;
 @property (nonatomic, strong)NSString *mArticleResultsKey;
@@ -45,6 +53,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.eventsHeaderHeight = 30;
+        self.eventsCellHeight = 50;
         
         UIImage *a = [UIImage imageNamed:@"a"];
         UIImage *b = [UIImage imageNamed:@"b"];
@@ -92,6 +102,14 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.eventsTable = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+    //self.eventsTable.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    self.eventsTable.delegate = self;
+    self.eventsTable.dataSource = self;
+    //[self.eventsTable reloadData];
+    
+    //self.view = self.eventsTable;
+    [_eventsBox addSubview:self.eventsTable];
     
     //Load the NIB file
     UINib *nib = [UINib nibWithNibName:@"HHSEventsCell" bundle:nil];
@@ -122,11 +140,15 @@
 {
     [self fillAll];
     
-    CGRect eventsFrame = eventsTable.frame;
-    eventsFrame.size.height = 600;//eventsTable.contentSize.height;
-    eventsTable.frame = eventsFrame;
+    //CGRect eventsFrame = eventsTable.frame;
+    //eventsFrame.size.height = 600;//eventsTable.contentSize.height;
+    //eventsTable.frame = eventsFrame;
 
-    
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    //necessary to resize the Events TableView
+    [self fillEvents];
 }
 
 -(void)fillAll
@@ -149,6 +171,7 @@
         NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
 
         HHSArticle *article = sortedArray[0];
+        self.scheduleArticle = article;
 
         self.schedTitle.text = article.title;
         //self.schedTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -195,6 +218,7 @@
         NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
     
         HHSArticle *article = reversedArray[0];
+        self.newsArticle = article;
     
         self.newsTitle.text = article.title;
         //self.newsTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -217,6 +241,7 @@
         NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
         
         HHSArticle *article = reversedArray[0];
+        self.dailyAnnArticle = article;
         
         NSString *titleString = article.title;
         titleString = [titleString stringByReplacingOccurrencesOfString:@"Daily Announcements" withString:@""];
@@ -340,8 +365,54 @@
         
         [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeEvents]];
         //[self.activityView stopAnimating];
+        
+        CGFloat newHeight = (CGFloat)[indexPaths count]*_eventsCellHeight +2*_eventsHeaderHeight;
+        
+        CGRect ebframe = [self.eventsBox frame];
+        [self.eventsBox setFrame:CGRectMake(ebframe.origin.x,
+                                            ebframe.origin.y,
+                                            ebframe.size.width,
+                                            newHeight)];
+        
+        CGRect tvframe = [self.eventsTable frame];
+        [self.eventsTable setFrame:CGRectMake(tvframe.origin.x,
+                                       0,
+                                       ebframe.size.width,
+                                       newHeight)];
+        
     }
 }
+
+- (IBAction)scheduleButtonClicked:(id)sender {
+    HHSScheduleDetailsViewController *vc = [[HHSScheduleDetailsViewController alloc] init];
+    
+    //Give deatil view controller a pointer to the item object in the row
+    vc.article = _scheduleArticle;
+    
+    //Piush it onto the top of the navigation controller's stack
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)newsButtonClicked:(id)sender {
+    HHSNewsDetailsViewController *vc = [[HHSNewsDetailsViewController alloc] init];
+    
+    //Give deatil view controller a pointer to the item object in the row
+    vc.article = _newsArticle;
+    
+    //Piush it onto the top of the navigation controller's stack
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)dailyAnnButtonClicked:(id)sender {
+    HHSDailyAnnDetailsViewController *vc = [[HHSDailyAnnDetailsViewController alloc] init];
+    
+    //Give deatil view controller a pointer to the item object in the row
+    vc.article = _dailyAnnArticle;
+    
+    //Piush it onto the top of the navigation controller's stack
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -399,15 +470,10 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 10, tableView.frame.size.width, 18)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, _eventsHeaderHeight)];
     /* Create custom view to display section header... */
     UILabel *label;
-    if (section == 0 ) {
-        label = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, tableView.frame.size.width, 18)];
-    } else {
-        label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width, 18)];
-        
-    }
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, _eventsHeaderHeight)];
     //NSString *string =@"";
     /* Section header is in 0th index... */
     HHSArticle *article = self.eventsArticles[section][0];
@@ -425,22 +491,18 @@
     [view addSubview:label];
     //label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     [label setFont:[UIFont boldSystemFontOfSize:16]];
-    //[view setBackgroundColor:[UIColor colorWithRed:166/255.0 green:177/255.0 blue:186/255.0 alpha:1.0]]; //your background color...
+    [view setBackgroundColor:[UIColor colorWithRed:166/255.0 green:177/255.0 blue:186/255.0 alpha:0.4]]; //your background color...
     return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    int returnval = 20;
-    if (section == 0) {
-        returnval = 40;
-    }
-    return returnval;
+    return _eventsHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    return _eventsCellHeight;
 }
 
 - (void)didReceiveMemoryWarning
