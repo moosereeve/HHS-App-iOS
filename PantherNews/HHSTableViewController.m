@@ -29,10 +29,6 @@
         self.articlesList = [[NSMutableArray array] init];
         self.clearsSelectionOnViewWillAppear = YES;
         
-        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc addObserver:self selector:@selector(updateTableViewForDynamicTypeSize)
-                   name:UIContentSizeCategoryDidChangeNotification object:nil];
-        
     }
     return self;
 }

@@ -52,11 +52,7 @@
     //Register this NIB, which contains the cell
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSScheduleCell"];
     
-    if ([[self.articleStore allArticles] count] >0) {
-        [self retrieveArticles];
-    } else {
-        [self.articleStore getArticlesFromFeed];
-    }
+    [self retrieveArticles];
 }
 
 - (void)retrieveArticles {

@@ -39,8 +39,6 @@
 @property (nonatomic, strong)NSString *mArticlesErrorNotificationName;
 @property (nonatomic, strong)NSString *mArticlesMessageErrorKey;
 
-
-
 @end
 
 @implementation HHSHomeViewController
@@ -160,7 +158,6 @@
     [self fillNews];
     [self fillDailyAnn];
     [self fillEvents];
-
     
 }
 
@@ -366,7 +363,6 @@
         
         //[self.eventsStore saveChanges];
         
-        [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeEvents]];
         //[self.activityView stopAnimating];
         
         CGFloat newHeight = (CGFloat)[indexPaths count]*_eventsCellHeight +2*_eventsHeaderHeight;

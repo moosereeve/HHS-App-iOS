@@ -46,4 +46,5 @@
 -(void)refreshDone:(int)type;
 -(void)fetchNewDataWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 -(void)setCurrentPopoverController:(UIPopoverController *)poc;
+-(void)hideWaiting;
 @end

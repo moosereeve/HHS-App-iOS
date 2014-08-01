@@ -97,8 +97,8 @@
     
     //HHSNavViewController *viewController = (HHSNavViewController *)self.window.rootViewController;
     
-    UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
-    HHSNavViewController *viewController = (HHSNavViewController *)[[navController viewControllers] objectAtIndex:0];
+    //UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
+    //HHSNavViewController *viewController = (HHSNavViewController *)[[navController viewControllers] objectAtIndex:0];
     
     [_nvc fetchNewDataWithCompletionHandler:^(UIBackgroundFetchResult result) {
         completionHandler(result);

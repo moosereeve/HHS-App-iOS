@@ -38,11 +38,7 @@
     //Register this NIB, which contains the cell
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSDailyAnnCell"];
     
-    if ([[self.articleStore allArticles] count] >0) {
-        [self retrieveArticles];
-    } else {
-        [self.articleStore getArticlesFromFeed];
-    }
+    [self retrieveArticles];
 }
 
 /**
@@ -85,8 +81,6 @@
         [self.articleStore saveChanges];
         
         [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeDailyAnns]];
-        [self.activityView stopAnimating];
-
     }
 }
 

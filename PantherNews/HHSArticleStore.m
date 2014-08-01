@@ -177,11 +177,8 @@
 {
     _mAddArticlesNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [self getType]];
     _mArticleResultsKey = [NSString stringWithFormat:@"%@%i", kArticleResultsKey, [self getType]];
-    
     _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, [self getType]];
-    
     _mArticlesMessageErrorKey = [NSString stringWithFormat:@"%@%i", kArticlesMessageErrorKey, [self getType]];
-    
     
     /*
      Use NSURLConnection to asynchronously download the data. This means the main thread will not be blocked - the application will remain responsive to the user.
@@ -205,36 +202,8 @@
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                
-                               // back on the main thread, check for errors, if no errors start the parsing
-                               //
-                               [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                               [self handleParseCompletion:response data:data error:error];
                                
-                               // here we check for any returned NSError from the server, "and" we also check for any http response errors
-                               if (error != nil) {
-                                   [self handleError:error];
-                               }
-                               else {
-                                   // check for any response errors
-                                   NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-                                   if ((([httpResponse statusCode]/100) == 2) && [[response MIMEType] isEqual:@"application/atom+xml"]) {
-                                       
-                                       // Update the UI and start parsing the data,
-                                       // Spawn an NSOperation to parse the earthquake data so that the UI is not
-                                       // blocked while the application parses the XML data.
-                                       //
-                                       APLParseOperation *parseOperation = [[APLParseOperation alloc] initWithData:data elementNames:self.parserElementNames store:self];
-                                       [self.parseQueue addOperation:parseOperation];
-                                   }
-                                   else {
-                                       NSString *errorString =
-                                       NSLocalizedString(@"HTTP Error", @"Error message displayed when receving a connection error.");
-                                       NSDictionary *userInfo = @{NSLocalizedDescriptionKey : errorString};
-                                       NSError *reportError = [NSError errorWithDomain:@"HTTP"
-                                                                                  code:[httpResponse statusCode]
-                                                                              userInfo:userInfo];
-                                       [self handleError:reportError];
-                                   }
-                               }
                            }];
     
     // Start the status bar network activity indicator.
@@ -254,8 +223,41 @@
                                                  name:_mArticlesErrorNotificationName object:nil];
 }
 
+-(void)handleParseCompletion:(NSURLResponse *)response data:(NSData *)data error:(NSError *)error
+{
+    // back on the main thread, check for errors, if no errors start the parsing
+    //
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+    // here we check for any returned NSError from the server, "and" we also check for any http response errors
+    if (error != nil) {
+        [self handleError:error];
+    }
+    else {
+        // check for any response errors
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+        if ((([httpResponse statusCode]/100) == 2) && [[response MIMEType] isEqual:@"application/atom+xml"]) {
+            // Update the UI and start parsing the data,
+            // Spawn an NSOperation to parse the earthquake data so that the UI is not
+            // blocked while the application parses the XML data.
+            //
+            APLParseOperation *parseOperation = [[APLParseOperation alloc] initWithData:data elementNames:self.parserElementNames store:self];
+            [self.parseQueue addOperation:parseOperation];
+        }
+        else {
+            NSString *errorString =
+            NSLocalizedString(@"HTTP Error", @"Error message displayed when receving a connection error.");
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey : errorString};
+            NSError *reportError = [NSError errorWithDomain:@"HTTP"
+                                                       code:[httpResponse statusCode]
+                                                   userInfo:userInfo];
+            [self handleError:reportError];
+        }
+    }
+}
+
 #pragma mark network and xml
-- (void)dealloc {
+- (void)removeObservers {
     
     // we are no longer interested in these notifications:
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -279,9 +281,11 @@
     NSString *okTitle = NSLocalizedString(@"OK ", @"OK Title for alert displayed when download or parse error occurs.");
     
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:errorMessage delegate:nil cancelButtonTitle:okTitle otherButtonTitles:nil];
-    [alertView show];
+    // Don't bother showing the alert.
+    //[alertView show];
     HHSTableViewController *tvc = self.owners[0];
     [tvc.delegate refreshDone:_type ];
+    [self removeObservers];
 }
 
 /**
@@ -291,13 +295,14 @@
     
     [self replaceAllArticlesWith:[[notif userInfo] valueForKey:_mArticleResultsKey]];
 
-    assert([NSThread isMainThread]);
+    //assert([NSThread isMainThread]);
     HHSTableViewController *tvc = _owners[0];
     //HHSHomeViewController *homeVC = _owners[1];
     
     [tvc retrieveArticles];
     //[homeVC fillAll];
     //[_activityView stopAnimating];
+    [self removeObservers];
 }
 
 /**

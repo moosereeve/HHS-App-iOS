@@ -39,11 +39,7 @@
     //Register this NIB, which contains the cell
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSNewsCell"];
     
-    if ([[self.articleStore allArticles] count] >0) {
-        [self retrieveArticles];
-    } else {
-        [self.articleStore getArticlesFromFeed];
-    }
+    [self retrieveArticles];
 }
 
 - (void)retrieveArticles {
@@ -81,7 +77,6 @@
         [self.articleStore saveChanges];
         
         [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeNews]];
-        [self.activityView stopAnimating];
         
 
     }

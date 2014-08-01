@@ -54,6 +54,7 @@
         [self setUpEvents];
         [self setUpDailyAnn];
         [self setUpHome];
+        [self refreshDataButtonPushed:nil];
         
     }
     return self;
@@ -90,6 +91,7 @@
     
     _schedulesTVC.articleStore = _schedulesStore;
     _schedulesTVC.delegate = (HHSTableViewController *) self;
+    //[_schedulesTVC retrieveArticles];
     
 }
 
@@ -120,7 +122,7 @@
     
     _eventsTVC.articleStore = _eventsStore;
     _eventsTVC.delegate = (HHSTableViewController *) self;
-
+    //[_eventsTVC retrieveArticles];
 }
 
 -(void)setUpNews
@@ -148,7 +150,7 @@
     
     _newsTVC.articleStore = _newsStore;
     _newsTVC.delegate = (HHSTableViewController *) self;
-
+    //[_newsTVC retrieveArticles];
 }
 -(void)setUpDailyAnn
 {
@@ -176,7 +178,7 @@
     
     _dailyAnnTVC.articleStore = _dailyAnnStore;
     _dailyAnnTVC.delegate = (HHSTableViewController *) self;
-
+    //[_dailyAnnTVC retrieveArticles];
 }
 -(void)setUpHome
 {
@@ -185,7 +187,7 @@
     _homeVC.eventsStore = _eventsStore;
     _homeVC.newsStore = _newsStore;
     _homeVC.dailyAnnStore = _dailyAnnStore;
-    
+    _homeVC.delegate = (HHSTableViewController *) self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -230,6 +232,7 @@
 {
     HHSScheduleTableViewController *view = _schedulesTVC;
     self.tableViewController = view;
+    
     if( self.splitViewController) {
         // prevent redisplaying if already displaying
         //( this is needed to prevent breaking the back button, although I don't know why)
@@ -257,6 +260,7 @@
 {
     HHSDailyAnnTableViewController *view = _dailyAnnTVC;
     self.tableViewController = view;
+
     if( self.splitViewController) {
         // prevent redisplaying if already displaying
         //( this is needed to prevent breaking the back button, although I don't know why)
@@ -282,6 +286,7 @@
 {
     HHSNewsTableViewController *view = _newsTVC;
     self.tableViewController = view;
+    
     if( self.splitViewController) {
         // prevent redisplaying if already displaying
         //( this is needed to prevent breaking the back button, although I don't know why)
@@ -309,6 +314,7 @@
 {
     HHSEventsTableViewController *view = _eventsTVC;
     self.tableViewController = view;
+    
     if( self.splitViewController) {
         // prevent redisplaying if already displaying
         //( this is needed to prevent breaking the back button, although I don't know why)
@@ -328,7 +334,6 @@
     else {
         [self.navigationController pushViewController:view animated:YES];
     }
-
 }
 
 - (IBAction)goToWebsite:(id)sender
@@ -342,17 +347,29 @@
     self.currentPopover = poc;
 }
 
+-(void)showWaitingWithText:(NSString *)text
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:text message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles: nil];
+    
+    UIActivityIndicatorView *progress= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(125, 50, 30, 30)];
+    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+    [alert addSubview:progress];
+    [progress startAnimating];
+    [alert show];
+    
+    _alert = alert;
+    
+}
+
+-(void)hideWaiting
+{
+    [_alert dismissWithClickedButtonIndex:0 animated:YES];
+
+}
+
 - (IBAction)refreshDataButtonPushed:(id)sender
 {
-    _alert = [[UIAlertView alloc] initWithTitle:@"Downloading Data\nPlease Wait..." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles: nil];
-    [_alert show];
-    
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-    // Adjust the indicator so it is up a few pixels from the bottom of the alert
-    indicator.center = CGPointMake(_alert.bounds.size.width / 2, _alert.bounds.size.height - 50);
-    [indicator startAnimating];
-    [_alert addSubview:indicator];
+    [self showWaitingWithText:@"Refreshing Data\nPlease Wait..."];
     
     _schedulesDownloaded = NO;
     _eventsDownloaded = NO;
@@ -363,7 +380,6 @@
     [_newsTVC.articleStore getArticlesFromFeed];
     [_eventsTVC.articleStore getArticlesFromFeed];
     [_dailyAnnTVC.articleStore getArticlesFromFeed];
-
 }
 
 - (void) refreshDone:(int)type {
@@ -387,8 +403,11 @@
                   @"refreshDone complete for ArticleStore #", type]);
     
     if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailAynnDownloaded) {
-        [_alert dismissWithClickedButtonIndex:0 animated:YES];
-        [_homeVC fillAll];
+        [self hideWaiting];
+        HHSHomeViewController *maybeHome = (HHSHomeViewController *) self.tableViewController;
+        if (maybeHome == _homeVC) {
+            [_homeVC fillAll];
+        }
     }
 }
 
@@ -398,10 +417,11 @@
     
     NSLog(@"Background Fetch in HHSNavViewController activated");
 
-    [_schedulesTVC.articleStore getArticlesFromFeed];
-    [_newsTVC.articleStore getArticlesFromFeed];
-    [_eventsTVC.articleStore getArticlesFromFeed];
-    [_dailyAnnTVC.articleStore getArticlesFromFeed];
+    [self refreshDataButtonPushed:nil];
+    //[_schedulesTVC.articleStore getArticlesFromFeed];
+    //[_newsTVC.articleStore getArticlesFromFeed];
+    //[_eventsTVC.articleStore getArticlesFromFeed];
+    //[_dailyAnnTVC.articleStore getArticlesFromFeed];
     NSLog(@"4 requests for getArticlesFrom Feed sent to the article stores");
 
     NSLog(@"Background Fetch completed");

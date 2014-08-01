@@ -95,14 +95,6 @@ NSString *kArticlesMessageErrorKey = @"ArticleMsgErrorKey";
     return self;
 }
 
-
-- (void)addArticlesToList:(NSArray *)articles {
-    
-    assert([NSThread isMainThread]);
-    [[NSNotificationCenter defaultCenter] postNotificationName:_mAddArticlesNotificationName object:self userInfo:@{_mArticleResultsKey: articles}];
-}
-
-
 // The main function for this NSOperation, to start the parsing.
 - (void)main {
     
@@ -132,7 +124,7 @@ static const NSUInteger kMaximumNumberOfArticlesToParse = 25;
 /*
  When an Earthquake object has been fully constructed, it must be passed to the main thread and the table view in RootViewController must be reloaded to display it. It is not efficient to do this for every Earthquake object - the overhead in communicating between the threads and reloading the table exceed the benefit to the user. Instead, we pass the objects in batches, sized by the constant below. In your application, the optimal batch size will vary depending on the amount of data in the object and other factors, as appropriate.
  */
-static NSUInteger const kSizeOfArticleBatch = 25;
+static NSUInteger const kSizeOfArticleBatch = 40;
 
 // Reduce potential parsing errors by using string constants declared in a single place.
 
@@ -289,6 +281,12 @@ static NSUInteger const kSizeOfArticleBatch = 25;
         //
         [self.currentParsedCharacterData appendString:string];
     }
+}
+
+- (void)addArticlesToList:(NSArray *)articles {
+    
+    assert([NSThread isMainThread]);
+    [[NSNotificationCenter defaultCenter] postNotificationName:_mAddArticlesNotificationName object:self userInfo:@{_mArticleResultsKey: articles}];
 }
 
 /**

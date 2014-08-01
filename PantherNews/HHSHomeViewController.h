@@ -37,5 +37,9 @@
 @property (weak, nonatomic) IBOutlet UIView *eventsBox;
 
 -(void) fillAll;
+-(void) fillSchedule;
+-(void) fillEvents;
+-(void) fillNews;
+-(void) fillDailyAnn;
 
 @end
