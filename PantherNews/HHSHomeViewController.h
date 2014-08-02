@@ -12,12 +12,10 @@
 #import "HHSArticleStore.h"
 #import "HHSTableViewController.h"
 
-@interface HHSHomeViewController : UIViewController <UITableViewDelegate, UISplitViewControllerDelegate, HHSNavViewControllerDelegate>
-{
-    UIPopoverController *popoverController;
-}
+@interface HHSHomeViewController : UIViewController <UITableViewDelegate, UISplitViewControllerDelegate>
 @property (nonatomic) UIPopoverController *popoverController;
-@property (assign) id <HHSNavViewControllerDelegate> delegate;
+@property (nonatomic, weak) HHSNavViewController *owner;
+@property BOOL viewLoaded;
 
 @property (nonatomic, weak) HHSArticleStore *schedulesStore;
 @property (nonatomic, weak) HHSArticleStore *newsStore;

@@ -19,6 +19,7 @@
 @interface HHSNavViewController ()
 @property (nonatomic, strong) UIPopoverController *currentPopover;
 @property (nonatomic, strong) UIAlertView *alert;
+@property BOOL errorShowing;
 
 @end
 
@@ -68,7 +69,6 @@
 
 -(void)setUpSchedules
 {
-    _schedulesTVC = [[HHSScheduleTableViewController alloc] init];
     //these are values that the parser will scan for
     NSDictionary *parserNames = @{@"entry" : @"entry",
                                   @"date" : @"gd:when",
@@ -80,24 +80,23 @@
     
     NSString *feedUrlString = @"http://www.google.com/calendar/feeds/sulsp2f8e4npqtmdp469o8tmro%40group.calendar.google.com/private-fe49e26b4b5bd4579c74fd9c94e2d445/full?orderby=starttime&sortorder=a&futureevents=true&singleevents=true&ctz=America/New_York";
 
-    NSArray *schedulesOwners = @[_schedulesTVC, _homeVC];
-    
     //initialize stores
     _schedulesStore = [[HHSArticleStore alloc]
                        initWithType:[HHSArticleStore HHSArticleStoreTypeSchedules]
                        parserNames:parserNames
                        feedUrlString:feedUrlString
-                       owners:(NSArray *)schedulesOwners];
+                       sortNowToFuture:(BOOL)YES
+                       owner:self];
     
-    _schedulesTVC.articleStore = _schedulesStore;
-    _schedulesTVC.delegate = (HHSTableViewController *) self;
-    //[_schedulesTVC retrieveArticles];
+    _schedulesTVC = [[HHSScheduleTableViewController alloc] initWithStore:_schedulesStore];
+    _schedulesTVC.owner = self;
+    [_schedulesTVC view];
+    
     
 }
 
 -(void)setUpEvents
 {
-    _eventsTVC = [[HHSEventsTableViewController alloc] init];
     //these are values that the parser will scan for
     
     NSDictionary *parserNames = @{@"entry" : @"entry",
@@ -110,24 +109,22 @@
     
     NSString *feedUrlString = @"https://www.google.com/calendar/feeds/holliston.k12.ma.us_gsfpbqnefkm59ul6gbofte1s2k%40group.calendar.google.com/private-641b39b01a46e77af57592990d225fac/full?orderby=starttime&sortorder=a&futureevents=true&singleevents=true&ctz=America/New_York";
 
-    
-    NSArray *owners = @[_eventsTVC, _homeVC];
-    
     //initialize stores
     _eventsStore = [[HHSArticleStore alloc]
                       initWithType:[HHSArticleStore HHSArticleStoreTypeEvents]
                       parserNames:parserNames
                       feedUrlString:feedUrlString
-                      owners:(NSArray *)owners];
+                      sortNowToFuture:YES
+                      owner:self];
+
+    _eventsTVC = [[HHSEventsTableViewController alloc] initWithStore:_eventsStore];
+    _eventsTVC.owner = self;
+    [_eventsTVC view];
     
-    _eventsTVC.articleStore = _eventsStore;
-    _eventsTVC.delegate = (HHSTableViewController *) self;
-    //[_eventsTVC retrieveArticles];
 }
 
 -(void)setUpNews
 {
-    _newsTVC = [[HHSNewsTableViewController alloc] init];
     //these are values that the parser will scan for
     NSDictionary *parserNames = @{@"entry" : @"entry",
                                   @"date" : @"updated",
@@ -139,22 +136,20 @@
     
     NSString *feedUrlString = @"https://sites.google.com/a/holliston.k12.ma.us/holliston-high-school/general-info/news/posts.xml";
     
-    NSArray *owners = @[_newsTVC, _homeVC];
-    
     //initialize stores
     _newsStore = [[HHSArticleStore alloc]
                        initWithType:[HHSArticleStore HHSArticleStoreTypeNews]
                        parserNames:parserNames
                        feedUrlString:feedUrlString
-                       owners:(NSArray *)owners];
+                       sortNowToFuture:NO
+                       owner:self];
     
-    _newsTVC.articleStore = _newsStore;
-    _newsTVC.delegate = (HHSTableViewController *) self;
-    //[_newsTVC retrieveArticles];
+    _newsTVC = [[HHSNewsTableViewController alloc] initWithStore:_newsStore];
+    _newsTVC.owner = self;
+    [_newsTVC view];
 }
 -(void)setUpDailyAnn
 {
-    _dailyAnnTVC = [[HHSDailyAnnTableViewController alloc] init];
     //these are values that the parser will scan for
     
     NSDictionary *parserNames = @{@"entry" : @"entry",
@@ -167,18 +162,18 @@
     
     NSString *feedUrlString = @"https://sites.google.com/a/holliston.k12.ma.us/holliston-high-school/general-info/daily-announcements/posts.xml";
     
-    NSArray *owners = @[_dailyAnnTVC, _homeVC];
-    
     //initialize stores
     _dailyAnnStore = [[HHSArticleStore alloc]
                        initWithType:[HHSArticleStore HHSArticleStoreTypeDailyAnns]
                        parserNames:parserNames
                        feedUrlString:feedUrlString
-                       owners:(NSArray *)owners];
+                       sortNowToFuture:NO
+                       owner:self];
     
-    _dailyAnnTVC.articleStore = _dailyAnnStore;
-    _dailyAnnTVC.delegate = (HHSTableViewController *) self;
-    //[_dailyAnnTVC retrieveArticles];
+    _dailyAnnTVC = [[HHSDailyAnnTableViewController alloc] initWithStore:_dailyAnnStore];
+    _dailyAnnTVC.owner = self;
+    [_dailyAnnTVC view];
+    
 }
 -(void)setUpHome
 {
@@ -187,17 +182,14 @@
     _homeVC.eventsStore = _eventsStore;
     _homeVC.newsStore = _newsStore;
     _homeVC.dailyAnnStore = _dailyAnnStore;
-    _homeVC.delegate = (HHSTableViewController *) self;
+    _homeVC.owner = self;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark handle navigation
 
 - (IBAction)goToHome:(id)sender
 {
+    _currentView = nil;
     HHSHomeViewController *view = _homeVC;
     view.schedulesStore = _schedulesTVC.articleStore;
     view.newsStore = _newsTVC.articleStore;
@@ -223,50 +215,44 @@
     else {
         [self.navigationController pushViewController:view animated:YES];
     }
-    
-    
 }
-
 
 - (IBAction)goToSchedules:(id)sender
 {
+    
     HHSScheduleTableViewController *view = _schedulesTVC;
-    self.tableViewController = view;
-    
-    if( self.splitViewController) {
-        // prevent redisplaying if already displaying
-        //( this is needed to prevent breaking the back button, although I don't know why)
-        HHSNavigationControllerForSplitView *nvcsv = (HHSNavigationControllerForSplitView *) self.splitViewController.viewControllers[1];
-        HHSTableViewController *tvc = (HHSTableViewController *) nvcsv.topViewController;
-        if(tvc != _schedulesTVC) {
-            self.splitViewController.delegate = view;
-            HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
-            HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
-            view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
-            self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
-        }
-        if (self.currentPopover) {
-            [self.currentPopover dismissPopoverAnimated:YES];
-        }
-    }
-    else {
-        [self.navigationController pushViewController:view animated:YES];
-    }
-
-    
+    _currentView = view;
+    [self pushView:view];
 }
 
 - (IBAction)goToDailyAnns:(id)sender
 {
     HHSDailyAnnTableViewController *view = _dailyAnnTVC;
-    self.tableViewController = view;
+    _currentView = view;
+    [self pushView:view];
+}
 
+- (IBAction)goToNews:(id)sender
+{
+    HHSNewsTableViewController *view = _newsTVC;
+    _currentView = view;
+    [self pushView:view];}
+
+- (IBAction)goToEvents:(id)sender
+{
+    HHSEventsTableViewController *view = _eventsTVC;
+    _currentView = view;
+    [self pushView:view];
+}
+
+-(void)pushView:(HHSTableViewController *)view
+{
     if( self.splitViewController) {
         // prevent redisplaying if already displaying
         //( this is needed to prevent breaking the back button, although I don't know why)
         HHSNavigationControllerForSplitView *nvcsv = (HHSNavigationControllerForSplitView *) self.splitViewController.viewControllers[1];
         HHSTableViewController *tvc = (HHSTableViewController *) nvcsv.topViewController;
-        if(tvc != _dailyAnnTVC) {
+        if(tvc != _currentView) {
             self.splitViewController.delegate = view;
             HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
             HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
@@ -282,94 +268,9 @@
 
 }
 
-- (IBAction)goToNews:(id)sender
-{
-    HHSNewsTableViewController *view = _newsTVC;
-    self.tableViewController = view;
-    
-    if( self.splitViewController) {
-        // prevent redisplaying if already displaying
-        //( this is needed to prevent breaking the back button, although I don't know why)
-        HHSNavigationControllerForSplitView *nvcsv = (HHSNavigationControllerForSplitView *) self.splitViewController.viewControllers[1];
-        HHSTableViewController *tvc = (HHSTableViewController *) nvcsv.topViewController;
-        if(tvc != _newsTVC) {
-            self.splitViewController.delegate = view;
-            HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
-            HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
-            view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
-            self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
-        }
-        if (self.currentPopover) {
-            [self.currentPopover dismissPopoverAnimated:YES];
-        }
-    }
-    else {
-        [self.navigationController pushViewController:view animated:YES];
-    }
-
-
-}
-
-- (IBAction)goToEvents:(id)sender
-{
-    HHSEventsTableViewController *view = _eventsTVC;
-    self.tableViewController = view;
-    
-    if( self.splitViewController) {
-        // prevent redisplaying if already displaying
-        //( this is needed to prevent breaking the back button, although I don't know why)
-        HHSNavigationControllerForSplitView *nvcsv = (HHSNavigationControllerForSplitView *) self.splitViewController.viewControllers[1];
-        HHSTableViewController *tvc = (HHSTableViewController *) nvcsv.topViewController;
-        if(tvc != _eventsTVC) {
-            self.splitViewController.delegate = view;
-            HHSNavigationControllerForSplitView *masternav = [self.splitViewController.viewControllers objectAtIndex:0];
-            HHSNavigationControllerForSplitView *detailNav = [[HHSNavigationControllerForSplitView alloc] initWithRootViewController:view];
-            view.navigationItem.leftBarButtonItem = [[[[self.splitViewController.viewControllers objectAtIndex:1]topViewController]navigationItem ]leftBarButtonItem];  //With this you tet a pointer to the button from the first detail VC but from the new detail VC
-            self.splitViewController.viewControllers = @[masternav,detailNav];  //Now you set the new detail VC as the only VC in the array of VCs of the subclassed navigation controller which is the right VC of the split view Controller
-        }
-        if (self.currentPopover) {
-            [self.currentPopover dismissPopoverAnimated:YES];
-        }
-    }
-    else {
-        [self.navigationController pushViewController:view animated:YES];
-    }
-}
-
-- (IBAction)goToWebsite:(id)sender
-{
-    NSURL *url = [[NSURL alloc] initWithString:@"https://sites.google.com/a/holliston.k12.ma.us/holliston-high-school/"];
-    [[UIApplication sharedApplication] openURL:url];
-}
-
--(void)setCurrentPopoverController:(UIPopoverController *)poc
-{
-    self.currentPopover = poc;
-}
-
--(void)showWaitingWithText:(NSString *)text
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:text message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles: nil];
-    
-    UIActivityIndicatorView *progress= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(125, 50, 30, 30)];
-    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-    [alert addSubview:progress];
-    [progress startAnimating];
-    [alert show];
-    
-    _alert = alert;
-    
-}
-
--(void)hideWaiting
-{
-    [_alert dismissWithClickedButtonIndex:0 animated:YES];
-
-}
-
 - (IBAction)refreshDataButtonPushed:(id)sender
 {
-    [self showWaitingWithText:@"Refreshing Data\nPlease Wait..."];
+    [self showWaitingWithText:@"Refreshing Data\nPlease Wait..." buttonText:nil];
     
     _schedulesDownloaded = NO;
     _eventsDownloaded = NO;
@@ -380,6 +281,86 @@
     [_newsTVC.articleStore getArticlesFromFeed];
     [_eventsTVC.articleStore getArticlesFromFeed];
     [_dailyAnnTVC.articleStore getArticlesFromFeed];
+}
+
+- (IBAction)goToWebsite:(id)sender
+{
+    NSURL *url = [[NSURL alloc] initWithString:@"https://sites.google.com/a/holliston.k12.ma.us/holliston-high-school/"];
+    [[UIApplication sharedApplication] openURL:url];
+}
+
+
+
+#pragma mark handle notifications
+
+-(void)notifyStoreIsReady:(HHSArticleStore *)store
+{
+    if (store == _schedulesStore) {
+        [_schedulesTVC reloadArticlesFromStore];
+        [_homeVC fillSchedule];
+    } else if (store == _newsStore) {
+        [_newsTVC reloadArticlesFromStore];
+        [_homeVC fillNews];
+    } else if (store == _eventsStore) {
+        [_eventsTVC reloadArticlesFromStore];
+        [_homeVC fillEvents];
+    } else if (store == _dailyAnnStore) {
+        [_dailyAnnTVC reloadArticlesFromStore];
+        [_homeVC fillDailyAnn];
+    }
+    /*
+    if (store == _currentView.articleStore) {
+        [_currentView reloadArticlesFromStore];
+    } else if (_currentView == nil) {
+        if (store == _schedulesStore) {
+            [_homeVC fillSchedule];
+        } else if (store == _newsStore) {
+            [_homeVC fillNews];
+        }else if (store == _dailyAnnStore) {
+            [_homeVC fillDailyAnn];
+        }else if (store == _eventsStore) {
+            [_homeVC fillEvents];
+        }
+    }
+     */
+}
+
+-(void)notifyStoreDownloadError:(HHSArticleStore *)store error:(NSString *)errorMessage
+{
+    [self showWaitingWithText:errorMessage buttonText:@"Ok"];
+    /*if (store == _schedulesStore) {
+        [_schedulesTVC downloadError];
+        [_homeVC downloadError];
+    } else if (store == _newsStore) {
+        [_newsTVC downloadError];
+        [_homeVC downloadError];
+    } else if (store == _eventsStore) {
+        [_eventsTVC downloadError];
+        [_homeVC downloadError];
+    } else if (store == _dailyAnnStore) {
+        [_dailyAnnTVC downloadError];
+        [_homeVC downloadError];
+    }*/
+}
+
+-(void)setCurrentPopoverController:(UIPopoverController *)poc
+{
+    self.currentPopover = poc;
+}
+
+-(void)showWaitingWithText:(NSString *)text buttonText:(NSString *)buttonText
+{
+    [_alert dismissWithClickedButtonIndex:0 animated:NO];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:text message:nil delegate:nil cancelButtonTitle:buttonText otherButtonTitles: nil];
+    [alert show];
+    _alert = alert;
+    
+}
+
+-(void)hideWaiting
+{
+    [_alert dismissWithClickedButtonIndex:0 animated:YES];
+
 }
 
 - (void) refreshDone:(int)type {
@@ -404,10 +385,6 @@
     
     if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailAynnDownloaded) {
         [self hideWaiting];
-        HHSHomeViewController *maybeHome = (HHSHomeViewController *) self.tableViewController;
-        if (maybeHome == _homeVC) {
-            [_homeVC fillAll];
-        }
     }
 }
 

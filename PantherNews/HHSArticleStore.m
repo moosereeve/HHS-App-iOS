@@ -15,12 +15,16 @@
 
 @interface HHSArticleStore ()
 
-@property (nonatomic) NSOperationQueue *parseQueue;
 @property (nonatomic) NSMutableDictionary *privateItems;
 @property (nonatomic) int type;
+@property (nonatomic) BOOL sortNowToFuture;
+
+@property (nonatomic) NSOperationQueue *parseQueue;
 @property (nonatomic, strong) NSString *feedUrlString;
 @property (nonatomic) NSDictionary *parserElementNames;
-@property (nonatomic) NSArray *owners;
+
+//@property (nonatomic) NSArray *owners;
+@property (nonatomic, weak) HHSNavViewController *owner;
 
 @property (nonatomic, strong)NSString *mAddArticlesNotificationName;
 @property (nonatomic, strong)NSString *mArticleResultsKey;
@@ -42,15 +46,18 @@
 -(instancetype)initWithType:(int)type
                 parserNames:(NSDictionary *)parserNames
               feedUrlString:(NSString *)feedUrlString
-                     owners:(NSArray *)owners
+                       sortNowToFuture:(BOOL)sortOrder
+                     owner:(HHSNavViewController *)owner
 {
     
     self = [super init];
     if (self) {
         _type = type;
-        _owners = owners;
+        _owner = owner;
         _parserElementNames = parserNames;
         _feedUrlString = feedUrlString;
+        _sortNowToFuture = sortOrder;
+        _downloadError = NO;
         
         NSString *path = [self articleArchivePath];
         _privateItems = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
@@ -61,17 +68,34 @@
             _privateItems = [[NSMutableDictionary alloc] init];
             [self getArticlesFromFeed];
         }
-        
     }
     return self;
 }
 
-- (NSArray *)allArticles
+-(int)getType
 {
-    return [self.privateItems allValues];
+    return self.type;
 }
 
-- (HHSArticle *)createItem
+#pragma mark article management
+
+- (NSArray *)allArticles
+{
+    if ([self.privateItems count] == 0) {
+        [self getArticlesFromFeed];
+        return nil;
+    } else {
+        NSArray *newArticles = [self.privateItems allValues] ;
+        
+        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:_sortNowToFuture];
+        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+        NSArray *sortedArray = [newArticles sortedArrayUsingDescriptors:descriptors];
+
+        return sortedArray;
+    }
+}
+
+- (HHSArticle *)newArticle
 {
     HHSArticle *item = [[HHSArticle alloc] init];
     
@@ -81,21 +105,21 @@
     return item;
 }
 
-- (void)registerArticleInStore:(HHSArticle *)article
+- (void)addArticle:(HHSArticle *)article
 {
     self.privateItems[article.articleKey] = article;
 }
 
--(void)replaceAllArticlesWith:(NSArray *)articleList
+-(void)populateStoreWith:(NSArray *)articleList
 {
     //NSDictionary *backupOfItems = [[NSDictionary alloc] initWithDictionary:self.privateItems copyItems:YES];
     
     [self.privateItems removeAllObjects];
     for (HHSArticle *article in articleList) {
-        [self registerArticleInStore:article];
+        [self addArticle:article];
     }
     
-    [self saveChanges];
+    [self saveStore];
     
 }
 
@@ -136,7 +160,7 @@
     [[HHSImageStore sharedStore] deleteImageForKey:key];
 }
 
--(void)removeAllItems
+-(void)removeAllArticles
 {
     for (HHSArticle *article in self.privateItems) {
         [self.privateItems removeObjectForKey:article.articleKey];
@@ -144,7 +168,9 @@
         NSString *key = article.articleKey;
         [[HHSImageStore sharedStore] deleteImageForKey:key];
     }
-    }
+}
+
+#pragma mark file encoding
 
 - (NSString *)articleArchivePath
 {
@@ -160,7 +186,7 @@
     return [documentDirectory stringByAppendingPathComponent:pathComponent];
 }
 
-- (BOOL)saveChanges
+- (BOOL)saveStore
 {
     NSString *path = self.articleArchivePath;
     
@@ -172,6 +198,8 @@
     //Returns YES on success
     return [NSKeyedArchiver archiveRootObject:self.privateItems toFile:path];
 }
+
+#pragma mark downloading
 
 -(void)getArticlesFromFeed
 {
@@ -202,7 +230,7 @@
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                
-                               [self handleParseCompletion:response data:data error:error];
+                               [self handleUrlConnectCompletion:response data:data error:error];
                                
                            }];
     
@@ -215,7 +243,7 @@
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(addArticles:)
+                                             selector:@selector(addParseResultsToStore:)
                                                  name:_mAddArticlesNotificationName object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -223,7 +251,7 @@
                                                  name:_mArticlesErrorNotificationName object:nil];
 }
 
--(void)handleParseCompletion:(NSURLResponse *)response data:(NSData *)data error:(NSError *)error
+-(void)handleUrlConnectCompletion:(NSURLResponse *)response data:(NSData *)data error:(NSError *)error
 {
     // back on the main thread, check for errors, if no errors start the parsing
     //
@@ -271,38 +299,21 @@
                                                   object:nil];
 }
 
-/**
- Handle errors in the download by showing an alert to the user. This is a very simple way of handling the error, partly because this application does not have any offline functionality for the user. Most real applications should handle the error in a less obtrusive way and provide offline functionality to the user.
- */
+#pragma mark handle parse results
 - (void)handleError:(NSError *)error {
     
     NSString *errorMessage = [error localizedDescription];
-    NSString *alertTitle = NSLocalizedString(@"Error", @"Title for alert displayed when download or parse error occurs.");
-    NSString *okTitle = NSLocalizedString(@"OK ", @"OK Title for alert displayed when download or parse error occurs.");
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:errorMessage delegate:nil cancelButtonTitle:okTitle otherButtonTitles:nil];
-    // Don't bother showing the alert.
-    //[alertView show];
-    HHSTableViewController *tvc = self.owners[0];
-    [tvc.delegate refreshDone:_type ];
     [self removeObservers];
+    _downloadError = YES;
+    [_owner notifyStoreDownloadError:self error:errorMessage];
 }
 
-/**
- Our NSNotification callback from the running NSOperation to add the earthquakes
- */
-- (void)addArticles:(NSNotification *)notif {
+- (void)addParseResultsToStore:(NSNotification *)notif {
     
-    [self replaceAllArticlesWith:[[notif userInfo] valueForKey:_mArticleResultsKey]];
-
-    //assert([NSThread isMainThread]);
-    HHSTableViewController *tvc = _owners[0];
-    //HHSHomeViewController *homeVC = _owners[1];
-    
-    [tvc retrieveArticles];
-    //[homeVC fillAll];
-    //[_activityView stopAnimating];
+    [self populateStoreWith:[[notif userInfo] valueForKey:_mArticleResultsKey]];
     [self removeObservers];
+    _downloadError = NO;
+    [_owner notifyStoreIsReady:self];
 }
 
 /**
@@ -317,12 +328,6 @@
 - (void)addArticlesToList:(NSArray *)articles {
     
     //each subclass must have its own version of this method
-}
-
-
--(int)getType
-{
-    return self.type;
 }
 
 #pragma mark constants

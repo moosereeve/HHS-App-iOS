@@ -16,24 +16,23 @@
 #import "HHSNavViewController.h"
 @class HHSArticle;
 
-@interface HHSTableViewController : UITableViewController <UISplitViewControllerDelegate, HHSNavViewControllerDelegate>
-{
-    UIPopoverController *popoverController;
-}
-@property (nonatomic) UIPopoverController *popoverController;
+@interface HHSTableViewController : UITableViewController <UISplitViewControllerDelegate>
 
-
-@property (assign) id <HHSNavViewControllerDelegate> delegate;
-
-@property (nonatomic, copy) NSArray *articles;
 @property (nonatomic, strong) HHSArticleStore *articleStore;
-@property (nonatomic) NSDictionary *parserElementNames;
-@property (nonatomic, strong) NSMutableArray *sectionGroups;
 @property (nonatomic) NSMutableArray *articlesList;
+@property (nonatomic, strong) NSMutableArray *sectionGroups;
 @property (nonatomic) int numberOfSections;
+
+@property (nonatomic) UIPopoverController *popoverController;
+@property (nonatomic, weak) HHSNavViewController *owner;
+@property BOOL viewLoaded;
+
+//@property (nonatomic, copy) NSArray *articles;
+
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 
-- (void)updateTableViewForDynamicTypeSize;
-- (void)retrieveArticles;
+-(instancetype)initWithStore:(HHSArticleStore *)store;
+-(void)reloadArticlesFromStore;
+-(void)downloadError;
 
 @end

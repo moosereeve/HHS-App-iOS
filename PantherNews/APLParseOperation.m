@@ -214,7 +214,7 @@ static NSUInteger const kSizeOfArticleBatch = 40;
         _currentImgSrc = nil;
         
         [self.currentParseBatch addObject:self.currentArticleObject];
-        [self.currentArticleStore registerArticleInStore:self.currentArticleObject];
+        [self.currentArticleStore addArticle:self.currentArticleObject];
         
         _parsedArticleCounter++;
         if ([self.currentParseBatch count] >= kSizeOfArticleBatch) {

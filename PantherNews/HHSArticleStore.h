@@ -8,26 +8,26 @@
 
 #import <Foundation/Foundation.h>
 #import "HHSArticle.h"
-@class HHSTableViewController;
+@class HHSNavViewController;
 
 @interface HHSArticleStore : NSObject
 
 @property (nonatomic, readonly, copy) NSDictionary *Articles;
-//values that the parser should scan for
+@property BOOL downloadError;
 
 -(instancetype)initWithType:(int)type
                 parserNames:(NSDictionary *)parserNames
               feedUrlString:(NSString *)feedUrlString
-                     owners:(NSArray *)owners;
+            sortNowToFuture:(BOOL)sortOrder
+                      owner:(HHSNavViewController *)owner;
 
--(HHSArticle *)createItem;
--(void)registerArticleInStore:(HHSArticle *)article;
+-(int)getType;
+-(HHSArticle *)newArticle;
+-(void)addArticle:(HHSArticle *)article;
 -(NSArray *)allArticles;
 -(HHSArticle *)findArticle:(HHSArticle *)articleToCheck;
 -(void)removeItem:(HHSArticle *)item;
--(BOOL)saveChanges;
--(int)getType;
--(void)replaceAllArticlesWith:(NSArray *)articleList;
+
 -(void)getArticlesFromFeed;
 
 +(int)HHSArticleStoreTypeSchedules;

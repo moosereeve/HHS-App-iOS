@@ -16,9 +16,9 @@
 
 @implementation HHSDailyAnnTableViewController
 
-- (id)init
+- (id)initWithStore:(HHSArticleStore *)store
 {
-    self = [super init];
+    self = [super initWithStore:store];
     if (self) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Announcements";
@@ -38,50 +38,41 @@
     //Register this NIB, which contains the cell
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSDailyAnnCell"];
     
-    [self retrieveArticles];
+    [self reloadArticlesFromStore];
 }
 
-/**
- The NSOperation "ParseOperation" calls addArticlesToList: via NSNotification, on the main thread which in turn calls this method, with batches of parsed objects.
- */
-- (void)retrieveArticles {
+- (void)reloadArticlesFromStore {
     
-    if ([[self.articleStore allArticles] count] == 0) {
-        [self.articleStore getArticlesFromFeed];
-    } else {
-        NSArray *storeArticles = [self.articleStore allArticles] ;
-        
-        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-        NSArray *sortedArray = [storeArticles sortedArrayUsingDescriptors:descriptors];
-        NSArray* reversedArray = [[sortedArray reverseObjectEnumerator] allObjects];
-        NSArray *articles = [[NSArray alloc] initWithArray:reversedArray];
-        
-        [self.articleStore replaceAllArticlesWith:reversedArray];
-        
-        [self.articlesList removeAllObjects];
-        
-        [self.tableView reloadData];
-        
-        NSInteger startingRow = [self.articlesList count];
-        NSInteger articleCount = [articles count];
-        NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:articleCount];
-        
-        for (NSInteger row = startingRow; row < (startingRow + articleCount); row++) {
-            
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-            [indexPaths addObject:indexPath];
-        }
-        
-        [self.articlesList addObjectsFromArray:articles];
-        
-        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-        
-        
-        [self.articleStore saveChanges];
-        
-        [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeDailyAnns]];
+    NSArray *articles = [self.articleStore allArticles];
+    
+    if (self.articleStore.downloadError) {
+        [self.owner hideWaiting];
+        return;
     }
+    if ((articles == nil) || !(self.viewLoaded) || (self.articleStore.downloadError)) {
+        return;
+    }
+
+    
+    [self.articlesList removeAllObjects];
+    [self.tableView reloadData];
+    
+    NSInteger startingRow = [self.articlesList count];
+    NSInteger articleCount = [articles count];
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:articleCount];
+    
+    for (NSInteger row = startingRow; row < (startingRow + articleCount); row++) {
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+        [indexPaths addObject:indexPath];
+    }
+    
+    [self.articlesList addObjectsFromArray:articles];
+    
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    
+    [self.owner hideWaiting];
+
 }
 
 

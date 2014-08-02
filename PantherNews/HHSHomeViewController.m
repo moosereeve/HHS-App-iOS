@@ -44,7 +44,6 @@
 @implementation HHSHomeViewController
 @synthesize eventsTable;
 @synthesize popoverController;
-@synthesize delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,7 +52,8 @@
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Home";
         
-        // Custom initialization
+        _viewLoaded = NO;
+        
         self.eventsHeaderHeight = 30;
         self.eventsCellHeight = 50;
         
@@ -135,8 +135,10 @@
                                                                       multiplier:1.0
                                                                         constant:0];
     [self.view addConstraint:rightConstraint];
+    _viewLoaded = YES;
     
 }
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [self fillAll];
@@ -205,6 +207,7 @@
             self.schedIcon.image = _images[@"star"];
         }
     }
+    [self hideIfReady];
 }
 
 - (void)fillNews
@@ -224,9 +227,9 @@
         //self.newsTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
         self.newsImage.image = article.thumbnail;
-    
-        //__weak HHSNewsCell *weakCell = cell;
+        
     }
+    [self hideIfReady];
 }
 
 - (void)fillDailyAnn
@@ -287,6 +290,7 @@
         //self.dailyAnnTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         
     }
+    [self hideIfReady];
 }
 
 - (void) fillEvents
@@ -378,7 +382,18 @@
                                        0,
                                        ebframe.size.width,
                                        newHeight)];
-        
+    }
+    [self hideIfReady];
+}
+
+-(void)hideIfReady
+{
+    BOOL ready = (_scheduleArticle != nil) && (_newsArticle != nil)
+    && (_dailyAnnArticle != nil) && (_eventsArticles != nil);
+    
+    if (ready) {
+        [self.owner hideWaiting];
+
     }
 }
 

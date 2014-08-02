@@ -99,8 +99,6 @@
         //If we found an image on the file system, place it into the cache
         if (result) {
             self.dictionary[key] = result;
-        } else {
-            NSLog(@"Error: unable to find %@", imagePath);
         }
     }
     
@@ -116,7 +114,9 @@
     [self.dictionary removeObjectForKey:key];
     
     NSString *imagePath = [self imagePathForKey:key];
-    [[NSFileManager defaultManager] removeItemAtPath:imagePath error:nil];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:imagePath]) {
+        [[NSFileManager defaultManager] removeItemAtPath:imagePath error:nil];
+    }
 }
 
 - (NSString *)imagePathForKey:(NSString *)key

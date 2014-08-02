@@ -20,9 +20,9 @@
 
 @implementation HHSEventsTableViewController
 
-- (id)init
+- (id)initWithStore:(HHSArticleStore *)store
 {
-    self = [super init];
+    self = [super initWithStore:store];
     if (self) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Events";
@@ -41,75 +41,70 @@
     //Register this NIB, which contains the cell
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSEventsCell"];
 
-    [self retrieveArticles];
+    [self reloadArticlesFromStore];
 }
 
-- (void)retrieveArticles {
+- (void)reloadArticlesFromStore {
+    NSArray *articles = [self.articleStore allArticles];
     
-    if ([[self.articleStore allArticles] count] == 0) {
-        [self.articleStore getArticlesFromFeed];
-    } else {
-        NSArray *storeArticles = [self.articleStore allArticles] ;
-        
-        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
-        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-        NSArray *sortedArray = [storeArticles sortedArrayUsingDescriptors:descriptors];
-        
-        [self.articlesList removeAllObjects];
-        NSArray *articles = [[NSArray alloc] initWithArray:[sortedArray copy]];
-        
-        [self.tableView reloadData];
-        
-        int currentDay = -1;
-        int numSections = (int)[self.articlesList count];
-        int numRows = 0;
-        if (numSections >0){
-            numRows = (int)[self.articlesList[numSections-1] count];
-            
-            HHSArticle *lastArticle = self.articlesList[numSections-1][numRows-1];
-            if(lastArticle){
-                
-                NSCalendar *lastcal = [NSCalendar currentCalendar];
-                NSDateComponents *lastcomponents = [lastcal components:NSDayCalendarUnit fromDate:lastArticle.date];
-                currentDay = (int)[lastcomponents day];
-                numRows++;
-            }
-        }
-        
-        [self.tableView beginUpdates];
-        
-        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-        
-        for (HHSArticle *art in articles) {
-            NSDate *date=art.date;
-            NSCalendar *cal = [NSCalendar currentCalendar];
-            NSDateComponents *components = [cal components:NSDayCalendarUnit fromDate:date];
-            int thisDay = (int)[components day];
-            
-            if(thisDay != currentDay) {
-                [self.articlesList addObject:[[NSMutableArray alloc] init]];
-                numSections++;
-                numRows=1;
-                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:numSections-1] withRowAnimation:UITableViewRowAnimationNone];
-                
-            }
-            currentDay = thisDay;
-            
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numRows-1 inSection:numSections-1];
-            [indexPaths addObject:indexPath];
-            [self.articlesList[numSections-1] addObject:art];
-        }
-        
-        [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-        
-        [self.tableView endUpdates];
-        
-        [self.articleStore saveChanges];
-        
-        [self.delegate refreshDone:[HHSArticleStore HHSArticleStoreTypeEvents]];
-
+    if (self.articleStore.downloadError) {
+        [self.owner hideWaiting];
+        return;
     }
     
+    if ((articles == nil) || !(self.viewLoaded) || (self.articleStore.downloadError)) {
+        return;
+    }
+
+
+        
+    [self.tableView reloadData];
+    
+    int currentDay = -1;
+    int numSections = (int)[self.articlesList count];
+    int numRows = 0;
+    if (numSections >0){
+        numRows = (int)[self.articlesList[numSections-1] count];
+        
+        HHSArticle *lastArticle = self.articlesList[numSections-1][numRows-1];
+        if(lastArticle){
+            
+            NSCalendar *lastcal = [NSCalendar currentCalendar];
+            NSDateComponents *lastcomponents = [lastcal components:NSDayCalendarUnit fromDate:lastArticle.date];
+            currentDay = (int)[lastcomponents day];
+            numRows++;
+        }
+    }
+    
+    [self.tableView beginUpdates];
+    
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    
+    for (HHSArticle *art in articles) {
+        NSDate *date=art.date;
+        NSCalendar *cal = [NSCalendar currentCalendar];
+        NSDateComponents *components = [cal components:NSDayCalendarUnit fromDate:date];
+        int thisDay = (int)[components day];
+        
+        if(thisDay != currentDay) {
+            [self.articlesList addObject:[[NSMutableArray alloc] init]];
+            numSections++;
+            numRows=1;
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:numSections-1] withRowAnimation:UITableViewRowAnimationNone];
+            
+        }
+        currentDay = thisDay;
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:numRows-1 inSection:numSections-1];
+        [indexPaths addObject:indexPath];
+        [self.articlesList[numSections-1] addObject:art];
+    }
+    
+    [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    
+    [self.tableView endUpdates];
+    
+    [self.owner hideWaiting];
 }
 
 

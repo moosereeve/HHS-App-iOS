@@ -24,7 +24,7 @@
 @class HHSHomeViewController;
 
 @interface HHSNavViewController : UIViewController 
-@property (nonatomic) HHSTableViewController *tableViewController;
+@property (nonatomic) HHSTableViewController *currentView;
 @property (nonatomic, strong) NSDictionary *tableviews;
 @property (nonatomic) BOOL schedulesDownloaded;
 @property (nonatomic) BOOL eventsDownloaded;
@@ -43,8 +43,11 @@
 @property (nonatomic, strong) HHSDailyAnnTableViewController *dailyAnnTVC;
 
 
+-(void)notifyStoreIsReady:(HHSArticleStore *)store;
+-(void)notifyStoreDownloadError:(HHSArticleStore *)store error:(NSString *)error;
 -(void)refreshDone:(int)type;
 -(void)fetchNewDataWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 -(void)setCurrentPopoverController:(UIPopoverController *)poc;
+-(void)showWaitingWithText:(NSString *)text buttonText:(NSString *)buttonText;
 -(void)hideWaiting;
 @end

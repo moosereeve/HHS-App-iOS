@@ -13,22 +13,31 @@
 #import "HHSHomeViewController.h"
 
 @interface HHSTableViewController ()
-// queue that manages our NSOperation for parsing article data
 @end
 
 @implementation HHSTableViewController
 @synthesize popoverController;
-@synthesize delegate;
 
-- (id)init{
+-(id)init
+{
+    self = [super init];
+    NSLog(@"Wrong initializer. Use InitWithStore");
+    return self;
+}
+
+- (id)initWithStore:(HHSArticleStore *) store
+{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
+        
+        self.articleStore = store;
         
         self.sectionGroups = [[NSMutableArray array] init];
         
         self.articlesList = [[NSMutableArray array] init];
         self.clearsSelectionOnViewWillAppear = YES;
         
+        _viewLoaded = NO;
     }
     return self;
 }
@@ -39,49 +48,30 @@
     
     _activityView=[[UIActivityIndicatorView alloc]     initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
-    if([self.articles count] ==0) {
+    if(([self.articlesList count] == 0)) {
         
-        _activityView.center=self.view.center;
-    
-        [_activityView startAnimating];
-    
-        [self.view addSubview:_activityView];
+        [self.owner showWaitingWithText:@"Loading..." buttonText:nil];
         
     }
     
+    _viewLoaded = YES;
     
+}
+
+-(void)downloadError
+{
+    [self.owner hideWaiting];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
     
-    
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-}
-
-- (void)updateTableViewForDynamicTypeSize
-{
-    static NSDictionary *cellHeightDictionary;
-    
-    if (!cellHeightDictionary) {
-        cellHeightDictionary = @{ UIContentSizeCategoryExtraSmall: @44,
-                                  UIContentSizeCategorySmall: @44,
-                                  UIContentSizeCategoryMedium: @44,
-                                  UIContentSizeCategoryLarge: @44,
-                                  UIContentSizeCategoryExtraLarge: @55,
-                                  UIContentSizeCategoryExtraLarge: @65,
-                                  UIContentSizeCategoryExtraExtraExtraLarge: @75};
-        
-    }
-    NSString *userSize = [[UIApplication sharedApplication] preferredContentSizeCategory];
-    NSNumber *cellHeight = cellHeightDictionary[userSize];
-    [self.tableView setRowHeight:cellHeight.floatValue];
-    [self.tableView reloadData];
 }
 
 #pragma mark tableview
@@ -139,7 +129,7 @@
     }
 }
 
-- (void)retrieveArticles {
+- (void)reloadArticlesFromStore {
     //to be overridden
 }
 
