@@ -112,7 +112,9 @@
     [self.tableView endUpdates];
     [self.activityView stopAnimating];
     
-    [self.owner hideWaiting];
+    if (self.owner.currentView == self) {
+        [self.owner hideWaiting];
+    }
     
 }
 

@@ -108,9 +108,11 @@ NSString *kArticlesMessageErrorKey = @"ArticleMsgErrorKey";
     /*
      Depending on the total number of earthquakes parsed, the last batch might not have been a "full" batch, and thus not been part of the regular batch transfer. So, we check the count of the array and, if necessary, send it to the main thread.
      */
-    if ([self.currentParseBatch count] > 0) {
+    /*if ([self.currentParseBatch count] > 0) {
         [self performSelectorOnMainThread:@selector(addArticlesToList:) withObject:self.currentParseBatch waitUntilDone:NO];
-    }
+    }*/
+    [self performSelectorOnMainThread:@selector(parsingDone) withObject:nil waitUntilDone:YES];
+    //[self.currentArticleStore parsingDone];
 }
 
 
@@ -214,12 +216,15 @@ static NSUInteger const kSizeOfArticleBatch = 40;
         _currentImgSrc = nil;
         
         [self.currentParseBatch addObject:self.currentArticleObject];
-        [self.currentArticleStore addArticle:self.currentArticleObject];
+        [self.currentArticleStore addTempArticle:self.currentArticleObject];
         
         _parsedArticleCounter++;
         if ([self.currentParseBatch count] >= kSizeOfArticleBatch) {
-            [self performSelectorOnMainThread:@selector(addArticlesToList:) withObject:self.currentParseBatch waitUntilDone:YES];
+            //[self.currentArticleStore parsingDone];
+            [self performSelectorOnMainThread:@selector(parsingDone) withObject:nil waitUntilDone:YES];
+            //[self performSelectorOnMainThread:@selector(addArticlesToList:) withObject:self.currentParseBatch waitUntilDone:YES];
             self.currentParseBatch = [NSMutableArray array];
+            [self.currentArticleStore parsingDone];
         }
     }
     else if ([elementName isEqualToString:_kTitleElementName]) {
@@ -283,9 +288,14 @@ static NSUInteger const kSizeOfArticleBatch = 40;
     }
 }
 
+-(void)parsingDone
+{
+    [self.currentArticleStore parsingDone];
+}
+
 - (void)addArticlesToList:(NSArray *)articles {
     
-    assert([NSThread isMainThread]);
+    //assert([NSThread isMainThread]);
     [[NSNotificationCenter defaultCenter] postNotificationName:_mAddArticlesNotificationName object:self userInfo:@{_mArticleResultsKey: articles}];
 }
 

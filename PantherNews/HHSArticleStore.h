@@ -23,12 +23,15 @@
 
 -(int)getType;
 -(HHSArticle *)newArticle;
--(void)addArticle:(HHSArticle *)article;
+-(void)addTempArticle:(HHSArticle *)article;
 -(NSArray *)allArticles;
 -(HHSArticle *)findArticle:(HHSArticle *)articleToCheck;
 -(void)removeItem:(HHSArticle *)item;
 
 -(void)getArticlesFromFeed;
+-(void)getArticlesInBackground;
+-(void)parsingDone;
++(BOOL)needsUpdating;
 
 +(int)HHSArticleStoreTypeSchedules;
 +(int)HHSArticleStoreTypeEvents;

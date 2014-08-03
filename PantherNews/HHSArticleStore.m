@@ -16,12 +16,14 @@
 @interface HHSArticleStore ()
 
 @property (nonatomic) NSMutableDictionary *privateItems;
+@property (nonatomic) NSMutableDictionary *tempItems;
 @property (nonatomic) int type;
 @property (nonatomic) BOOL sortNowToFuture;
 
 @property (nonatomic) NSOperationQueue *parseQueue;
 @property (nonatomic, strong) NSString *feedUrlString;
 @property (nonatomic) NSDictionary *parserElementNames;
+@property BOOL parsingInBackgroundFetch;
 
 //@property (nonatomic) NSArray *owners;
 @property (nonatomic, weak) HHSNavViewController *owner;
@@ -105,6 +107,11 @@
     return item;
 }
 
+- (void)addTempArticle:(HHSArticle *)article
+{
+    self.tempItems[article.articleKey] = article;
+}
+
 - (void)addArticle:(HHSArticle *)article
 {
     self.privateItems[article.articleKey] = article;
@@ -186,9 +193,28 @@
     return [documentDirectory stringByAppendingPathComponent:pathComponent];
 }
 
++(NSString *)downloadDatePath
+{
+    //Make sure that the first arguemnt is NSDocumentDirectory
+    //and not NSDocumentation Directory
+    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    //Get the one document from the list
+    NSString *documentDirectory = [documentDirectories firstObject];
+    
+    NSString *pathComponent = [NSString stringWithFormat:@"lastdownload.archive"];
+    
+    return [documentDirectory stringByAppendingPathComponent:pathComponent];
+}
+
 - (BOOL)saveStore
 {
     NSString *path = self.articleArchivePath;
+    NSString *datePath = [HHSArticleStore downloadDatePath];
+    
+    NSDate *now = [[NSDate alloc] init];
+    NSArray *dateArray = [[NSArray alloc] initWithObjects:now, nil];
+    [dateArray writeToFile:datePath atomically:YES];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
@@ -199,10 +225,62 @@
     return [NSKeyedArchiver archiveRootObject:self.privateItems toFile:path];
 }
 
++(BOOL)needsUpdating
+{
+    BOOL update = NO;
+    
+    NSString *datePath = [HHSArticleStore downloadDatePath];
+    NSArray *dateArray = [[NSArray alloc] initWithContentsOfFile:datePath];
+    NSDate *lastDate = [[NSDate alloc] init];
+    
+    if ((dateArray != nil) && ([dateArray count]>0)) {
+        lastDate = dateArray[0];
+        NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *lastDateComp = [cal components:(NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:lastDate];
+        int lastYear =   [lastDateComp year];
+        int lastMonth =  [lastDateComp month];
+        int lastDay =    [lastDateComp day];
+        int lastHour =   13; //[lastDateComp hour];
+        int lastMinute = 35; //[lastDateComp minute];
+        
+        NSDate *today = [[NSDate alloc] init];
+        NSDateComponents *todayComp = [cal components:(NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:today];
+        int todayYear =   [todayComp year];
+        int todayMonth =  [todayComp month];
+        int todayDay =    [todayComp day];
+        int todayHour =   16;//[todayComp hour];
+        int todayMinute = 15;//[todayComp minute];
+        
+        if (todayYear > lastYear) {
+            update = YES;
+        } else if (todayMonth > lastMonth) {
+            update = YES;
+        } else if (todayDay > lastDay) {
+            update = YES;
+        } else if ((todayHour >= 4) && (lastHour <4)) {
+            update = YES;
+        } else if ((todayHour >= 8) && (lastHour <8)) {
+            update = YES;
+        } else if ((todayHour == 13) && (todayMinute >=30)) {
+            if ((lastHour <13) || ((lastHour == 13) && (lastMinute <30)) ){
+                update = YES;
+            }
+        } else if(todayHour >13) {
+            if ((lastHour <13) || ((lastHour == 13) && (lastMinute <30)) ){
+                update = YES;
+            }
+        }
+    }
+    return update;
+}
+
 #pragma mark downloading
 
 -(void)getArticlesFromFeed
 {
+    _tempItems = [[NSMutableDictionary alloc] init];
+    _parsingInBackgroundFetch = NO;
+    
     _mAddArticlesNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [self getType]];
     _mArticleResultsKey = [NSString stringWithFormat:@"%@%i", kArticleResultsKey, [self getType]];
     _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, [self getType]];
@@ -241,6 +319,48 @@
     
     self.parseQueue = [NSOperationQueue new];
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(addParseResultsToStore:)
+                                                 name:_mAddArticlesNotificationName object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(articlesError:)
+                                                 name:_mArticlesErrorNotificationName object:nil];
+}
+
+-(void)getArticlesInBackground{
+    _tempItems = [[NSMutableDictionary alloc] init];
+    _parsingInBackgroundFetch = YES;
+    
+    _mAddArticlesNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [self getType]];
+    _mArticleResultsKey = [NSString stringWithFormat:@"%@%i", kArticleResultsKey, [self getType]];
+    _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, [self getType]];
+    _mArticlesMessageErrorKey = [NSString stringWithFormat:@"%@%i", kArticlesMessageErrorKey, [self getType]];
+    
+    /*
+     Use NSURLConnection to asynchronously download the data. This means the main thread will not be blocked - the application will remain responsive to the user.
+     
+     IMPORTANT! The main thread of the application should never be blocked!
+     Also, avoid synchronous network access on any thread.
+     */
+    
+    NSURL *urlFeed = [[NSURL alloc] initWithString:self.feedUrlString];
+    NSURLRequest *articleURLRequest = [NSURLRequest requestWithURL:urlFeed];
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    
+    // send the async request (note that the completion block will be called on the main thread)
+    //
+    // note: using the block-based "sendAsynchronousRequest" is preferred, and useful for
+    // small data transfers that are likely to succeed. If you doing large data transfers,
+    // consider using the NSURLConnectionDelegate-based APIs.
+    //
+    self.parseQueue = [NSOperationQueue new];
+    
+    NSData *data = [NSURLConnection sendSynchronousRequest:articleURLRequest returningResponse:&response error:&error];
+    
+    [self handleUrlConnectCompletion:response data:data error:error];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(addParseResultsToStore:)
@@ -311,9 +431,25 @@
 - (void)addParseResultsToStore:(NSNotification *)notif {
     
     [self populateStoreWith:[[notif userInfo] valueForKey:_mArticleResultsKey]];
+    NSLog(@"%@%@", @"Store updated: ", _mArticleResultsKey);
     [self removeObservers];
     _downloadError = NO;
     [_owner notifyStoreIsReady:self];
+}
+
+-(void)parsingDone
+{
+    NSLog(@"%@%@", @"Store updated: ", _mArticleResultsKey);
+    _privateItems = [_tempItems copy];
+    [_tempItems removeAllObjects];
+    [self saveStore];
+    [self removeObservers];
+    _downloadError = NO;
+    
+    if (!_parsingInBackgroundFetch){
+        //[_owner performSelectorOnMainThread:@selector(notifyStoreIsReady:) withObject:self waitUntilDone:NO];
+        [_owner notifyStoreIsReady:self];
+    }
 }
 
 /**

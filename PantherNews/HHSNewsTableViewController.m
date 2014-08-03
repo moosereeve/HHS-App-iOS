@@ -71,7 +71,9 @@
     
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
     
-    [self.owner hideWaiting];
+    if (self.owner.currentView == self) {
+        [self.owner hideWaiting];
+    }
 }
 
 - (void)didReceiveMemoryWarning

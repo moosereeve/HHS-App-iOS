@@ -55,7 +55,6 @@
         [self setUpEvents];
         [self setUpDailyAnn];
         [self setUpHome];
-        [self refreshDataButtonPushed:nil];
         
     }
     return self;
@@ -283,6 +282,21 @@
     [_dailyAnnTVC.articleStore getArticlesFromFeed];
 }
 
+-(void)refreshStores
+{
+    [self refreshDataButtonPushed:nil];
+}
+
+-(void)refreshViews
+{
+    [self showWaitingWithText:@"Loading..." buttonText:nil];
+    [_schedulesTVC reloadArticlesFromStore];
+    [_eventsTVC reloadArticlesFromStore];
+    [_newsTVC reloadArticlesFromStore];
+    [_dailyAnnTVC reloadArticlesFromStore];
+    [_homeVC fillAll];
+}
+
 - (IBAction)goToWebsite:(id)sender
 {
     NSURL *url = [[NSURL alloc] initWithString:@"https://sites.google.com/a/holliston.k12.ma.us/holliston-high-school/"];
@@ -298,31 +312,25 @@
     if (store == _schedulesStore) {
         [_schedulesTVC reloadArticlesFromStore];
         [_homeVC fillSchedule];
+        _schedulesDownloaded = YES;
     } else if (store == _newsStore) {
         [_newsTVC reloadArticlesFromStore];
         [_homeVC fillNews];
+        _newsDownloaded =YES;
     } else if (store == _eventsStore) {
         [_eventsTVC reloadArticlesFromStore];
         [_homeVC fillEvents];
+        _eventsDownloaded = YES;
     } else if (store == _dailyAnnStore) {
         [_dailyAnnTVC reloadArticlesFromStore];
         [_homeVC fillDailyAnn];
+        _dailyAnnDownloaded = YES;
     }
-    /*
-    if (store == _currentView.articleStore) {
-        [_currentView reloadArticlesFromStore];
-    } else if (_currentView == nil) {
-        if (store == _schedulesStore) {
-            [_homeVC fillSchedule];
-        } else if (store == _newsStore) {
-            [_homeVC fillNews];
-        }else if (store == _dailyAnnStore) {
-            [_homeVC fillDailyAnn];
-        }else if (store == _eventsStore) {
-            [_homeVC fillEvents];
-        }
+    
+    if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailyAnnDownloaded) {
+        //[self performSelectorOnMainThread:@selector(hideWaiting) withObject:nil waitUntilDone:NO];
+        [self hideWaiting];
     }
-     */
 }
 
 -(void)notifyStoreDownloadError:(HHSArticleStore *)store error:(NSString *)errorMessage
@@ -376,15 +384,16 @@
             _newsDownloaded = YES;
             break;
         case 4:
-            _dailAynnDownloaded = YES;
+            _dailyAnnDownloaded = YES;
             break;
     }
     
     NSLog (@"%@",[NSString stringWithFormat:@"%@%i",
                   @"refreshDone complete for ArticleStore #", type]);
     
-    if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailAynnDownloaded) {
-        [self hideWaiting];
+    if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailyAnnDownloaded) {
+        [self performSelectorOnMainThread:@selector(hideWaiting) withObject:nil waitUntilDone:YES];
+        //[self hideWaiting];
     }
 }
 
@@ -394,12 +403,12 @@
     
     NSLog(@"Background Fetch in HHSNavViewController activated");
 
-    [self refreshDataButtonPushed:nil];
-    //[_schedulesTVC.articleStore getArticlesFromFeed];
-    //[_newsTVC.articleStore getArticlesFromFeed];
-    //[_eventsTVC.articleStore getArticlesFromFeed];
-    //[_dailyAnnTVC.articleStore getArticlesFromFeed];
-    NSLog(@"4 requests for getArticlesFrom Feed sent to the article stores");
+    //[self refreshDataButtonPushed:nil];
+    [_schedulesTVC.articleStore getArticlesInBackground];
+    [_newsTVC.articleStore getArticlesInBackground];
+    [_eventsTVC.articleStore getArticlesInBackground];
+    [_dailyAnnTVC.articleStore getArticlesInBackground];
+    //NSLog(@"4 requests for getArticlesInBackground sent to the article stores");
 
     NSLog(@"Background Fetch completed");
 

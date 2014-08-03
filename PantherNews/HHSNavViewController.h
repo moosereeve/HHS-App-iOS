@@ -29,7 +29,7 @@
 @property (nonatomic) BOOL schedulesDownloaded;
 @property (nonatomic) BOOL eventsDownloaded;
 @property (nonatomic) BOOL newsDownloaded;
-@property (nonatomic) BOOL dailAynnDownloaded;
+@property (nonatomic) BOOL dailyAnnDownloaded;
 
 @property (nonatomic, strong) HHSArticleStore *schedulesStore;
 @property (nonatomic, strong) HHSArticleStore *eventsStore;
@@ -43,6 +43,8 @@
 @property (nonatomic, strong) HHSDailyAnnTableViewController *dailyAnnTVC;
 
 
+-(void)refreshStores;
+-(void)refreshViews;
 -(void)notifyStoreIsReady:(HHSArticleStore *)store;
 -(void)notifyStoreDownloadError:(HHSArticleStore *)store error:(NSString *)error;
 -(void)refreshDone:(int)type;

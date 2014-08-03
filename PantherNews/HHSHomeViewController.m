@@ -388,12 +388,13 @@
 
 -(void)hideIfReady
 {
-    BOOL ready = (_scheduleArticle != nil) && (_newsArticle != nil)
-    && (_dailyAnnArticle != nil) && (_eventsArticles != nil);
+    if (self.owner.currentView == nil) {
+        BOOL ready = (_scheduleArticle != nil) && (_newsArticle != nil)
+            && (_dailyAnnArticle != nil) && (_eventsArticles != nil);
     
-    if (ready) {
-        [self.owner hideWaiting];
-
+        if (ready) {
+            [self.owner hideWaiting];
+        }
     }
 }
 
