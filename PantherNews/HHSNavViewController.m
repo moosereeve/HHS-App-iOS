@@ -299,7 +299,7 @@
 
 - (IBAction)goToWebsite:(id)sender
 {
-    NSURL *url = [[NSURL alloc] initWithString:@"https://sites.google.com/a/holliston.k12.ma.us/holliston-high-school/"];
+    NSURL *url = [[NSURL alloc] initWithString:@"http://hhs.holliston.k12.ma.us"];
     [[UIApplication sharedApplication] openURL:url];
 }
 
