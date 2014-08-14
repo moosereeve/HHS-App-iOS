@@ -147,41 +147,13 @@
     }
     
     //Use filtered NSDate object to set dateLabel contents
-    cell.timeLabel.text = [dateFormatter stringFromDate:article.date];
-    //cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    //cell.thumbnailView.image = item.thumbnail;
-    
-    //__weak BNRItemCell *weakCell = cell;
-    
-    //cell.actionBlock = ^{NSLog(@"Going to show image for %@", item);
-    
-    //BNRItemCell *strongCell = weakCell;
-    
-    //if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-    //NSString *itemKey = item.itemKey;
-    
-    ////If there is no image, we don't need to display anything
-    //UIImage *img = [[BNRImageStore sharedStore] imageForKey:itemKey];
-    //if (!img) {
-    //    return;
-    //}
-    
-    //Make a rectangle for the frame of the thumbnail relative to table view
-    //CGRect rect = [self.view convertRect:strongCell.thumbnailView.bounds
-    //                            fromView:strongCell.thumbnailView];
-    
-    ////Create a new BNRImageViewController and set its image
-    //BNRImageViewController *ivc = [[BNRImageViewController alloc] init];
-    //ivc.image = img;
-    
-    ////Present a 600x600 popover from the rect
-    //self.imagePopover = [[UIPopoverController alloc] initWithContentViewController:ivc];
-    //self.imagePopover.delegate = self;
-    //self.imagePopover.popoverContentSize = CGSizeMake(600, 600);
-    //[self.imagePopover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    //} ;
-    //};
-    
+    NSString *time = [dateFormatter stringFromDate:article.date];
+    if ([time isEqual:@"12:00 AM"]) {
+        cell.timeLabel.text = @"All Day";
+    } else {
+        cell.timeLabel.text = time;
+    }
+
     return cell;
 }
 

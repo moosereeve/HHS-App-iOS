@@ -336,6 +336,8 @@
             if(thisDay != currentDay) {
                 numSections++;
                 numRows=1;
+                
+                //only display two days of events
                 if (numSections >=3) {
                     break;
                 }
@@ -462,7 +464,12 @@
     }
     
     //Use filtered NSDate object to set dateLabel contents
-    cell.timeLabel.text = [dateFormatter stringFromDate:article.date];
+    NSString *time = [dateFormatter stringFromDate:article.date];
+    if ([time isEqual:@"12:00 AM"]) {
+        cell.timeLabel.text = @"All Day";
+    } else {
+        cell.timeLabel.text = time;
+    }
     //cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
     return cell;

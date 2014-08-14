@@ -31,7 +31,7 @@
     //stvc.articleStore = [[HHSArticleStore alloc] initWithType:[HHSArticleStore HHSArticleStoreTypeSchedules]];
     
     //HHSTableViewController *tablevc;
-    HHSHomeViewController *home = [[HHSHomeViewController alloc] init];
+    HHSHomeViewController *home = _nvc.homeVC;
     
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         

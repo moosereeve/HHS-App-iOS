@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSString *feedUrlString;
 @property (nonatomic) NSDictionary *parserElementNames;
 @property BOOL parsingInBackgroundFetch;
+@property BOOL currentlyParsing;
 
 //@property (nonatomic) NSArray *owners;
 @property (nonatomic, weak) HHSNavViewController *owner;
@@ -60,6 +61,7 @@
         _feedUrlString = feedUrlString;
         _sortNowToFuture = sortOrder;
         _downloadError = NO;
+        _currentlyParsing = NO;
         
         NSString *path = [self articleArchivePath];
         _privateItems = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
@@ -233,7 +235,9 @@
     NSArray *dateArray = [[NSArray alloc] initWithContentsOfFile:datePath];
     NSDate *lastDate = [[NSDate alloc] init];
     
-    if ((dateArray != nil) && ([dateArray count]>0)) {
+    if (dateArray == nil) {
+        update = YES;
+    } else if ((dateArray != nil) && ([dateArray count]>0)) {
         lastDate = dateArray[0];
         NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSDateComponents *lastDateComp = [cal components:(NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:lastDate];
@@ -278,6 +282,10 @@
 
 -(void)getArticlesFromFeed
 {
+    if (_currentlyParsing == YES) {
+        return;
+    }
+    _currentlyParsing = YES;
     _tempItems = [[NSMutableDictionary alloc] init];
     _parsingInBackgroundFetch = NO;
     
@@ -445,6 +453,7 @@
     [self saveStore];
     [self removeObservers];
     _downloadError = NO;
+    _currentlyParsing = NO;
     
     if (!_parsingInBackgroundFetch){
         //[_owner performSelectorOnMainThread:@selector(notifyStoreIsReady:) withObject:self waitUntilDone:NO];
