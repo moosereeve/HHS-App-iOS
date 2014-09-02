@@ -57,7 +57,7 @@
 
 - (void)reloadArticlesFromStore {
     
-    NSArray *articles = [self.articleStore allArticles];
+    NSMutableArray *articles = [[self.articleStore allArticles] mutableCopy];
     
     if (self.articleStore.downloadError) {
         [self.owner hideWaiting];
@@ -75,6 +75,27 @@
        NSIndexSet *is = [[NSIndexSet alloc] initWithIndex:0];
         [self.tableView deleteSections:is withRowAnimation:UITableViewRowAnimationNone];
     }*/
+    if ([articles count] >=2) {
+        NSDate *todayDate = [[NSDate alloc] init];
+        NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:todayDate];
+        NSInteger todayMonth = [todayComp month];
+        NSInteger todayDay = [todayComp day];
+        NSInteger todayHour = [todayComp hour];
+        
+        if (todayHour >=14) {
+            HHSArticle *firstArticle = (HHSArticle *) articles[0];
+            NSDate *firstDate = firstArticle.date;
+            NSDateComponents *firstComp =[[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay fromDate:firstDate] ;
+            NSInteger firstMonth = [firstComp month];
+            NSInteger firstDay = [firstComp day];
+            
+            if ((todayMonth == firstMonth) && (todayDay == firstDay)) {
+                [articles removeObjectAtIndex:0];
+            }
+        }
+    }
+
+    
     
     int currentWeek = -1;
     int numSections = 0;

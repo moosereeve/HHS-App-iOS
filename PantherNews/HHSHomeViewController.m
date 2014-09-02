@@ -173,6 +173,27 @@
         NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
 
         HHSArticle *article = sortedArray[0];
+        if ([sortedArray count] >=2) {
+            NSDate *todayDate = [[NSDate alloc] init];
+            NSCalendar *cal = [[NSCalendar alloc] init];
+            NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:todayDate];
+            NSInteger todayMonth = [todayComp month];
+            NSInteger todayDay = [todayComp day];
+            NSInteger todayHour = [todayComp hour];
+            
+            if (todayHour >=14) {
+                NSDate *firstDate = article.date;
+                NSCalendar *firstCal = [[NSCalendar alloc] init];
+                NSDateComponents *firstComp =[[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay fromDate:firstDate];
+                NSInteger firstMonth = [firstComp month];
+                NSInteger firstDay = [firstComp day];
+                
+                if ((todayMonth == firstMonth) && (todayDay == firstDay)) {
+                    article = sortedArray[1];
+                }
+            }
+        }
+        
         self.scheduleArticle = article;
 
         self.schedTitle.text = article.title;
