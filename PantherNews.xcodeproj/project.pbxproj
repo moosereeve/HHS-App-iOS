@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6D067E3A1A1E63DF00998072 /* HHSJsonParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D067E391A1E63DF00998072 /* HHSJsonParseOperation.m */; };
 		6D1575CB1954CF2E007AAE8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D1575CA1954CF2E007AAE8C /* Foundation.framework */; };
 		6D1575CD1954CF2E007AAE8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D1575CC1954CF2E007AAE8C /* CoreGraphics.framework */; };
 		6D1575CF1954CF2E007AAE8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D1575CE1954CF2E007AAE8C /* UIKit.framework */; };
@@ -40,6 +41,12 @@
 		6D1576331956636A007AAE8C /* HHSNewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D1576311956636A007AAE8C /* HHSNewsCell.xib */; };
 		6D15763C195664EA007AAE8C /* HHSNewsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D15763A195664EA007AAE8C /* HHSNewsDetailsViewController.m */; };
 		6D15763D195664EA007AAE8C /* HHSNewsDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D15763B195664EA007AAE8C /* HHSNewsDetailsViewController.xib */; };
+		6D2CE02419D092C6006F462E /* ic_lunch.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D2CE02319D092C6006F462E /* ic_lunch.png */; };
+		6D2CE02719D0958B006F462E /* HHSLunchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2CE02619D0958B006F462E /* HHSLunchTableViewController.m */; };
+		6D2CE02E19D09766006F462E /* HHSLunchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2CE02C19D09766006F462E /* HHSLunchCell.m */; };
+		6D2CE02F19D09766006F462E /* HHSLunchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D2CE02D19D09766006F462E /* HHSLunchCell.xib */; };
+		6D2CE03319D099CC006F462E /* HHSLunchDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2CE03119D099CC006F462E /* HHSLunchDetailsViewController.m */; };
+		6D2CE03419D099CC006F462E /* HHSLunchDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D2CE03219D099CC006F462E /* HHSLunchDetailsViewController.xib */; };
 		6D52B4EA1959C5880021A2BB /* hhs-icon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D52B4DB1959C5880021A2BB /* hhs-icon-29.png */; };
 		6D52B4EB1959C5880021A2BB /* hhs-icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D52B4DC1959C5880021A2BB /* hhs-icon-40.png */; };
 		6D52B4EC1959C5880021A2BB /* hhs-icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D52B4DD1959C5880021A2BB /* hhs-icon-40@2x.png */; };
@@ -96,6 +103,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6D067E381A1E63DF00998072 /* HHSJsonParseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSJsonParseOperation.h; sourceTree = "<group>"; };
+		6D067E391A1E63DF00998072 /* HHSJsonParseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHSJsonParseOperation.m; sourceTree = "<group>"; };
 		6D1575C71954CF2E007AAE8C /* Holliston High School.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Holliston High School.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D1575CA1954CF2E007AAE8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6D1575CC1954CF2E007AAE8C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -147,6 +156,15 @@
 		6D157639195664EA007AAE8C /* HHSNewsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HHSNewsDetailsViewController.h; path = PantherNews/HHSNewsDetailsViewController.h; sourceTree = "<group>"; };
 		6D15763A195664EA007AAE8C /* HHSNewsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HHSNewsDetailsViewController.m; path = PantherNews/HHSNewsDetailsViewController.m; sourceTree = "<group>"; };
 		6D15763B195664EA007AAE8C /* HHSNewsDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HHSNewsDetailsViewController.xib; path = PantherNews/HHSNewsDetailsViewController.xib; sourceTree = "<group>"; };
+		6D2CE02319D092C6006F462E /* ic_lunch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_lunch.png; sourceTree = "<group>"; };
+		6D2CE02519D0958B006F462E /* HHSLunchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSLunchTableViewController.h; sourceTree = "<group>"; };
+		6D2CE02619D0958B006F462E /* HHSLunchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHSLunchTableViewController.m; sourceTree = "<group>"; };
+		6D2CE02B19D09766006F462E /* HHSLunchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSLunchCell.h; sourceTree = "<group>"; };
+		6D2CE02C19D09766006F462E /* HHSLunchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHSLunchCell.m; sourceTree = "<group>"; };
+		6D2CE02D19D09766006F462E /* HHSLunchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HHSLunchCell.xib; sourceTree = "<group>"; };
+		6D2CE03019D099CC006F462E /* HHSLunchDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSLunchDetailsViewController.h; sourceTree = "<group>"; };
+		6D2CE03119D099CC006F462E /* HHSLunchDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHSLunchDetailsViewController.m; sourceTree = "<group>"; };
+		6D2CE03219D099CC006F462E /* HHSLunchDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HHSLunchDetailsViewController.xib; sourceTree = "<group>"; };
 		6D52B4DB1959C5880021A2BB /* hhs-icon-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hhs-icon-29.png"; sourceTree = "<group>"; };
 		6D52B4DC1959C5880021A2BB /* hhs-icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hhs-icon-40.png"; sourceTree = "<group>"; };
 		6D52B4DD1959C5880021A2BB /* hhs-icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hhs-icon-40@2x.png"; sourceTree = "<group>"; };
@@ -237,6 +255,9 @@
 				6D157639195664EA007AAE8C /* HHSNewsDetailsViewController.h */,
 				6D15763A195664EA007AAE8C /* HHSNewsDetailsViewController.m */,
 				6D15763B195664EA007AAE8C /* HHSNewsDetailsViewController.xib */,
+				6D2CE03019D099CC006F462E /* HHSLunchDetailsViewController.h */,
+				6D2CE03119D099CC006F462E /* HHSLunchDetailsViewController.m */,
+				6D2CE03219D099CC006F462E /* HHSLunchDetailsViewController.xib */,
 			);
 			name = DetailsViews;
 			path = ..;
@@ -257,6 +278,9 @@
 				6D15762F1956636A007AAE8C /* HHSNewsCell.h */,
 				6D1576301956636A007AAE8C /* HHSNewsCell.m */,
 				6D1576311956636A007AAE8C /* HHSNewsCell.xib */,
+				6D2CE02B19D09766006F462E /* HHSLunchCell.h */,
+				6D2CE02C19D09766006F462E /* HHSLunchCell.m */,
+				6D2CE02D19D09766006F462E /* HHSLunchCell.xib */,
 			);
 			name = TableCells;
 			path = ..;
@@ -275,6 +299,8 @@
 				6DB730281957A5D100B55798 /* HHSEventsTableViewController.m */,
 				6D15762C1956623D007AAE8C /* HHSNewsTableViewController.h */,
 				6D15762D1956623D007AAE8C /* HHSNewsTableViewController.m */,
+				6D2CE02519D0958B006F462E /* HHSLunchTableViewController.h */,
+				6D2CE02619D0958B006F462E /* HHSLunchTableViewController.m */,
 			);
 			name = TableViews;
 			path = ..;
@@ -339,6 +365,7 @@
 		6D1575D11954CF2E007AAE8C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6D2CE02319D092C6006F462E /* ic_lunch.png */,
 				6DB7302E1957B53300B55798 /* ic_announcements.png */,
 				6DB7302F1957B53300B55798 /* ic_events.png */,
 				6DB730301957B53300B55798 /* ic_hhs.png */,
@@ -390,6 +417,8 @@
 			children = (
 				6D15760F195541F9007AAE8C /* APLParseOperation.h */,
 				6D157610195541F9007AAE8C /* APLParseOperation.m */,
+				6D067E381A1E63DF00998072 /* HHSJsonParseOperation.h */,
+				6D067E391A1E63DF00998072 /* HHSJsonParseOperation.m */,
 			);
 			name = Parser;
 			sourceTree = "<group>";
@@ -523,6 +552,7 @@
 				6D15763D195664EA007AAE8C /* HHSNewsDetailsViewController.xib in Resources */,
 				6D52B4F11959C5880021A2BB /* hhs-icon-58.png in Resources */,
 				6D15760B1954CF64007AAE8C /* HHSNavViewController.xib in Resources */,
+				6D2CE03419D099CC006F462E /* HHSLunchDetailsViewController.xib in Resources */,
 				6D1576251955E171007AAE8C /* HHSDailyAnnCell.xib in Resources */,
 				6D52B4F61959C5880021A2BB /* hhs-icon-76.png in Resources */,
 				6D52B50A195A4F220021A2BB /* c-50.png in Resources */,
@@ -541,12 +571,14 @@
 				6D52B50B195A4F220021A2BB /* b-50.png in Resources */,
 				6DF12AC91989D4C00055B989 /* panther.png in Resources */,
 				6DA0778A19808C0200E28346 /* HHSHomeViewController.xib in Resources */,
+				6D2CE02F19D09766006F462E /* HHSLunchCell.xib in Resources */,
 				6D52B4F51959C5880021A2BB /* hhs-icon-72@2x.png in Resources */,
 				6D15762A19564BA4007AAE8C /* HHSDailyAnnDetailsViewController.xib in Resources */,
 				6D52B4F21959C5880021A2BB /* hhs-icon-60.png in Resources */,
 				6D1575D51954CF2E007AAE8C /* InfoPlist.strings in Resources */,
 				6DB730391957B53300B55798 /* ic_schedules.png in Resources */,
 				6D52B4F01959C5880021A2BB /* hhs-icon-57@2x.png in Resources */,
+				6D2CE02419D092C6006F462E /* ic_lunch.png in Resources */,
 				6D52B4F71959C5880021A2BB /* hhs-icon-76@2x.png in Resources */,
 				6D52B4EE1959C5880021A2BB /* hhs-icon-50@2x.png in Resources */,
 				6DB7302B1957B37E00B55798 /* HHSSplashScreen.xib in Resources */,
@@ -583,6 +615,8 @@
 				6D1576091954CF64007AAE8C /* HHSImageStore.m in Sources */,
 				6D15762E1956623D007AAE8C /* HHSNewsTableViewController.m in Sources */,
 				6DB73025195799BE00B55798 /* HHSEventsDetailsViewController.m in Sources */,
+				6D2CE02719D0958B006F462E /* HHSLunchTableViewController.m in Sources */,
+				6D2CE03319D099CC006F462E /* HHSLunchDetailsViewController.m in Sources */,
 				6DB730291957A5D100B55798 /* HHSEventsTableViewController.m in Sources */,
 				6D1576241955E171007AAE8C /* HHSDailyAnnCell.m in Sources */,
 				6DB730421958EFBC00B55798 /* HHSTableViewController.m in Sources */,
@@ -594,7 +628,9 @@
 				6D15760C1954CF64007AAE8C /* HHSScheduleCell.m in Sources */,
 				6D15760A1954CF64007AAE8C /* HHSNavViewController.m in Sources */,
 				6DB15C98197A1A2D007B93F3 /* HHSNavigationControllerForSplitView.m in Sources */,
+				6D2CE02E19D09766006F462E /* HHSLunchCell.m in Sources */,
 				6D15761E1955DE2B007AAE8C /* HHSDailyAnnTableViewController.m in Sources */,
+				6D067E3A1A1E63DF00998072 /* HHSJsonParseOperation.m in Sources */,
 				6D15763C195664EA007AAE8C /* HHSNewsDetailsViewController.m in Sources */,
 				6D1575D71954CF2E007AAE8C /* main.m in Sources */,
 			);

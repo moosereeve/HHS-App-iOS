@@ -29,7 +29,9 @@
 -(void)removeItem:(HHSArticle *)item;
 
 -(void)getArticlesFromFeed;
+-(void)getEventsFromFeed;
 -(void)getArticlesInBackground;
+-(void)getEventsInBackground;
 -(void)parsingDone;
 +(BOOL)needsUpdating;
 
@@ -37,5 +39,6 @@
 +(int)HHSArticleStoreTypeEvents;
 +(int)HHSArticleStoreTypeNews;
 +(int)HHSArticleStoreTypeDailyAnns;
++(int)HHSArticleStoreTypeLunch;
 
 @end

@@ -20,6 +20,8 @@
 #import "HHSEventsDetailsViewController.h"
 #import "HHSDailyAnnTableViewController.h"
 #import "HHSDailyAnnDetailsViewController.h"
+#import "HHSLunchTableViewController.h"
+#import "HHSLunchDetailsViewController.h"
 #import "HHSNavViewController.h"
 
 @interface HHSHomeViewController ()
@@ -29,6 +31,7 @@
 @property (nonatomic, weak) HHSArticle *newsArticle;
 @property (nonatomic, weak) HHSArticle *dailyAnnArticle;
 @property (nonatomic) NSMutableArray *eventsArticles;
+@property (nonatomic, weak) HHSArticle *lunchArticle;
 
 @property (nonatomic, strong) UITableView *eventsTable;
 @property int eventsCellHeight;
@@ -76,6 +79,7 @@
         NSString *eventsNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [HHSArticleStore HHSArticleStoreTypeEvents]];
         NSString *newsNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [HHSArticleStore HHSArticleStoreTypeNews]];
         NSString *dailyAnnNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [HHSArticleStore HHSArticleStoreTypeDailyAnns]];
+        NSString *lunchNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [HHSArticleStore HHSArticleStoreTypeLunch]];
     
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(fillSchedule)
@@ -92,6 +96,10 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(fillDailyAnn)
                                                      name:dailyAnnNotificationName
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                selector:@selector(fillLunch)
+                                                    name:lunchNotificationName
                                                    object:nil];
     }
 
@@ -157,6 +165,7 @@
 -(void)fillAll
 {
     [self fillSchedule];
+    [self fillLunch];
     [self fillNews];
     [self fillDailyAnn];
     [self fillEvents];
@@ -226,6 +235,28 @@
         }
         else {
             self.schedIcon.image = _images[@"star"];
+        }
+    }
+    [self hideIfReady];
+}
+
+- (void)fillLunch
+{
+    if ( [[_lunchStore allArticles] count] >0) {
+        NSArray *articleList = [[NSArray alloc] initWithArray:[_lunchStore allArticles]];
+        
+        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+        NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
+        
+        NSDate *schedDate = self.scheduleArticle.date;
+        
+        for (HHSArticle *article in sortedArray) {
+            NSDate *lunchDate = article.date;
+            if ([lunchDate compare:schedDate] == 0) {
+                self.lunchTitle.text = [NSString stringWithFormat:@"Lunch: %@", article.title];
+                self.lunchArticle = article;
+            }
         }
     }
     [self hideIfReady];

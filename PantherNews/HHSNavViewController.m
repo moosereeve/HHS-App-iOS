@@ -12,6 +12,7 @@
 #import "HHSDailyAnnTableViewController.h"
 #import "HHSEventsTableViewController.h"
 #import "HHSNewsTableViewController.h"
+#import "HHSLunchTableViewController.h"
 #import "HHSArticleStore.h"
 #import "APLParseOperation.h"
 #import "HHSNavigationControllerForSplitView.h"
@@ -54,6 +55,7 @@
         [self setUpNews];
         [self setUpEvents];
         [self setUpDailyAnn];
+        [self setUpLunch];
         [self setUpHome];
         
     }
@@ -69,15 +71,15 @@
 -(void)setUpSchedules
 {
     //these are values that the parser will scan for
-    NSDictionary *parserNames = @{@"entry" : @"entry",
-                                  @"date" : @"gd:when",
-                                  @"startTime" : @"startTime",
-                                  @"title" : @"title",
-                                  @"link" : @"link",
-                                  @"details" : @"content",
-                                  @"keepHtmlTags" : @"skip"};
+    NSDictionary *parserNames = @{@"entry" : @"",
+                                  @"date" : @"start",
+                                  @"startTime" : @"",
+                                  @"title" : @"summary",
+                                  @"link" : @"htmlLink",
+                                  @"details" : @"description",
+                                  @"keepHtmlTags" : @""};
     
-    NSString *feedUrlString = @"http://www.google.com/calendar/feeds/sulsp2f8e4npqtmdp469o8tmro%40group.calendar.google.com/private-fe49e26b4b5bd4579c74fd9c94e2d445/full?orderby=starttime&sortorder=a&futureevents=true&singleevents=true&ctz=America/New_York";
+    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/sulsp2f8e4npqtmdp469o8tmro%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyAQa5V8a141kmmGrcb2LgpmyTvocrVPiDI";
 
     //initialize stores
     _schedulesStore = [[HHSArticleStore alloc]
@@ -98,15 +100,16 @@
 {
     //these are values that the parser will scan for
     
-    NSDictionary *parserNames = @{@"entry" : @"entry",
-                                  @"date" : @"gd:when",
-                                  @"startTime" : @"startTime",
-                                  @"title" : @"title",
-                                  @"link" : @"link",
-                                  @"details" : @"content",
-                                  @"keepHtmlTags" : @"skip"};
+    NSDictionary *parserNames = @{@"entry" : @"",
+                                  @"date" : @"start",
+                                  @"startTime" : @"",
+                                  @"title" : @"summary",
+                                  @"link" : @"htmlLink",
+                                  @"details" : @"description",
+                                  @"keepHtmlTags" : @""};
+
     
-    NSString *feedUrlString = @"https://www.google.com/calendar/feeds/holliston.k12.ma.us_gsfpbqnefkm59ul6gbofte1s2k%40group.calendar.google.com/private-641b39b01a46e77af57592990d225fac/full?orderby=starttime&sortorder=a&futureevents=true&singleevents=true&ctz=America/New_York";
+    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_gsfpbqnefkm59ul6gbofte1s2k%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyAQa5V8a141kmmGrcb2LgpmyTvocrVPiDI";
 
     //initialize stores
     _eventsStore = [[HHSArticleStore alloc]
@@ -174,6 +177,36 @@
     [_dailyAnnTVC view];
     
 }
+
+-(void)setUpLunch
+{
+    //these are values that the parser will scan for
+    NSDictionary *parserNames = @{@"entry" : @"",
+                                  @"date" : @"start",
+                                  @"startTime" : @"",
+                                  @"title" : @"summary",
+                                  @"link" : @"htmlLink",
+                                  @"details" : @"description",
+                                  @"keepHtmlTags" : @""};
+
+    
+    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_c2d4uic3gbsg7r9vv9qo8a949g%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyAQa5V8a141kmmGrcb2LgpmyTvocrVPiDI";
+    
+    //initialize stores
+    _lunchStore = [[HHSArticleStore alloc]
+                       initWithType:[HHSArticleStore HHSArticleStoreTypeLunch]
+                       parserNames:parserNames
+                       feedUrlString:feedUrlString
+                       sortNowToFuture:(BOOL)YES
+                       owner:self];
+    
+    _lunchTVC = [[HHSLunchTableViewController alloc] initWithStore:_lunchStore];
+    _lunchTVC.owner = self;
+    [_lunchTVC view];
+    
+    
+}
+
 -(void)setUpHome
 {
     //initialize stores
@@ -181,6 +214,7 @@
     _homeVC.eventsStore = _eventsStore;
     _homeVC.newsStore = _newsStore;
     _homeVC.dailyAnnStore = _dailyAnnStore;
+    _homeVC.lunchStore = _lunchStore;
     _homeVC.owner = self;
 }
 
@@ -244,6 +278,13 @@
     [self pushView:view];
 }
 
+- (IBAction)goToLunch:(id)sender
+{
+    HHSLunchTableViewController *view = _lunchTVC;
+    _currentView = view;
+    [self pushView:view];
+}
+
 -(void)pushView:(HHSTableViewController *)view
 {
     if( self.splitViewController) {
@@ -275,11 +316,13 @@
     _eventsDownloaded = NO;
     _newsDownloaded = NO;
     _eventsDownloaded = NO;
+    _lunchDownloaded = NO;
     
-    [_schedulesTVC.articleStore getArticlesFromFeed];
+    [_schedulesTVC.articleStore getEventsFromFeed];
     [_newsTVC.articleStore getArticlesFromFeed];
-    [_eventsTVC.articleStore getArticlesFromFeed];
+    [_eventsTVC.articleStore getEventsFromFeed];
     [_dailyAnnTVC.articleStore getArticlesFromFeed];
+    [_lunchTVC.articleStore getEventsFromFeed];
 }
 
 -(void)refreshStores
@@ -294,6 +337,7 @@
     [_eventsTVC reloadArticlesFromStore];
     [_newsTVC reloadArticlesFromStore];
     [_dailyAnnTVC reloadArticlesFromStore];
+    [_lunchTVC reloadArticlesFromStore];
     [_homeVC fillAll];
 }
 
@@ -325,9 +369,13 @@
         [_dailyAnnTVC reloadArticlesFromStore];
         [_homeVC fillDailyAnn];
         _dailyAnnDownloaded = YES;
+    } else if (store == _lunchStore) {
+        [_lunchTVC reloadArticlesFromStore];
+        //[_homeVC fillLunch];
+        _lunchDownloaded = YES;
     }
     
-    if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailyAnnDownloaded) {
+    if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailyAnnDownloaded && _lunchDownloaded) {
         //[self performSelectorOnMainThread:@selector(hideWaiting) withObject:nil waitUntilDone:NO];
         [self hideWaiting];
     }
@@ -386,12 +434,15 @@
         case 4:
             _dailyAnnDownloaded = YES;
             break;
+        case 5:
+            _lunchDownloaded = YES;
+            break;
     }
     
     NSLog (@"%@",[NSString stringWithFormat:@"%@%i",
                   @"refreshDone complete for ArticleStore #", type]);
     
-    if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailyAnnDownloaded) {
+    if (_schedulesDownloaded && _eventsDownloaded && _newsDownloaded && _dailyAnnDownloaded && _lunchDownloaded) {
         [self performSelectorOnMainThread:@selector(hideWaiting) withObject:nil waitUntilDone:YES];
         //[self hideWaiting];
     }
@@ -404,10 +455,11 @@
     NSLog(@"Background Fetch in HHSNavViewController activated");
 
     //[self refreshDataButtonPushed:nil];
-    [_schedulesTVC.articleStore getArticlesInBackground];
+    [_schedulesTVC.articleStore getEventsInBackground];
     [_newsTVC.articleStore getArticlesInBackground];
-    [_eventsTVC.articleStore getArticlesInBackground];
+    [_eventsTVC.articleStore getEventsInBackground];
     [_dailyAnnTVC.articleStore getArticlesInBackground];
+    [_lunchTVC.articleStore getEventsInBackground];
     //NSLog(@"4 requests for getArticlesInBackground sent to the article stores");
 
     NSLog(@"Background Fetch completed");

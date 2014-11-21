@@ -19,6 +19,7 @@
 @class HHSDailyAnnTableViewController;
 @class HHSEventsTableViewController;
 @class HHSNewsTableViewController;
+@class HHSLunchTableViewController;
 
 @class HHSTableViewController;
 @class HHSHomeViewController;
@@ -30,18 +31,20 @@
 @property (nonatomic) BOOL eventsDownloaded;
 @property (nonatomic) BOOL newsDownloaded;
 @property (nonatomic) BOOL dailyAnnDownloaded;
+@property (nonatomic) BOOL lunchDownloaded;
 
 @property (nonatomic, strong) HHSArticleStore *schedulesStore;
 @property (nonatomic, strong) HHSArticleStore *eventsStore;
 @property (nonatomic, strong) HHSArticleStore *newsStore;
 @property (nonatomic, strong) HHSArticleStore *dailyAnnStore;
+@property (nonatomic, strong) HHSArticleStore *lunchStore;
 
 @property (nonatomic, strong) HHSHomeViewController *homeVC;
 @property (nonatomic, strong) HHSScheduleTableViewController *schedulesTVC;
 @property (nonatomic, strong) HHSEventsTableViewController *eventsTVC;
 @property (nonatomic, strong) HHSNewsTableViewController *newsTVC;
 @property (nonatomic, strong) HHSDailyAnnTableViewController *dailyAnnTVC;
-
+@property (nonatomic, strong) HHSLunchTableViewController *lunchTVC;
 
 -(void)refreshStores;
 -(void)refreshViews;
