@@ -79,7 +79,7 @@
                                   @"details" : @"description",
                                   @"keepHtmlTags" : @""};
     
-    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/sulsp2f8e4npqtmdp469o8tmro%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyAQa5V8a141kmmGrcb2LgpmyTvocrVPiDI";
+    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/sulsp2f8e4npqtmdp469o8tmro%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyBsDse7YteqjWWEJpvAzxt3ZVToXSfjTEY";
 
     //initialize stores
     _schedulesStore = [[HHSArticleStore alloc]
@@ -109,7 +109,7 @@
                                   @"keepHtmlTags" : @""};
 
     
-    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_gsfpbqnefkm59ul6gbofte1s2k%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyAQa5V8a141kmmGrcb2LgpmyTvocrVPiDI";
+    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_gsfpbqnefkm59ul6gbofte1s2k%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyBsDse7YteqjWWEJpvAzxt3ZVToXSfjTEY";
 
     //initialize stores
     _eventsStore = [[HHSArticleStore alloc]
@@ -190,7 +190,7 @@
                                   @"keepHtmlTags" : @""};
 
     
-    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_c2d4uic3gbsg7r9vv9qo8a949g%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyAQa5V8a141kmmGrcb2LgpmyTvocrVPiDI";
+    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_c2d4uic3gbsg7r9vv9qo8a949g%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyBsDse7YteqjWWEJpvAzxt3ZVToXSfjTEY";
     
     //initialize stores
     _lunchStore = [[HHSArticleStore alloc]

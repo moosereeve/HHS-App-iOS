@@ -147,7 +147,9 @@
     if (dateString.length == 10) {
         [dateFormatter setDateFormat:@"YYYY-MM-dd"];
     } else if (dateString.length == 25) {
-        [dateFormatter setDateFormat:@"YYYY-MM-dd'T'HH:mm:ss'-05:00'"];
+        NSString *tz = [dateString substringWithRange:NSMakeRange(21, 1)];
+        NSString *tzformat = [NSString stringWithFormat:@"YYYY-MM-dd'T'HH:mm:ss'-0%@:00'", tz];
+        [dateFormatter setDateFormat:tzformat];
     } else if (dateString.length >10) {
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSz"];
     }

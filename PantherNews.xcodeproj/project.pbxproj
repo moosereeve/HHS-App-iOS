@@ -760,7 +760,7 @@
 				INFOPLIST_FILE = "PantherNews/Holliston High School-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "Holliston High School";
-				PROVISIONING_PROFILE = "8BF23342-CFFC-4A53-9BC4-09657FCB16E7";
+				PROVISIONING_PROFILE = "ADDE392A-859E-4A23-8CF8-656B51F5505E";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -771,14 +771,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-2";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Thomas Reeve (9LD7974WE2)";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PantherNews/Holliston High School.temp_caseinsensitive_rename-Prefix.pch";
 				INFOPLIST_FILE = "PantherNews/Holliston High School-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "Holliston High School";
-				PROVISIONING_PROFILE = "8BF23342-CFFC-4A53-9BC4-09657FCB16E7";
+				PROVISIONING_PROFILE = "ADDE392A-859E-4A23-8CF8-656B51F5505E";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};

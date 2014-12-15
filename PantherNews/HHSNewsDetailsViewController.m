@@ -114,6 +114,15 @@
                                     options:NSLiteralSearch
                                       range:NSMakeRange(0, [detailsHTML length])];
 
+    [detailsHTML replaceOccurrencesOfString:@"<br><br>"
+                                 withString:@"<br>"
+                                    options:NSLiteralSearch
+                                      range:NSMakeRange(0, [detailsHTML length])];
+
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<hr.+>" options:NSRegularExpressionCaseInsensitive error:nil];
+    
+    detailsHTML = [[regex stringByReplacingMatchesInString:detailsHTML options:0 range:NSMakeRange(0, [detailsHTML length]) withTemplate:@""] mutableCopy];
+    
     
     if ((UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation)) && ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ) )
     {

@@ -71,7 +71,12 @@
         //If the array hadn't been saved previously, crete one
         if (!_privateItems) {
             _privateItems = [[NSMutableDictionary alloc] init];
-            [self getArticlesFromFeed];
+            if ((_type == [HHSArticleStore HHSArticleStoreTypeDailyAnns]) ||
+                (_type == [HHSArticleStore HHSArticleStoreTypeNews])) {
+                [self getArticlesFromFeed];
+            } else {
+                [self getEventsFromFeed];
+            }
         }
     }
     return self;
@@ -86,8 +91,13 @@
 
 - (NSArray *)allArticles
 {
-    if ([self.privateItems count] == 0) {
-        [self getArticlesFromFeed];
+    if ([self.privateItems count] <0) {   //if ([self.privateItems count] == 0) {
+        if ((self.type == [HHSArticleStore HHSArticleStoreTypeDailyAnns]) ||
+            (self.type == [HHSArticleStore HHSArticleStoreTypeNews])) {
+                [self getArticlesFromFeed];
+            } else {
+                [self getEventsFromFeed];
+            }
         return nil;
     } else {
         NSArray *newArticles = [self.privateItems allValues] ;
@@ -186,7 +196,7 @@
 {
     //Make sure that the first arguemnt is NSDocumentDirectory
     //and not NSDocumentation Directory
-    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     
     //Get the one document from the list
     NSString *documentDirectory = [documentDirectories firstObject];
@@ -343,7 +353,7 @@
     if (_currentlyParsing == YES) {
         return;
     }
-    //_currentlyParsing = YES;
+    _currentlyParsing = YES;
     _tempItems = [[NSMutableDictionary alloc] init];
     _parsingInBackgroundFetch = NO;
     

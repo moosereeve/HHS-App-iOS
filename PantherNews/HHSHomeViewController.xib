@@ -193,8 +193,8 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eJC-gr-KoO">
-                                            <rect key="frame" x="-5" y="-87" width="30" height="30"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eJC-gr-KoO">
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -208,7 +208,11 @@
                                     <constraints>
                                         <constraint firstItem="MWT-s1-Szt" firstAttribute="top" secondItem="sWO-Wg-v5O" secondAttribute="top" constant="15" id="D9t-fu-Zea"/>
                                         <constraint firstAttribute="trailing" secondItem="MWT-s1-Szt" secondAttribute="trailing" constant="10" id="FFp-s6-zcY"/>
+                                        <constraint firstAttribute="bottom" secondItem="eJC-gr-KoO" secondAttribute="bottom" id="GdU-PV-hX1"/>
+                                        <constraint firstItem="eJC-gr-KoO" firstAttribute="top" secondItem="sWO-Wg-v5O" secondAttribute="top" id="IBH-S8-w8o"/>
                                         <constraint firstItem="MWT-s1-Szt" firstAttribute="leading" secondItem="sWO-Wg-v5O" secondAttribute="leading" constant="10" id="IQM-21-zCq"/>
+                                        <constraint firstItem="eJC-gr-KoO" firstAttribute="leading" secondItem="sWO-Wg-v5O" secondAttribute="leading" id="OSx-hl-QcQ"/>
+                                        <constraint firstAttribute="trailing" secondItem="eJC-gr-KoO" secondAttribute="trailing" id="XUL-Fc-az2"/>
                                         <constraint firstAttribute="bottom" secondItem="MWT-s1-Szt" secondAttribute="bottom" constant="15" id="pjn-92-1w0"/>
                                     </constraints>
                                 </view>

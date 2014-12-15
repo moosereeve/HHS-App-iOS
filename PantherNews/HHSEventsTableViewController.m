@@ -57,7 +57,7 @@
     }
 
 
-        
+    [self.articlesList removeAllObjects];
     [self.tableView reloadData];
     
     int currentDay = -1;

@@ -74,12 +74,16 @@
     
     if (!testImage) {
         image = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
-        [self setImage:image forKey:key];
-    } else {
+        if (image) {
+            [self setImage:image forKey:key];
+            [article setThumbnailFromImage:image];
+        }
+    } else{
         image = testImage;
+        [article setThumbnailFromImage:image];
+
     }
     
-    [article setThumbnailFromImage:image];
     
     
 }
@@ -121,7 +125,7 @@
 
 - (NSString *)imagePathForKey:(NSString *)key
 {
-    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = [documentDirectories firstObject];
     
     return [documentDirectory stringByAppendingPathComponent:key];

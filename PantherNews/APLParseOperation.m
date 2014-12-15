@@ -194,7 +194,7 @@ static NSUInteger const kSizeOfArticleBatch = 40;
         }
         [self.currentParsedCharacterData appendString:@">"];
 
-        if ([elementName isEqualToString:@"img"]) {
+        if (([elementName isEqualToString:@"img"]) && (_currentImgSrc == nil)) {
             
             _currentImgSrc = attributeDict[@"src"];
         }
