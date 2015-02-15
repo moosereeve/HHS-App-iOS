@@ -28,11 +28,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-}
-- (void)viewWillAppear:(BOOL)animated {
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    [[self.pageController view] setFrame:[[self view] bounds]];
+
     self.pageController.dataSource = (id) self.parent;
-    //[[self.pageController view] setFrame:[[self view] bounds]];
+    
     
     UIViewController *initialDetailsVC = [self.parent viewControllerAtIndex:self.startingArticleIndex];
     
@@ -42,6 +42,9 @@
     [self addChildViewController:self.pageController];
     [[self view] addSubview:[self.pageController view]];
     [self.pageController didMoveToParentViewController:self];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    
 }
 
 - (void)didReceiveMemoryWarning

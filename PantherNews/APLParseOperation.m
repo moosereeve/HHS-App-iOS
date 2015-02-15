@@ -262,6 +262,8 @@ static NSUInteger const kSizeOfArticleBatch = 40;
     else if ([elementName isEqualToString:_kDetailsElementName]) {
         self.currentArticleObject.details = self.currentParsedCharacterData;
          _accumulatingParsedCharacterData = NO;
+        
+
     }
     else if([_kKeepHtmlTags isEqualToString:@"keep"]) {
             [self.currentParsedCharacterData appendString:@"</"];
@@ -269,8 +271,10 @@ static NSUInteger const kSizeOfArticleBatch = 40;
             [self.currentParsedCharacterData appendString:@">"];
     }
     else if ([_kKeepHtmlTags isEqualToString:@"convertToLineBreaks"]) {
+        self.currentParsedCharacterData = [[self.currentParsedCharacterData stringByReplacingOccurrencesOfString:@"\n" withString:@""] mutableCopy];
+
         if ([elementName isEqualToString:@"p"] || [elementName isEqualToString:@"br"] || [elementName isEqualToString:@"div"] ) {
-                [self.currentParsedCharacterData appendString:@"\n"];
+                [self.currentParsedCharacterData appendString:@"\r"];
         }
     }
 }

@@ -36,6 +36,7 @@
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.estimatedRowHeight = 40;
     [self.view addSubview:self.tableView];
     
     //Load the NIB file
@@ -85,6 +86,7 @@
     
     if (self.owner.currentView == self) {
         [self.owner hideWaiting];
+        [self sendToDetailPager:0 parentViewController:self];
     }
 }
 
@@ -217,9 +219,10 @@
     NSArray *articles = [[self articleStore] allArticles];
     
     HHSNewsDetailsViewController *detailvc = [[HHSNewsDetailsViewController alloc] init];
-    detailvc.articleNumber = index;
-    detailvc.article = articles[index];
-    
+    if ([articles count]>0) {
+        detailvc.articleNumber = index;
+        detailvc.article = articles[index];
+    }
     return detailvc;
 }
 

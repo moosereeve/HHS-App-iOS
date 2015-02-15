@@ -39,7 +39,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         
-        _homeVC = [[HHSHomeViewController alloc] init];
         [self setUpSchedules];
         [self setUpNews];
         [self setUpEvents];
@@ -54,6 +53,10 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.swViewController = [self revealViewController];
+    [self.swViewController panGestureRecognizer];
+    [self.swViewController tapGestureRecognizer];
     
     UINavigationItem *navItem = self.navigationItem;
     navItem.title = @"Holliston High School";
@@ -73,6 +76,7 @@
     //[self.navigationItem setBackBarButtonItem: backButton];
     //self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],};
     
     self.pager = [[HHSMainPager alloc] init];
     self.pager.parent = self;
@@ -81,10 +85,7 @@
     [self.view addSubview:self.pager.view];
     [self.pager didMoveToParentViewController:self];
     
-    self.swViewController = [self revealViewController];
     
-    [self.swViewController panGestureRecognizer];
-    [self.swViewController tapGestureRecognizer];
     
     UIImage *hamburger = [[UIImage imageNamed:@"hamburger"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIButton *menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -250,6 +251,8 @@
 
 -(void)setUpHome
 {
+    self.homeVC = [[HHSHomeViewController alloc] init];
+    self.homeVC.title = @"HomeVC";
     //initialize stores
     _homeVC.title = @"HomeVC";
     _homeVC.schedulesStore = _schedulesStore;
@@ -480,13 +483,13 @@
     if (index > currentIndex) {
         for (int i = currentIndex; i<=index; i++) {
             self.currentPagerIndex = i;
-            [self.pager.pageController setViewControllers:@[[self viewControllerAtIndex:i]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+            [self.pager.pageController setViewControllers:@[[self viewControllerAtIndex:i]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
         }
         
     } else if (index < currentIndex) {
         for (int i = currentIndex; i>=index; i--) {
             self.currentPagerIndex = i;
-            [self.pager.pageController setViewControllers:@[[self viewControllerAtIndex:i]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+            [self.pager.pageController setViewControllers:@[[self viewControllerAtIndex:i]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
         }
     }
     

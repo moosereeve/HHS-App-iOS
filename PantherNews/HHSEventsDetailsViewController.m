@@ -87,8 +87,8 @@
 {
     [super viewDidAppear:YES];
     
-    [self roundFrameCorners:self.titleLabel];
-    [self roundFrameCorners:self.detailsTextView];
+    //[self roundFrameCorners:self.titleLabel];
+    //[self roundFrameCorners:self.detailsTextView];
 }
 
 - (void)didReceiveMemoryWarning

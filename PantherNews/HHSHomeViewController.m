@@ -176,6 +176,10 @@
     [self fillDailyAnn];
     [self fillEvents];
     
+    if ([self.schedulesStore allArticles]>0 ) {
+        [self sendToDetailPager:0 parentViewController:(HHSCategoryVC*)self.owner.schedulesTVC];
+    }
+    
 }
 
 - (void)fillSchedule
@@ -241,7 +245,8 @@
         else {
             self.schedIcon.image = _images[@"star"];
         }
-    }
+        
+            }
     [self hideIfReady];
 }
 
@@ -454,6 +459,9 @@
         if (ready) {
             [self.owner hideWaiting];
             [self.refreshControl endRefreshing];
+            if(self.owner.splitViewController) {
+                [self sendToDetailPager:0 parentViewController:(HHSCategoryVC*)self.owner.schedulesTVC];
+            }
         }
     }
 }
@@ -639,7 +647,7 @@
     
     HHSDetailPager *pager = [[HHSDetailPager alloc] init];
     if(viewController == nil) {
-        viewController = self;
+        viewController = (HHSCategoryVC*)self.owner.schedulesTVC;
     }
     pager.articleStore = viewController.articleStore;
     pager.parent = viewController;;

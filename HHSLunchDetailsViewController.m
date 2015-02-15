@@ -79,8 +79,8 @@
 {
     [super viewDidAppear:YES];
     
-    [self roundFrameCorners:self.dateLabel];
-    [self roundFrameCorners:self.detailsTextView];
+    //[self roundFrameCorners:self.dateLabel];
+    //[self roundFrameCorners:self.detailsTextView];
     
 }
 

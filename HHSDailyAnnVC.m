@@ -88,6 +88,7 @@
     
     if (self.owner.currentView == self) {
         [self.owner hideWaiting];
+        [self sendToDetailPager:0 parentViewController:self];
     }
 }
 
@@ -209,9 +210,10 @@
     NSArray *articles = [[self articleStore] allArticles];
     
     HHSDailyAnnDetailsViewController *detailvc = [[HHSDailyAnnDetailsViewController alloc] init];
-    detailvc.articleNumber = index;
-    detailvc.article = articles[index];
-    
+    if ([articles count]>0) {
+        detailvc.articleNumber = index;
+        detailvc.article = articles[index];
+    }
     return detailvc;
 }
 
