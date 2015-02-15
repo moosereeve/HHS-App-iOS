@@ -10,11 +10,13 @@
 
 #import <UIKit/UIKit.h>
 #import "HHSArticleStore.h"
-#import "HHSTableViewController.h"
+#import "HHSCategoryVC.h"
 
 @interface HHSHomeViewController : UIViewController <UITableViewDelegate, UISplitViewControllerDelegate>
+
+@property (nonatomic) int pagerIndex;
 @property (nonatomic) UIPopoverController *popoverController;
-@property (nonatomic, weak) HHSNavViewController *owner;
+@property (nonatomic, weak) HHSMainViewController *owner;
 @property BOOL viewLoaded;
 
 @property (nonatomic, weak) HHSArticleStore *schedulesStore;

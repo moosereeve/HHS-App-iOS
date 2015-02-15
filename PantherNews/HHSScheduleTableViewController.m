@@ -10,9 +10,11 @@
 #import "HHSScheduleCell.h"
 #import "HHSScheduleDetailsViewController.h"
 #import "HHSNavViewController.h"
+#import "HHSDetailPager.h"
 
 @interface HHSScheduleTableViewController ()
 @property (nonatomic, strong) NSDictionary *images;
+@property (nonatomic) BOOL skipToday;
 @end
 
 
@@ -39,8 +41,11 @@
                     @"star" : star };
     }
     
+    self.skipToday = NO;
+    
     return self;
 }
+
 
 - (void)viewDidLoad
 {
@@ -52,7 +57,31 @@
     //Register this NIB, which contains the cell
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSScheduleCell"];
     
+    UIImage *headerImage = [UIImage imageNamed:@"books"];
+    int screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    int origHeight = headerImage.size.height;
+    int origWidth = headerImage.size.width;
+    int newHeight = origHeight * screenWidth / origWidth;
+    CGRect newImageRect = CGRectMake(0.0,0.0,screenWidth, newHeight);
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:newImageRect];
+    imageView.image = headerImage;
+    //imageView.bounds = newImageRect;
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    UIView *headerView = [[UIView alloc] initWithFrame:newImageRect];
+    [headerView addSubview:imageView];
+    
+    UILabel *headerLabel = [[UILabel alloc] init];
+    headerLabel.text = @"Schedules";
+    [headerView addSubview:headerLabel];
+    NSDictionary *views = NSDictionaryOfVariableBindings(headerLabel);
+    NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[headerLabel]-|" options:nil metrics:nil views:views];
+    [headerView addConstraints:constraints];
+    
+    self.tableView.tableHeaderView = headerView;
+    
     [self reloadArticlesFromStore];
+    
 }
 
 - (void)reloadArticlesFromStore {
@@ -75,6 +104,7 @@
        NSIndexSet *is = [[NSIndexSet alloc] initWithIndex:0];
         [self.tableView deleteSections:is withRowAnimation:UITableViewRowAnimationNone];
     }*/
+    
     if ([articles count] >=2) {
         NSDate *todayDate = [[NSDate alloc] init];
         NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:todayDate];
@@ -91,11 +121,10 @@
             
             if ((todayMonth == firstMonth) && (todayDay == firstDay)) {
                 [articles removeObjectAtIndex:0];
+                self.skipToday = YES;
             }
         }
     }
-
-    
     
     int currentWeek = -1;
     int numSections = 0;
@@ -236,22 +265,95 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    HHSScheduleDetailsViewController *vc = [[HHSScheduleDetailsViewController alloc] init];
+    //HHSScheduleDetailsViewController *vc = [[HHSScheduleDetailsViewController alloc] init];
+    int index = 0;
+    for (int j=0; j<=indexPath.section; j++) {
+        for (int i=0; i<[self.articlesList[j] count]; i++) {
+            if ((j==indexPath.section) && (i==indexPath.row)) {
+                break;
+            }
+            index++;
+        }
+    }
+    if (_skipToday) {
+        index++;
+    }
     
-    //NSArray *items = [[BNRItemStore sharedStore] allItems];
-    HHSArticle *selectedArticle = self.articlesList[indexPath.section][indexPath.row];
+    HHSDetailPager *pager = [[HHSDetailPager alloc] init];
+    
+    pager.articleStore = self.articleStore;
+    pager.parent = self;
+    pager.startingArticleIndex = index;
+    
+    
+    
+    //HHSArticle *selectedArticle = self.articlesList[indexPath.section][indexPath.row];
     
     //Give deatil view controller a pointer to the item object in the row
-    vc.article = selectedArticle;
+    //vc.article = selectedArticle;
+    //vc.articleNumber = (int) indexPath.row;
     
     //Piush it onto the top of the navigation controller's stack
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:pager animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 20;
 }
+
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSScheduleDetailsViewController *)viewController articleNumber];
+    
+    index++;
+    if (index >=articles.count) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
+    
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSScheduleDetailsViewController *)viewController articleNumber];
+    
+    index--;
+    if (index <0) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+
+-(UIViewController *)viewControllerAtIndex:(int)index {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    
+    HHSScheduleDetailsViewController *detailvc = [[HHSScheduleDetailsViewController alloc] init];
+    detailvc.articleNumber = index;
+    detailvc.article = articles[index];
+    
+    return detailvc;
+}
+
+-(NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
+    return 5;
+}
+-(NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
+    return 0;
+}
+
 
 
 @end

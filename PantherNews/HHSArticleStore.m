@@ -9,7 +9,7 @@
 #import "HHSArticleStore.h"
 #import "HHSArticle.h"
 #import "HHSImageStore.h"
-#import "HHSTableViewController.h"
+#import "HHSCategoryVC.h"
 #import "HHSHomeViewController.h"
 #import "APLParseOperation.h"
 #import "HHSJsonParseOperation.h"
@@ -28,7 +28,7 @@
 @property BOOL currentlyParsing;
 
 //@property (nonatomic) NSArray *owners;
-@property (nonatomic, weak) HHSNavViewController *owner;
+@property (nonatomic, weak) HHSMainViewController *owner;
 
 @property (nonatomic, strong)NSString *mAddArticlesNotificationName;
 @property (nonatomic, strong)NSString *mArticleResultsKey;
@@ -51,7 +51,7 @@
                 parserNames:(NSDictionary *)parserNames
               feedUrlString:(NSString *)feedUrlString
                        sortNowToFuture:(BOOL)sortOrder
-                     owner:(HHSNavViewController *)owner
+                     owner:(HHSMainViewController *)owner
 {
     
     self = [super init];
@@ -91,7 +91,7 @@
 
 - (NSArray *)allArticles
 {
-    if ([self.privateItems count] <0) {   //if ([self.privateItems count] == 0) {
+    /*if ([self.privateItems count] <0) {   //if ([self.privateItems count] == 0) {
         if ((self.type == [HHSArticleStore HHSArticleStoreTypeDailyAnns]) ||
             (self.type == [HHSArticleStore HHSArticleStoreTypeNews])) {
                 [self getArticlesFromFeed];
@@ -99,7 +99,7 @@
                 [self getEventsFromFeed];
             }
         return nil;
-    } else {
+    } else {*/
         NSArray *newArticles = [self.privateItems allValues] ;
         
         NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:_sortNowToFuture];
@@ -107,7 +107,7 @@
         NSArray *sortedArray = [newArticles sortedArrayUsingDescriptors:descriptors];
 
         return sortedArray;
-    }
+    //}
 }
 
 - (HHSArticle *)newArticle
@@ -514,8 +514,6 @@
     else {
         // check for any response errors
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        int code = [httpResponse statusCode];
-        NSString *mimeType = [response MIMEType];
         if ((([httpResponse statusCode]/100) == 2) ) {
             // Update the UI and start parsing the data,
             // Spawn an NSOperation to parse the earthquake data so that the UI is not

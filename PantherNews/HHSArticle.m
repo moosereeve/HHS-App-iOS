@@ -122,7 +122,7 @@
     CGSize origImageSize = image.size;
     
     //THe rectangel of the thumbnail
-    CGRect newRect = CGRectMake(0, 0, 40, 40);
+    CGRect newRect = CGRectMake(0, 0, 400, 400);
     
     //Figure out a scaling ratio to make sure we maintain the same aspect ratio
     float ratio = MAX(newRect.size.width / origImageSize.width,
@@ -133,11 +133,10 @@
     UIGraphicsBeginImageContextWithOptions(newRect.size, NO, 0.0);
     
     //Create a path that is a rounded rectangle
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:newRect
-                                                    cornerRadius:5.0];
+    //UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:newRect cornerRadius:5.0];
     
     //Make all subsequent drawing clip to this rounded rectangle
-    [path addClip];
+    //[path addClip];
     
     //Center the iamge in the thumbnail rectangel
     CGRect projectRect;

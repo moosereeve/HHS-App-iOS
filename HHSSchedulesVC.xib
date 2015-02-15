@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HHSSchedulesVC">
+            <connections>
+                <outlet property="tableView" destination="tF2-Sb-AoT" id="2j0-8n-7yS"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="books.png" translatesAutoresizingMaskIntoConstraints="NO" id="fgy-lz-Tie">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="160" id="TKh-ni-Fi8"/>
+                    </constraints>
+                </imageView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="tF2-Sb-AoT">
+                    <rect key="frame" x="0.0" y="160" width="320" height="408"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Schedules" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bn5-97-Bxm">
+                    <rect key="frame" x="5" y="132" width="89" height="23"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="fgy-lz-Tie" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="4kK-b9-jRq"/>
+                <constraint firstItem="fgy-lz-Tie" firstAttribute="bottom" secondItem="Bn5-97-Bxm" secondAttribute="bottom" constant="5" id="60w-97-GFa"/>
+                <constraint firstItem="Bn5-97-Bxm" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="5" id="Nd8-dn-I56"/>
+                <constraint firstItem="fgy-lz-Tie" firstAttribute="leading" secondItem="tF2-Sb-AoT" secondAttribute="leading" id="OMP-kM-Nkg"/>
+                <constraint firstItem="fgy-lz-Tie" firstAttribute="trailing" secondItem="tF2-Sb-AoT" secondAttribute="trailing" id="Wis-HL-UDp"/>
+                <constraint firstItem="tF2-Sb-AoT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="fDP-Aa-FSX"/>
+                <constraint firstAttribute="trailing" secondItem="tF2-Sb-AoT" secondAttribute="trailing" id="hvt-DB-Gb4"/>
+                <constraint firstItem="tF2-Sb-AoT" firstAttribute="top" secondItem="fgy-lz-Tie" secondAttribute="bottom" id="hzB-ZS-CPH"/>
+                <constraint firstAttribute="bottom" secondItem="tF2-Sb-AoT" secondAttribute="bottom" id="oZ5-3l-BMc"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="books.png" width="800" height="400"/>
+    </resources>
+</document>

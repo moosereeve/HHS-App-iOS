@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "HHSTableViewController.h"
 
-@interface HHSEventsTableViewController : HHSTableViewController
+@interface HHSEventsTableViewController : HHSTableViewController <UIPageViewControllerDataSource>
 
 @end

@@ -10,29 +10,29 @@
 	<string>PantherNews</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>39A3FA08-3F1E-4844-B568-C64A74DC3482</key>
+		<key>D93E04512CBFB459AD01712C9A8142E72D8D56A2</key>
 		<string>https://github.com/reevet/HHS-App-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>PantherNews.xcodeproj/project.xcworkspace</string>
+	<string>PantherNews.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>39A3FA08-3F1E-4844-B568-C64A74DC3482</key>
+		<key>D93E04512CBFB459AD01712C9A8142E72D8D56A2</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/reevet/HHS-App-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>39A3FA08-3F1E-4844-B568-C64A74DC3482</string>
+	<string>D93E04512CBFB459AD01712C9A8142E72D8D56A2</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>39A3FA08-3F1E-4844-B568-C64A74DC3482</string>
+			<string>D93E04512CBFB459AD01712C9A8142E72D8D56A2</string>
 			<key>IDESourceControlWCCName</key>
 			<string>HHS-App-iOS</string>
 		</dict>

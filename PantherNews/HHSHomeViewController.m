@@ -12,19 +12,18 @@
 #import "APLParseOperation.h"
 #import "HHSEventsCell.h"
 #import "HHSImageStore.h"
-#import "HHSScheduleTableViewController.h"
+#import "HHSCategoryVC.h"
 #import "HHSScheduleDetailsViewController.h"
-#import "HHSNewsTableViewController.h"
 #import "HHSNewsDetailsViewController.h"
-#import "HHSEventsTableViewController.h"
 #import "HHSEventsDetailsViewController.h"
-#import "HHSDailyAnnTableViewController.h"
 #import "HHSDailyAnnDetailsViewController.h"
-#import "HHSLunchTableViewController.h"
 #import "HHSLunchDetailsViewController.h"
 #import "HHSNavViewController.h"
+#import "HHSDetailPager.h"
 
 @interface HHSHomeViewController ()
+@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) NSDictionary *images;
 
 @property (nonatomic, weak) HHSArticle *scheduleArticle;
@@ -42,6 +41,8 @@
 @property (nonatomic, strong)NSString *mArticlesErrorNotificationName;
 @property (nonatomic, strong)NSString *mArticlesMessageErrorKey;
 
+@property (nonatomic) BOOL skipToday;
+
 @end
 
 @implementation HHSHomeViewController
@@ -54,23 +55,24 @@
     if (self) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Home";
-        
-        _viewLoaded = NO;
+        self.viewLoaded = NO;
         
         self.eventsHeaderHeight = 30;
         self.eventsCellHeight = 50;
         
-        UIImage *a = [UIImage imageNamed:@"a"];
-        UIImage *b = [UIImage imageNamed:@"b"];
-        UIImage *c = [UIImage imageNamed:@"c"];
-        UIImage *d = [UIImage imageNamed:@"d"];
-        UIImage *star = [UIImage imageNamed:@"star"];
+        UIImage *a = [UIImage imageNamed:@"a_lg"];
+        UIImage *b = [UIImage imageNamed:@"b_lg"];
+        UIImage *c = [UIImage imageNamed:@"c_lg"];
+        UIImage *d = [UIImage imageNamed:@"d_lg"];
+        UIImage *star = [UIImage imageNamed:@"star_lg"];
         
         _images = @{@"a" : a,
                     @"b" : b,
                     @"c" : c,
                     @"d" : d,
                     @"star" : star };
+        
+        self.skipToday = NO;
         
         for (int i = 0; i<4; i++)
         {
@@ -120,6 +122,10 @@
     //self.view = self.eventsTable;
     [_eventsBox addSubview:self.eventsTable];
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshStores) forControlEvents:UIControlEventValueChanged];
+    [self.scrollView addSubview:self.refreshControl];
+    
     //Load the NIB file
     UINib *nib = [UINib nibWithNibName:@"HHSEventsCell" bundle:nil];
     
@@ -143,7 +149,7 @@
                                                                       multiplier:1.0
                                                                         constant:0];
     [self.view addConstraint:rightConstraint];
-    _viewLoaded = YES;
+    self.viewLoaded = YES;
     
 }
 
@@ -184,7 +190,6 @@
         HHSArticle *article = sortedArray[0];
         if ([sortedArray count] >=2) {
             NSDate *todayDate = [[NSDate alloc] init];
-            NSCalendar *cal = [[NSCalendar alloc] init];
             NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:todayDate];
             NSInteger todayMonth = [todayComp month];
             NSInteger todayDay = [todayComp day];
@@ -192,13 +197,13 @@
             
             if (todayHour >=14) {
                 NSDate *firstDate = article.date;
-                NSCalendar *firstCal = [[NSCalendar alloc] init];
                 NSDateComponents *firstComp =[[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay fromDate:firstDate];
                 NSInteger firstMonth = [firstComp month];
                 NSInteger firstDay = [firstComp day];
                 
                 if ((todayMonth == firstMonth) && (todayDay == firstDay)) {
                     article = sortedArray[1];
+                    self.skipToday = YES;
                 }
             }
         }
@@ -448,41 +453,35 @@
     
         if (ready) {
             [self.owner hideWaiting];
+            [self.refreshControl endRefreshing];
         }
     }
 }
 
 - (IBAction)scheduleButtonClicked:(id)sender {
-    HHSScheduleDetailsViewController *vc = [[HHSScheduleDetailsViewController alloc] init];
+    //HHSScheduleDetailsViewController *vc = [[HHSScheduleDetailsViewController alloc] init];
     
-    //Give deatil view controller a pointer to the item object in the row
-    vc.article = _scheduleArticle;
+    int index = 0;
+    if (_skipToday) {
+        index++;
+    }
     
-    //Piush it onto the top of the navigation controller's stack
-    [self.navigationController pushViewController:vc animated:YES];
+    [self sendToDetailPager:index parentViewController:(HHSCategoryVC*)self.owner.schedulesTVC];
 }
 
 - (IBAction)newsButtonClicked:(id)sender {
-    HHSNewsDetailsViewController *vc = [[HHSNewsDetailsViewController alloc] init];
+    //HHSNewsDetailsViewController *vc = [[HHSNewsDetailsViewController alloc] init];
+    int index = 0;
     
-    //Give deatil view controller a pointer to the item object in the row
-    vc.article = _newsArticle;
-    
-    //Piush it onto the top of the navigation controller's stack
-    [self.navigationController pushViewController:vc animated:YES];
+    [self sendToDetailPager:index parentViewController:(HHSCategoryVC*)self.owner.newsTVC];
 }
 
 - (IBAction)dailyAnnButtonClicked:(id)sender {
-    HHSDailyAnnDetailsViewController *vc = [[HHSDailyAnnDetailsViewController alloc] init];
+    //HHSDailyAnnDetailsViewController *vc = [[HHSDailyAnnDetailsViewController alloc] init];
+    int index = 0;
     
-    //Give deatil view controller a pointer to the item object in the row
-    vc.article = _dailyAnnArticle;
-    
-    //Piush it onto the top of the navigation controller's stack
-    [self.navigationController pushViewController:vc animated:YES];
+    [self sendToDetailPager:index parentViewController:(HHSCategoryVC*)self.owner.dailyAnnTVC];
 }
-
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -529,25 +528,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    HHSEventsDetailsViewController *vc = [[HHSEventsDetailsViewController alloc] init];
-    
-    //NSArray *items = [[BNRItemStore sharedStore] allItems];
-    HHSArticle *selectedArticle = self.eventsArticles[indexPath.section][indexPath.row];
-    
-    //Give deatil view controller a pointer to the item object in the row
-    vc.article = selectedArticle;
-    
-    //Piush it onto the top of the navigation controller's stack
-    [self.navigationController pushViewController:vc animated:YES];
+    //HHSEventsDetailsViewController *vc = [[HHSEventsDetailsViewController alloc] init];
+    int index = 0;
+    for (int j=0; j<=indexPath.section; j++) {
+        for (int i=0; i<[self.eventsArticles[j] count]; i++) {
+            if ((j==indexPath.section) && (i==indexPath.row)) {
+                break;
+            }
+            index++;
+        }
+    }
+
+    [self sendToDetailPager:index parentViewController:(HHSCategoryVC*)self.owner.eventsTVC];
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, _eventsHeaderHeight)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, _eventsHeaderHeight+10)];
     /* Create custom view to display section header... */
     UILabel *label;
-        label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, _eventsHeaderHeight)];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(8, 5, tableView.frame.size.width-8, _eventsHeaderHeight)];
     //NSString *string =@"";
     /* Section header is in 0th index... */
     HHSArticle *article = self.eventsArticles[section][0];
@@ -565,7 +566,7 @@
     [view addSubview:label];
     //label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     [label setFont:[UIFont boldSystemFontOfSize:16]];
-    [view setBackgroundColor:[UIColor colorWithRed:166/255.0 green:177/255.0 blue:186/255.0 alpha:0.4]]; //your background color...
+    //[view setBackgroundColor:[UIColor colorWithRed:166/255.0 green:177/255.0 blue:186/255.0 alpha:0.4]]; //your background color...
     return view;
 }
 
@@ -585,35 +586,41 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 -(void)splitViewController:(UISplitViewController *)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
-    
+    /*
     if (barButtonItem == self.navigationItem.leftBarButtonItem) {
         self.navigationItem.leftBarButtonItem = nil;
     }
-    
+    */
     self.popoverController = nil;
 }
 
 -(void)splitViewController:(UISplitViewController *)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)pc {
     
-    if (barButtonItem != self.navigationItem.leftBarButtonItem) {
-        barButtonItem.title = @"<< Main Menu";
-        self.navigationItem.leftBarButtonItem = barButtonItem;
-    }
-    self.popoverController = pc;
-    UINavigationController *nvc = svc.viewControllers[0];
-    HHSNavViewController *hhsnvc = nvc.viewControllers[0];
-    [hhsnvc setCurrentPopoverController:pc];
+     /*if (barButtonItem != self.navigationItem.leftBarButtonItem) {
+     barButtonItem.title = @"<< Main Menu";
+     self.navigationItem.leftBarButtonItem = barButtonItem;
+     }
+     self.popoverController = pc;
+     UINavigationController *nvc = svc.viewControllers[0];
+     HHSMainViewController *hhsnvc = nvc.viewControllers[0];
+    
+     [hhsnvc setCurrentPopoverController:pc];*/
 }
 
 - (void)splitViewController:(UISplitViewController *)svc popoverController:(UIPopoverController *)pc willPresentViewController:(UIViewController *)aViewController
 {
-    self.popoverController = pc;
-    UINavigationController *nvc = svc.viewControllers[0];
-    HHSNavViewController *hhsnvc = nvc.viewControllers[0];
-    [hhsnvc setCurrentPopoverController:pc];
+     /*self.popoverController = pc;
+     UINavigationController *nvc = svc.viewControllers[0];
+     HHSNavViewController *hhsnvc = nvc.viewControllers[0];
+     
+     [hhsnvc setCurrentPopoverController:pc];
+     */
     
+}
+
+- (NSUInteger)splitViewControllerSupportedInterfaceOrientations:(UISplitViewController *)splitViewController {
+    return UIInterfaceOrientationMaskLandscape;
 }
 
 
@@ -624,15 +631,28 @@
     }
 }
 
-/*-(void)refreshDone:(int)type
-{
-    [self fillAll];
+-(void)refreshStores {
+    [self.owner refreshStores];
 }
 
--(void)setCurrentPopoverController:(UIPopoverController *)poc
-{
-    //
-}*/
+-(void)sendToDetailPager:(int)index parentViewController:(HHSCategoryVC *)viewController {
+    
+    HHSDetailPager *pager = [[HHSDetailPager alloc] init];
+    if(viewController == nil) {
+        viewController = self;
+    }
+    pager.articleStore = viewController.articleStore;
+    pager.parent = viewController;;
+    pager.startingArticleIndex = index;
+    
+    if (self.parentViewController.splitViewController == nil) {
+        [self.navigationController pushViewController:pager animated:YES];
+    } else {
+        [self.navigationController.splitViewController setViewControllers:@[self.owner.swViewController, pager]];
+    }
+}
+
+
 
 
 @end

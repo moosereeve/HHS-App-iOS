@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HHSNewsVC">
+            <connections>
+                <outlet property="tableView" destination="blN-6M-7ax" id="I3y-Hg-pn6"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="newspapers.png" translatesAutoresizingMaskIntoConstraints="NO" id="nc1-wf-mEp">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="160" id="due-Dz-o3v"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="News" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Er2-nD-Cav">
+                    <rect key="frame" x="5" y="-86" width="48" height="23"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="blN-6M-7ax">
+                    <rect key="frame" x="0.0" y="160" width="320" height="408"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="News" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WiH-6m-G0m">
+                    <rect key="frame" x="5" y="132" width="48" height="23"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="nc1-wf-mEp" firstAttribute="leading" secondItem="blN-6M-7ax" secondAttribute="leading" id="21y-Tu-4yz"/>
+                <constraint firstItem="nc1-wf-mEp" firstAttribute="trailing" secondItem="blN-6M-7ax" secondAttribute="trailing" id="56H-bK-bP8"/>
+                <constraint firstItem="WiH-6m-G0m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="5" id="9FD-cJ-xSz"/>
+                <constraint firstItem="blN-6M-7ax" firstAttribute="top" secondItem="nc1-wf-mEp" secondAttribute="bottom" id="GUJ-tL-4OD"/>
+                <constraint firstAttribute="trailing" secondItem="blN-6M-7ax" secondAttribute="trailing" id="LLL-6T-VVD"/>
+                <constraint firstItem="nc1-wf-mEp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bpM-Qu-IpZ"/>
+                <constraint firstItem="blN-6M-7ax" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="c2U-S8-J2f"/>
+                <constraint firstItem="Er2-nD-Cav" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="-86" id="ext-fb-eos"/>
+                <constraint firstItem="Er2-nD-Cav" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="5" id="lgh-xy-1ph"/>
+                <constraint firstItem="blN-6M-7ax" firstAttribute="top" secondItem="WiH-6m-G0m" secondAttribute="bottom" constant="5" id="m9k-yL-cl2"/>
+                <constraint firstAttribute="bottom" secondItem="blN-6M-7ax" secondAttribute="bottom" id="mD4-6g-cvP"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="newspapers.png" width="800" height="400"/>
+    </resources>
+</document>

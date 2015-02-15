@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "HHSArticle.h"
-@class HHSNavViewController;
+@class HHSMainViewController;
 
 @interface HHSArticleStore : NSObject
 
@@ -19,7 +19,7 @@
                 parserNames:(NSDictionary *)parserNames
               feedUrlString:(NSString *)feedUrlString
             sortNowToFuture:(BOOL)sortOrder
-                      owner:(HHSNavViewController *)owner;
+                      owner:(HHSMainViewController *)owner;
 
 -(int)getType;
 -(HHSArticle *)newArticle;

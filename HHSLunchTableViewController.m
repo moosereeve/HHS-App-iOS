@@ -10,9 +10,12 @@
 #import "HHSLunchCell.h"
 #import "HHSLunchDetailsViewController.h"
 #import "HHSNavViewController.h"
+#import "HHSNavViewController.h"
+#import "HHSDetailPager.h"
 
 @interface HHSLunchTableViewController ()
 @property (nonatomic, strong) NSDictionary *images;
+@property (nonatomic) BOOL skipToday;
 @end
 
 
@@ -24,7 +27,7 @@
     if (self) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Lunch Menus";
-        
+        self.skipToday = NO;
     }
     
     return self;
@@ -79,6 +82,7 @@
             
             if ((todayMonth == firstMonth) && (todayDay == firstDay)) {
                 [articles removeObjectAtIndex:0];
+                self.skipToday = YES;
             }
         }
     }
@@ -174,22 +178,94 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    HHSLunchDetailsViewController *vc = [[HHSLunchDetailsViewController alloc] init];
+    //HHSLunchDetailsViewController *vc = [[HHSLunchDetailsViewController alloc] init];
+    int index = 0;
+    for (int j=0; j<=indexPath.section; j++) {
+        for (int i=0; i<[self.articlesList[j] count]; i++) {
+            if ((j==indexPath.section) && (i==indexPath.row)) {
+                break;
+            }
+            index++;
+        }
+    }
+    if (_skipToday) {
+        index++;
+    }
     
+    HHSDetailPager *pager = [[HHSDetailPager alloc] init];
+    
+    pager.articleStore = self.articleStore;
+    pager.parent = self;
+    pager.startingArticleIndex = index;
+    
+
     //NSArray *items = [[BNRItemStore sharedStore] allItems];
-    HHSArticle *selectedArticle = self.articlesList[indexPath.section][indexPath.row];
+    //HHSArticle *selectedArticle = self.articlesList[indexPath.section][indexPath.row];
     
     //Give deatil view controller a pointer to the item object in the row
-    vc.article = selectedArticle;
+    //vc.article = selectedArticle;
     
     //Piush it onto the top of the navigation controller's stack
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:pager animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 20;
 }
+
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSLunchDetailsViewController *)viewController articleNumber];
+    
+    index++;
+    if (index >=articles.count) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
+    
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSLunchDetailsViewController *)viewController articleNumber];
+    
+    index--;
+    if (index <0) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+
+-(UIViewController *)viewControllerAtIndex:(int)index {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    
+    HHSLunchDetailsViewController *detailvc = [[HHSLunchDetailsViewController alloc] init];
+    detailvc.articleNumber = index;
+    detailvc.article = articles[index];
+    
+    return detailvc;
+}
+
+-(NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
+    return 5;
+}
+-(NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
+    return 0;
+}
+
 
 
 @end

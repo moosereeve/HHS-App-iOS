@@ -7,16 +7,22 @@
 //
 
 #import "HHSAppDelegate.h"
-#import "HHSNavViewController.h"
+#import "HHSMainViewController.h"
 #import "HHSHomeViewController.h"
 #import "HHSArticleStore.h"
+#import "HHSMenuController.h"
+#import "HHSDetailPager.h"
+#import "SWRevealViewController.h"
 
 @interface HHSAppDelegate ()
 @property (nonatomic, strong) UISplitViewController *splitvc;
-@property (nonatomic, strong) HHSNavViewController *nvc;
+@property (nonatomic, strong) HHSMainViewController *nvc;
 @end
 
 @implementation HHSAppDelegate
+
+@synthesize window = _window;
+@synthesize swViewController = _swViewController;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -24,19 +30,30 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    _nvc = [[HHSNavViewController alloc] init];
-    UINavigationController *masternav = [[UINavigationController alloc] initWithRootViewController:_nvc];
+    UIPageControl *pageControl = [UIPageControl appearance];
+    pageControl.backgroundColor = [UIColor colorWithRed: (181/255.0) green:(30/255.0) blue:(18/255.0) alpha:(255/255.0)];
     
-    //HHSScheduleTableViewController *stvc = [[HHSScheduleTableViewController alloc] init];
-    //stvc.articleStore = [[HHSArticleStore alloc] initWithType:[HHSArticleStore HHSArticleStoreTypeSchedules]];
+    _nvc = [[HHSMainViewController alloc] init];
+    UIViewController *masternav = [[UINavigationController alloc] initWithRootViewController:_nvc];
+    masternav.title = @"MasterNavController";
     
-    //HHSTableViewController *tablevc;
-    HHSHomeViewController *home = _nvc.homeVC;
+    //setup SWReveal menu system
+    HHSMenuController *menuController = [[HHSMenuController alloc] init];
+    menuController.mainViewController = _nvc;
+    SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:menuController frontViewController:masternav];
+    revealController.title = @"swRevealController";
     
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+    revealController.delegate = (id)self;
+    self.swViewController = revealController;
+    
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)  {
         
-        UINavigationController *detailNav = [[UINavigationController alloc] initWithRootViewController:home];
+        HHSDetailPager *detailPager = [[HHSDetailPager alloc] init];
         
+        detailPager.articleStore = _nvc.schedulesStore;
+        detailPager.parent = (HHSCategoryVC*)_nvc.schedulesTVC;
+        detailPager.startingArticleIndex = 0;
+       
         UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
         if(orientation == UIInterfaceOrientationPortrait)
         { /*   UIBarButtonItem *barButton = [[UIBarButtonItem alloc] init];
@@ -45,18 +62,15 @@
         */}
         
         _splitvc = [[UISplitViewController alloc] init];
-        
-        //set delegate of splitview to detail vc
-        _splitvc.delegate = home;
-        
-        _splitvc.viewControllers = @[masternav, detailNav];
+        _splitvc.delegate = _nvc.homeVC;
+        _splitvc.viewControllers = @[self.swViewController, detailPager];//detailNav];
         
         self.window.rootViewController = _splitvc;
         
     }
     else {
         //on non-iPad devices, do normal screens
-        self.window.rootViewController = masternav;
+        self.window.rootViewController = self.swViewController;// masternav;
     }
     
     self.window.backgroundColor = [UIColor whiteColor];

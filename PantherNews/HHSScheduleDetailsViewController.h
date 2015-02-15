@@ -12,5 +12,6 @@
 @interface HHSScheduleDetailsViewController : UIViewController
 
 @property (nonatomic, strong) HHSArticle *article;
+@property (nonatomic) int articleNumber;
 
 @end

@@ -15,17 +15,16 @@
 //#import "HHSTableViewController.h"
 //#import "HHSHomeViewController.h"
 @class HHSArticleStore;
-@class HHSScheduleTableViewController;
-@class HHSDailyAnnTableViewController;
-@class HHSEventsTableViewController;
-@class HHSNewsTableViewController;
-@class HHSLunchTableViewController;
-
-@class HHSTableViewController;
+@class HHSSchedulesVC;
+@class HHSDailyAnnVC;
+@class HHSEventsVC;
+@class HHSNewsVC;
+@class HHSLunchVC;
+@class HHSCategoryVC;
 @class HHSHomeViewController;
 
-@interface HHSNavViewController : UIViewController 
-@property (nonatomic) HHSTableViewController *currentView;
+@interface HHSNavViewController : UIViewController <UIPageViewControllerDataSource>
+@property (nonatomic) HHSCategoryVC *currentView;
 @property (nonatomic, strong) NSDictionary *tableviews;
 @property (nonatomic) BOOL schedulesDownloaded;
 @property (nonatomic) BOOL eventsDownloaded;
@@ -40,11 +39,11 @@
 @property (nonatomic, strong) HHSArticleStore *lunchStore;
 
 @property (nonatomic, strong) HHSHomeViewController *homeVC;
-@property (nonatomic, strong) HHSScheduleTableViewController *schedulesTVC;
-@property (nonatomic, strong) HHSEventsTableViewController *eventsTVC;
-@property (nonatomic, strong) HHSNewsTableViewController *newsTVC;
-@property (nonatomic, strong) HHSDailyAnnTableViewController *dailyAnnTVC;
-@property (nonatomic, strong) HHSLunchTableViewController *lunchTVC;
+@property (nonatomic, strong) HHSSchedulesVC *schedulesTVC;
+@property (nonatomic, strong) HHSEventsVC *eventsTVC;
+@property (nonatomic, strong) HHSNewsVC *newsTVC;
+@property (nonatomic, strong) HHSDailyAnnVC *dailyAnnTVC;
+@property (nonatomic, strong) HHSLunchVC *lunchTVC;
 
 -(void)refreshStores;
 -(void)refreshViews;
@@ -55,4 +54,5 @@
 -(void)setCurrentPopoverController:(UIPopoverController *)poc;
 -(void)showWaitingWithText:(NSString *)text buttonText:(NSString *)buttonText;
 -(void)hideWaiting;
+-(UIViewController *)viewControllerAtIndex:(int)index;
 @end

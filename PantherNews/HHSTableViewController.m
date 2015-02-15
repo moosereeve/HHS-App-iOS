@@ -49,9 +49,7 @@
     _activityView=[[UIActivityIndicatorView alloc]     initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
     if(([self.articlesList count] == 0)) {
-        
         [self.owner showWaitingWithText:@"Loading..." buttonText:nil];
-        
     }
     
     _viewLoaded = YES;
@@ -146,6 +144,10 @@
     //to be overridden
 }*/
 
+-(UIViewController *)viewControllerAtIndex:(int)index {
+    
+    return nil;
+}
 
 
 @end

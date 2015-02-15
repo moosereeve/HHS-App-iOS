@@ -12,6 +12,7 @@
 @interface HHSLunchDetailsViewController : UIViewController
 
 @property (nonatomic, strong) HHSArticle *article;
+@property (nonatomic) int articleNumber;
 
 @end
 

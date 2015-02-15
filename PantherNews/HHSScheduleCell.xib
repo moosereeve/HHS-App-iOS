@@ -14,32 +14,32 @@
                 <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GBc-XL-aiM">
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GBc-XL-aiM">
                         <rect key="frame" x="45" y="3" width="232" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZT-q5-XAe">
-                                <rect key="frame" x="0.0" y="0.0" width="232" height="17"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZT-q5-XAe">
+                                <rect key="frame" x="143" y="0.0" width="89" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJG-Eg-IFE">
-                                <rect key="frame" x="0.0" y="17" width="232" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJG-Eg-IFE">
+                                <rect key="frame" x="0.0" y="0.0" width="232" height="14"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="UJG-Eg-IFE" firstAttribute="top" secondItem="rZT-q5-XAe" secondAttribute="bottom" id="5MF-bq-x4N"/>
                             <constraint firstAttribute="trailing" secondItem="UJG-Eg-IFE" secondAttribute="trailing" id="DOn-Gp-5LO"/>
                             <constraint firstAttribute="trailing" secondItem="rZT-q5-XAe" secondAttribute="trailing" id="KkF-xd-BpK"/>
-                            <constraint firstAttribute="bottom" secondItem="UJG-Eg-IFE" secondAttribute="bottom" id="Xpm-Qn-Y1P"/>
+                            <constraint firstItem="rZT-q5-XAe" firstAttribute="baseline" secondItem="UJG-Eg-IFE" secondAttribute="baseline" id="O0B-OX-z2i"/>
                             <constraint firstItem="UJG-Eg-IFE" firstAttribute="leading" secondItem="GBc-XL-aiM" secondAttribute="leading" id="cbg-zC-9Oz"/>
                             <constraint firstItem="rZT-q5-XAe" firstAttribute="leading" secondItem="GBc-XL-aiM" secondAttribute="leading" id="oCf-fV-16c"/>
+                            <constraint firstAttribute="centerY" secondItem="UJG-Eg-IFE" secondAttribute="centerY" id="rbE-xA-fwg"/>
                             <constraint firstItem="rZT-q5-XAe" firstAttribute="top" secondItem="GBc-XL-aiM" secondAttribute="top" id="w7R-0m-q6n"/>
                         </constraints>
                     </view>

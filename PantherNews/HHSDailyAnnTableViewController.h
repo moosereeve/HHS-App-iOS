@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HHSTableViewController.h"
 
-@interface HHSDailyAnnTableViewController : HHSTableViewController
+@interface HHSDailyAnnTableViewController : HHSTableViewController <UIPageViewControllerDataSource>
 
 @end
 

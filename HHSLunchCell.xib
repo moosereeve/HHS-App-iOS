@@ -14,26 +14,23 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W34-fB-lvu">
-                        <rect key="frame" x="20" y="2" width="130" height="39"/>
+                        <rect key="frame" x="20" y="2" width="29" height="39"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="130" id="PYh-El-PT2"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="121" translatesAutoresizingMaskIntoConstraints="NO" id="g7W-cH-sbK">
-                        <rect key="frame" x="158" y="14" width="121" height="16"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="222" translatesAutoresizingMaskIntoConstraints="NO" id="g7W-cH-sbK">
+                        <rect key="frame" x="57" y="2" width="222" height="40"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="W34-fB-lvu" secondAttribute="bottom" constant="2" id="5Vw-Lu-PH3"/>
-                    <constraint firstAttribute="centerY" secondItem="W34-fB-lvu" secondAttribute="centerY" id="In9-7r-cB9"/>
                     <constraint firstItem="W34-fB-lvu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="KVw-nZ-mXN"/>
+                    <constraint firstItem="W34-fB-lvu" firstAttribute="baseline" secondItem="g7W-cH-sbK" secondAttribute="baseline" id="QAm-a5-rAa"/>
                     <constraint firstItem="g7W-cH-sbK" firstAttribute="centerY" secondItem="W34-fB-lvu" secondAttribute="centerY" id="bqR-dc-AWz"/>
                     <constraint firstItem="g7W-cH-sbK" firstAttribute="leading" secondItem="W34-fB-lvu" secondAttribute="trailing" constant="8" id="fqZ-Gs-OVI"/>
                     <constraint firstItem="W34-fB-lvu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="gYc-KV-zcl"/>

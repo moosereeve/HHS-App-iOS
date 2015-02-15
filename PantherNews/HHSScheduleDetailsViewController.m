@@ -8,11 +8,13 @@
 
 #import "HHSScheduleDetailsViewController.h"
 #import "HHSArticle.h"
+#import "HHSGradientBuilder.h"
 
 @interface HHSScheduleDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextView *detailsTextView;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIImageView *iconView;
 
 @property (strong, nonatomic) NSDictionary *images;
@@ -29,11 +31,11 @@
         //NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
         //[defaultCenter addObserver:self selector:@selector(updateFonts) name:UIContentSizeCategoryDidChangeNotification object:nil];
         
-        UIImage *a = [UIImage imageNamed:@"a-50"];
-        UIImage *b = [UIImage imageNamed:@"b-50"];
-        UIImage *c = [UIImage imageNamed:@"c-50"];
-        UIImage *d = [UIImage imageNamed:@"d-50"];
-        UIImage *star = [UIImage imageNamed:@"star-50"];
+        UIImage *a = [UIImage imageNamed:@"a_lg"];
+        UIImage *b = [UIImage imageNamed:@"b_lg"];
+        UIImage *c = [UIImage imageNamed:@"c_lg"];
+        UIImage *d = [UIImage imageNamed:@"d_lg"];
+        UIImage *star = [UIImage imageNamed:@"star_lg"];
         
         _images = @{@"a" : a,
                     @"b" : b,
@@ -48,7 +50,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+        
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -93,21 +95,10 @@
     else {
         self.iconView.image = _images[@"star"];
     }
+    
+    [HHSGradientBuilder buildGradient:self.headerView];
 
-    
-    
-    //[self.detailsTextView setFont:[UIFont systemFontOfSize:16]];
-    
-    //NSString *itemKey = self.item.itemKey;
-    
-    //Get the image for its image key from the image store
-    //UIImage *imageToDisplay = [[BNRImageStore sharedStore] imageForKey:itemKey];
-    
-    //Use that image to put on the screen in the imageView
-    //self.imageView.image = imageToDisplay;
-    
-    //[self updateFonts];
-    
+
 }
 
 -(void)viewDidAppear:(BOOL)animated

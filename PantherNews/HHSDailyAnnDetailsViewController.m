@@ -7,12 +7,13 @@
 //
 
 #import "HHSDailyAnnDetailsViewController.h"
-
 #import "HHSArticle.h"
+#import "HHSGradientBuilder.h"
 
 @interface HHSDailyAnnDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UITextView *detailsTextView;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 
 @end
 
@@ -30,7 +31,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -58,6 +58,8 @@
     //Use filtered NSDate object to set dateLabel contents
     self.dateLabel.text = [dateFormatter stringFromDate:article.date];
     
+    [HHSGradientBuilder buildGradient:self.headerView];
+
     //NSString *itemKey = self.item.itemKey;
     
     //Get the image for its image key from the image store
@@ -84,3 +86,4 @@
     
 }
 @end
+

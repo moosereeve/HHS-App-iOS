@@ -9,6 +9,8 @@
 #import "HHSDailyAnnTableViewController.h"
 #import "HHSDailyAnnCell.h"
 #import "HHSDailyAnnDetailsViewController.h"
+#import "HHSNavViewController.h"
+#import "HHSDetailPager.h"
 
 @interface HHSDailyAnnTableViewController ()
 
@@ -39,6 +41,7 @@
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSDailyAnnCell"];
     
     [self reloadArticlesFromStore];
+
 }
 
 - (void)reloadArticlesFromStore {
@@ -151,17 +154,76 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    HHSDailyAnnDetailsViewController *vc = [[HHSDailyAnnDetailsViewController alloc] init];
+    //HHSDailyAnnDetailsViewController *vc = [[HHSDailyAnnDetailsViewController alloc] init];
+    HHSDetailPager *pager = [[HHSDetailPager alloc] init];
     
-    //NSArray *items = [[BNRItemStore sharedStore] allItems];
-    HHSArticle *selectedArticle = self.articlesList[indexPath.row];
+    pager.articleStore = self.articleStore;
+    pager.startingArticleIndex = (int)indexPath.row;
+    pager.parent = self;
+
+    //HHSArticle *selectedArticle = self.articlesList[indexPath.row];
     
     //Give deatil view controller a pointer to the item object in the row
-    vc.article = selectedArticle;
+    //vc.article = selectedArticle;
     
     //Piush it onto the top of the navigation controller's stack
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:pager animated:YES];
 }
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSDailyAnnDetailsViewController *)viewController articleNumber];
+    
+    index++;
+    if (index >=articles.count) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
+    
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSDailyAnnDetailsViewController *)viewController articleNumber];
+    
+    index--;
+    if (index <0) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+
+-(UIViewController *)viewControllerAtIndex:(int)index {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    
+    HHSDailyAnnDetailsViewController *detailvc = [[HHSDailyAnnDetailsViewController alloc] init];
+    detailvc.articleNumber = index;
+    detailvc.article = articles[index];
+    
+    return detailvc;
+}
+
+-(NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
+    return 5;
+}
+-(NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
+    return 0;
+}
+
+
+
 
 
 

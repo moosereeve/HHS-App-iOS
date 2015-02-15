@@ -7,17 +7,19 @@
 //
 
 #import "HHSNavViewController.h"
+#import "HHSMainPager.h"
 #import "HHSHomeViewController.h"
-#import "HHSScheduleTableViewController.h"
-#import "HHSDailyAnnTableViewController.h"
-#import "HHSEventsTableViewController.h"
-#import "HHSNewsTableViewController.h"
-#import "HHSLunchTableViewController.h"
+#import "HHSSchedulesVC.h"
+#import "HHSDailyAnnVC.h"
+#import "HHSEventsVC.h"
+#import "HHSNewsVC.h"
+#import "HHSLunchVC.h"
 #import "HHSArticleStore.h"
 #import "APLParseOperation.h"
 #import "HHSNavigationControllerForSplitView.h"
 
 @interface HHSNavViewController ()
+@property (nonatomic, strong) HHSMainPager *pager;
 @property (nonatomic, strong) UIPopoverController *currentPopover;
 @property (nonatomic, strong) UIAlertView *alert;
 @property BOOL errorShowing;
@@ -35,18 +37,14 @@
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Holliston High School";
         
-        [[UINavigationBar appearance] setTitleTextAttributes: @{
-                NSForegroundColorAttributeName: [UIColor whiteColor],
-                
-                }];
+        [[UINavigationBar appearance] setTitleTextAttributes: @{NSForegroundColorAttributeName: [UIColor blackColor],}];
         [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
         
-        [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed: (181/255.0) green:(30/255.0) blue:(18/255.0) alpha:(255/255.0)]];
+        [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed: (181/255.0) green:(30/255.0) blue:(18/255.0) alpha:(128/255.0)]];
         
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
-                                       initWithTitle: @"Menu"
-                                       style: UIBarButtonItemStyleBordered
-                                      target: nil action: nil];
+        self.navigationController.navigationBar.translucent = YES;
+        
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Menu" style: UIBarButtonItemStyleBordered target: nil action: nil];
         
         [self.navigationItem setBackBarButtonItem: backButton];
 
@@ -62,10 +60,12 @@
     return self;
 }
 
+
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    [self goToHome:nil];
+    [self jumpToPage:0];
+    //[self goToHome:nil];
 }
 
 -(void)setUpSchedules
@@ -89,8 +89,9 @@
                        sortNowToFuture:(BOOL)YES
                        owner:self];
     
-    _schedulesTVC = [[HHSScheduleTableViewController alloc] initWithStore:_schedulesStore];
+    _schedulesTVC = [[HHSSchedulesVC alloc] initWithStore:_schedulesStore];
     _schedulesTVC.owner = self;
+    _schedulesTVC.pagerIndex = 1;
     [_schedulesTVC view];
     
     
@@ -119,8 +120,10 @@
                       sortNowToFuture:YES
                       owner:self];
 
-    _eventsTVC = [[HHSEventsTableViewController alloc] initWithStore:_eventsStore];
+    _eventsTVC = [[HHSEventsVC alloc] initWithStore:_eventsStore];
     _eventsTVC.owner = self;
+    
+    _eventsTVC.pagerIndex = 4;
     [_eventsTVC view];
     
 }
@@ -146,8 +149,9 @@
                        sortNowToFuture:NO
                        owner:self];
     
-    _newsTVC = [[HHSNewsTableViewController alloc] initWithStore:_newsStore];
+    _newsTVC = [[HHSNewsVC alloc] initWithStore:_newsStore];
     _newsTVC.owner = self;
+    _newsTVC.pagerIndex = 2;
     [_newsTVC view];
 }
 -(void)setUpDailyAnn
@@ -172,8 +176,9 @@
                        sortNowToFuture:NO
                        owner:self];
     
-    _dailyAnnTVC = [[HHSDailyAnnTableViewController alloc] initWithStore:_dailyAnnStore];
+    _dailyAnnTVC = [[HHSDailyAnnVC alloc] initWithStore:_dailyAnnStore];
     _dailyAnnTVC.owner = self;
+    _dailyAnnTVC.pagerIndex = 3;
     [_dailyAnnTVC view];
     
 }
@@ -200,8 +205,9 @@
                        sortNowToFuture:(BOOL)YES
                        owner:self];
     
-    _lunchTVC = [[HHSLunchTableViewController alloc] initWithStore:_lunchStore];
+    _lunchTVC = [[HHSLunchVC alloc] initWithStore:_lunchStore];
     _lunchTVC.owner = self;
+    _lunchTVC.pagerIndex = 5;
     [_lunchTVC view];
     
     
@@ -222,8 +228,10 @@
 
 - (IBAction)goToHome:(id)sender
 {
+    [self jumpToPage:0];
     _currentView = nil;
     HHSHomeViewController *view = _homeVC;
+    _homeVC.pagerIndex = 0;
     view.schedulesStore = _schedulesTVC.articleStore;
     view.newsStore = _newsTVC.articleStore;
     view.dailyAnnStore = _dailyAnnTVC.articleStore;
@@ -252,37 +260,35 @@
 
 - (IBAction)goToSchedules:(id)sender
 {
-    
-    HHSScheduleTableViewController *view = _schedulesTVC;
-    _currentView = view;
-    [self pushView:view];
+    [self jumpToPage:1];
 }
 
 - (IBAction)goToDailyAnns:(id)sender
 {
-    HHSDailyAnnTableViewController *view = _dailyAnnTVC;
-    _currentView = view;
-    [self pushView:view];
+    [self jumpToPage:3];
 }
 
 - (IBAction)goToNews:(id)sender
 {
-    HHSNewsTableViewController *view = _newsTVC;
-    _currentView = view;
-    [self pushView:view];}
+    [self jumpToPage:2];
+}
 
 - (IBAction)goToEvents:(id)sender
 {
-    HHSEventsTableViewController *view = _eventsTVC;
-    _currentView = view;
-    [self pushView:view];
+    [self jumpToPage:4];
 }
 
 - (IBAction)goToLunch:(id)sender
 {
-    HHSLunchTableViewController *view = _lunchTVC;
-    _currentView = view;
-    [self pushView:view];
+    [self jumpToPage:5];
+}
+
+-(void)jumpToPage:(int) index {
+    self.pager = [[HHSMainPager alloc] init];
+    self.pager.parent = self;
+    self.pager.startingPage = index;
+    
+    [self.navigationController pushViewController:self.pager animated:YES];
 }
 
 -(void)pushView:(HHSTableViewController *)view
@@ -467,6 +473,80 @@
     completionHandler(UIBackgroundFetchResultNewData);
 
 }
+
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    
+    int index;
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    if ([viewController isKindOfClass:[HHSHomeViewController class]]) {
+        index = 0;
+    } else {
+        index = [(HHSTableViewController *)viewController pagerIndex];
+    }
+    
+    index++;
+    if (index >5) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
+    
+    int index;
+    UIViewController *returnVC = [[UIViewController alloc] init];
+    
+    if ([viewController isKindOfClass:[HHSHomeViewController class]]) {
+        index = 0;
+    } else {
+        index = [(HHSTableViewController *)viewController pagerIndex];
+    }
+    
+    index--;
+    if (index <0) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+
+-(UIViewController *)viewControllerAtIndex:(int)index {
+    
+    
+    UIViewController *tvc = _homeVC;
+    switch (index) {
+        case 0:
+            tvc = self.homeVC;
+            break;
+        case 1:
+            tvc = self.schedulesTVC;
+            break;
+        case 2:
+            tvc = self.newsTVC;
+            break;
+        case 3:
+            tvc = self.dailyAnnTVC;
+            break;
+        case 4:
+            tvc = self.eventsTVC;
+            break;
+        case 5:
+            tvc = self.lunchTVC;
+            break;
+    }
+    
+    return tvc;
+}
+
+
+
 
 
 @end

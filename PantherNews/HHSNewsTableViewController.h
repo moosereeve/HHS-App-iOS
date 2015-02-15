@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "HHSTableViewController.h"
 
-@interface HHSNewsTableViewController : HHSTableViewController
+@interface HHSNewsTableViewController : HHSTableViewController <UIPageViewControllerDataSource>
 
 @end

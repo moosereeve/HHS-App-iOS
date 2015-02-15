@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "HHSTableViewController.h"
 
-@interface HHSScheduleTableViewController : HHSTableViewController
+@interface HHSScheduleTableViewController : HHSTableViewController <UIPageViewControllerDataSource>
 
 @end

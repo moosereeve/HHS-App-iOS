@@ -8,12 +8,14 @@
 
 #import "HHSLunchDetailsViewController.h"
 #import "HHSArticle.h"
+#import "HHSGradientBuilder.h"
 
 @interface HHSLunchDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITextView *detailsTextView;
 @property (weak, nonatomic) IBOutlet UIImageView *iconView;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 
 @property (strong, nonatomic) UIImage *lunchimage;
 
@@ -67,8 +69,9 @@
         self.dateLabel.text = [dateFormatter stringFromDate:date];
     }
     
+    [HHSGradientBuilder buildGradient:self.headerView];
     
-        self.iconView.image = _lunchimage;
+    self.iconView.image = _lunchimage;
     
 }
 

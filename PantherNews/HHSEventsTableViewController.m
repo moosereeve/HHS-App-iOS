@@ -9,6 +9,8 @@
 #import "HHSEventsTableViewController.h"
 #import "HHSEventsCell.h"
 #import "HHSEventsDetailsViewController.h"
+#import "HHSNavViewController.h"
+#import "HHSDetailPager.h"
 
 @interface HHSEventsTableViewController ()
 
@@ -42,6 +44,7 @@
     [self.tableView registerNib:nib forCellReuseIdentifier:@"HHSEventsCell"];
 
     [self reloadArticlesFromStore];
+    
 }
 
 - (void)reloadArticlesFromStore {
@@ -159,16 +162,31 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    HHSEventsDetailsViewController *vc = [[HHSEventsDetailsViewController alloc] init];
+    //HHSEventsDetailsViewController *vc = [[HHSEventsDetailsViewController alloc] init];
     
     //NSArray *items = [[BNRItemStore sharedStore] allItems];
-    HHSArticle *selectedArticle = self.articlesList[indexPath.section][indexPath.row];
+    int index = 0;
+    for (int j=0; j<=indexPath.section; j++) {
+        for (int i=0; i<[self.articlesList[j] count]; i++) {
+            if ((j==indexPath.section) && (i==indexPath.row)) {
+                break;
+            }
+            index++;
+        }
+    }
+    HHSDetailPager *pager = [[HHSDetailPager alloc] init];
+    
+    pager.articleStore = self.articleStore;
+    pager.parent = self;
+    pager.startingArticleIndex = index;
+
+    //HHSArticle *selectedArticle = self.articlesList[indexPath.section][indexPath.row];
     
     //Give deatil view controller a pointer to the item object in the row
-    vc.article = selectedArticle;
+    //vc.article = selectedArticle;
     
     //Piush it onto the top of the navigation controller's stack
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:pager animated:YES];
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -216,5 +234,59 @@
 {
     return 50;
 }
+
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSEventsDetailsViewController *)viewController articleNumber];
+    
+    index++;
+    if (index >=articles.count) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
+    
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSEventsDetailsViewController *)viewController articleNumber];
+    
+    index--;
+    if (index <0) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+
+-(UIViewController *)viewControllerAtIndex:(int)index {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    
+    HHSEventsDetailsViewController *detailvc = [[HHSEventsDetailsViewController alloc] init];
+    detailvc.articleNumber = index;
+    detailvc.article = articles[index];
+    
+    return detailvc;
+}
+
+-(NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
+    return 5;
+}
+-(NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
+    return 0;
+}
+
+
 
 @end

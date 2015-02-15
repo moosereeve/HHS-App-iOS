@@ -18,6 +18,8 @@
 
 @interface HHSTableViewController : UITableViewController <UISplitViewControllerDelegate>
 
+@property (nonatomic, strong) UIPageViewController *pageController;
+@property (nonatomic) int pagerIndex;
 @property (nonatomic, strong) HHSArticleStore *articleStore;
 @property (nonatomic) NSMutableArray *articlesList;
 @property (nonatomic, strong) NSMutableArray *sectionGroups;
@@ -34,5 +36,6 @@
 -(instancetype)initWithStore:(HHSArticleStore *)store;
 -(void)reloadArticlesFromStore;
 -(void)downloadError;
+-(UIViewController *)viewControllerAtIndex:(int)index;
 
 @end

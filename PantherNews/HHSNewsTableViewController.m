@@ -10,6 +10,8 @@
 #import "HHSNewsCell.h"
 #import "HHSNewsDetailsViewController.h"
 #import "HHSImageStore.h"
+#import "HHSNavViewController.h"
+#import "HHSDetailPager.h"
 
 
 @interface HHSNewsTableViewController ()
@@ -159,21 +161,77 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    HHSNewsDetailsViewController *vc = [[HHSNewsDetailsViewController alloc] init];
+    //HHSNewsDetailsViewController *vc = [[HHSNewsDetailsViewController alloc] init];
+    HHSDetailPager *pager = [[HHSDetailPager alloc] init];
     
+    pager.articleStore = self.articleStore;
+    pager.parent = self;
+    pager.startingArticleIndex = indexPath.row;
     //NSArray *items = [[BNRItemStore sharedStore] allItems];
-    HHSArticle *selectedArticle = self.articlesList[indexPath.row];
+    //HHSArticle *selectedArticle = self.articlesList[indexPath.row];
     
     //Give deatil view controller a pointer to the item object in the row
-    vc.article = selectedArticle;
+    //vc.article = selectedArticle;
     
     //Piush it onto the top of the navigation controller's stack
-    [self.navigationController pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:pager animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 66;
 }
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSNewsDetailsViewController *)viewController articleNumber];
+    
+    index++;
+    if (index >=articles.count) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+-(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
+    
+    UIViewController *returnVC = [UIViewController alloc];
+    
+    int index = [(HHSNewsDetailsViewController *)viewController articleNumber];
+    
+    index--;
+    if (index <0) {
+        returnVC = nil;
+    } else {
+        returnVC =[self viewControllerAtIndex:index];
+    }
+    
+    return returnVC;
+    
+}
+
+-(UIViewController *)viewControllerAtIndex:(int)index {
+    
+    NSArray *articles = [[self articleStore] allArticles];
+    
+    HHSNewsDetailsViewController *detailvc = [[HHSNewsDetailsViewController alloc] init];
+    detailvc.articleNumber = index;
+    detailvc.article = articles[index];
+    
+    return detailvc;
+}
+
+-(NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
+    return 5;
+}
+-(NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
+    return 0;
+}
+
 
 @end

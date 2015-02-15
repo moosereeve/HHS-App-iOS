@@ -8,13 +8,14 @@
 
 #import "HHSEventsDetailsViewController.h"
 #import "HHSArticle.h"
+#import "HHSGradientBuilder.h"
 
 @interface HHSEventsDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UITextView *detailsTextView;
-
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 
 @end
 
@@ -44,7 +45,11 @@
     HHSArticle *article = self.article;
     
     self.titleLabel.text = article.title;
-    self.detailsTextView.text = article.details;
+    if (article.details == nil) {
+        //skip
+    } else {
+        self.detailsTextView.text = article.details;
+    }
     
     //You will need an NSDateFormatter taht will turn a date into a simple date string
     static NSDateFormatter *dateFormatter;
@@ -64,6 +69,7 @@
         self.timeLabel.text = [timeFormatter stringFromDate:date];
     }
     
+    [HHSGradientBuilder buildGradient:self.headerView];
     
     //NSString *itemKey = self.item.itemKey;
     
