@@ -19,6 +19,7 @@
 #import "HHSNavigationControllerForSplitView.h"
 #import "HHSDetailPager.h"
 #import "SWRevealViewController.h"
+#import "HHSSocialViewController.h"
 
 @interface HHSMainViewController ()
 @property (nonatomic, strong) HHSMainPager *pager;
@@ -118,7 +119,8 @@
                        initWithType:[HHSArticleStore HHSArticleStoreTypeSchedules]
                        parserNames:parserNames
                        feedUrlString:feedUrlString
-                       sortNowToFuture:(BOOL)YES
+                       sortNowToFuture:YES
+                       triggersNotification:NO
                        owner:self];
     
     _schedulesTVC = [[HHSSchedulesVC alloc] initWithStore:_schedulesStore];
@@ -151,6 +153,7 @@
                     parserNames:parserNames
                     feedUrlString:feedUrlString
                     sortNowToFuture:YES
+                    triggersNotification:NO
                     owner:self];
     
     _eventsTVC = [[HHSEventsVC alloc] initWithStore:_eventsStore];
@@ -180,6 +183,7 @@
                   parserNames:parserNames
                   feedUrlString:feedUrlString
                   sortNowToFuture:NO
+                  triggersNotification:YES
                   owner:self];
     
     _newsTVC = [[HHSNewsVC alloc] initWithStore:_newsStore];
@@ -208,6 +212,7 @@
                       parserNames:parserNames
                       feedUrlString:feedUrlString
                       sortNowToFuture:NO
+                      triggersNotification:NO
                       owner:self];
     
     _dailyAnnTVC = [[HHSDailyAnnVC alloc] initWithStore:_dailyAnnStore];
@@ -238,6 +243,7 @@
                    parserNames:parserNames
                    feedUrlString:feedUrlString
                    sortNowToFuture:(BOOL)YES
+                   triggersNotification:NO
                    owner:self];
     
     _lunchTVC = [[HHSLunchVC alloc] initWithStore:_lunchStore];
@@ -509,9 +515,9 @@
     }
     
     index++;
-    if (index >5) {
+    if (index >6) {
         returnVC = nil;
-        self.currentPagerIndex = 5;
+        self.currentPagerIndex = 6;
     } else {
         returnVC =[self viewControllerAtIndex:index];
         self.currentPagerIndex = index;
@@ -567,13 +573,16 @@
         case 5:
             tvc = self.lunchTVC;
             break;
+        case 6:
+            tvc = [[HHSSocialViewController alloc] init];
+            break;
     }
     
     return tvc;
 }
 
 -(NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
-    return 6;
+    return 7;
 }
 -(NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
     return self.currentPagerIndex;

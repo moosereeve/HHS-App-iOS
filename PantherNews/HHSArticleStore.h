@@ -19,6 +19,7 @@
                 parserNames:(NSDictionary *)parserNames
               feedUrlString:(NSString *)feedUrlString
             sortNowToFuture:(BOOL)sortOrder
+       triggersNotification:(BOOL)triggersNotification
                       owner:(HHSMainViewController *)owner;
 
 -(int)getType;

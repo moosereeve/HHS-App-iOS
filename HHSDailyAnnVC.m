@@ -167,7 +167,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self sendToDetailPager:indexPath.row parentViewController:self];
+    [self sendToDetailPager:(int)indexPath.row parentViewController:self];
 }
 
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {

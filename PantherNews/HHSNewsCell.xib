@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,31 +15,24 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eob-Jg-r4H">
-                        <rect key="frame" x="6" y="3" width="50" height="50"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="20" y="3" width="50" height="50"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="HNJ-ym-AdP"/>
                             <constraint firstAttribute="height" constant="50" id="JrA-K8-dEk"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C37-4v-aF0">
-                        <rect key="frame" x="66" y="4" width="216" height="48"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="80" y="6" width="202" height="44"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="240" text="Label More Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="216" translatesAutoresizingMaskIntoConstraints="NO" id="rzi-WB-8QA">
-                                <rect key="frame" x="0.0" y="17" width="216" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hpo-fT-0ja">
+                                <rect key="frame" x="0.0" y="31" width="202" height="13"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hpo-fT-0ja">
-                                <rect key="frame" x="0.0" y="0.0" width="216" height="17"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="17" id="ay7-e4-Zan"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="240" text="Label More Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="216" translatesAutoresizingMaskIntoConstraints="NO" id="rzi-WB-8QA">
+                                <rect key="frame" x="0.0" y="0.0" width="202" height="31"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -48,10 +41,10 @@
                             <constraint firstAttribute="trailing" secondItem="Hpo-fT-0ja" secondAttribute="trailing" id="9lS-QY-goM"/>
                             <constraint firstItem="rzi-WB-8QA" firstAttribute="leading" secondItem="C37-4v-aF0" secondAttribute="leading" id="Arc-n7-lrc"/>
                             <constraint firstAttribute="trailing" secondItem="rzi-WB-8QA" secondAttribute="trailing" id="F5I-4h-RiE"/>
-                            <constraint firstItem="Hpo-fT-0ja" firstAttribute="top" secondItem="C37-4v-aF0" secondAttribute="top" id="Zxa-dW-cdK"/>
+                            <constraint firstItem="Hpo-fT-0ja" firstAttribute="top" secondItem="rzi-WB-8QA" secondAttribute="bottom" id="Kui-0B-OUS"/>
+                            <constraint firstItem="rzi-WB-8QA" firstAttribute="top" secondItem="C37-4v-aF0" secondAttribute="top" id="X6Y-PZ-ech"/>
+                            <constraint firstAttribute="bottom" secondItem="Hpo-fT-0ja" secondAttribute="bottom" id="Y7W-EC-Bdb"/>
                             <constraint firstItem="Hpo-fT-0ja" firstAttribute="leading" secondItem="C37-4v-aF0" secondAttribute="leading" id="juH-bq-FbE"/>
-                            <constraint firstItem="rzi-WB-8QA" firstAttribute="top" secondItem="Hpo-fT-0ja" secondAttribute="bottom" id="kJY-cb-gTN"/>
-                            <constraint firstAttribute="bottom" secondItem="rzi-WB-8QA" secondAttribute="bottom" id="qup-T0-jpm"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -60,7 +53,7 @@
                     <constraint firstAttribute="centerY" secondItem="eob-Jg-r4H" secondAttribute="centerY" id="Ikg-gA-Hgj"/>
                     <constraint firstItem="C37-4v-aF0" firstAttribute="leading" secondItem="eob-Jg-r4H" secondAttribute="trailing" constant="10" id="ONm-5v-odP"/>
                     <constraint firstAttribute="centerY" secondItem="C37-4v-aF0" secondAttribute="centerY" id="eab-QK-maG"/>
-                    <constraint firstItem="eob-Jg-r4H" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="h8i-ES-77c"/>
+                    <constraint firstItem="eob-Jg-r4H" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="h8i-ES-77c"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -71,4 +64,9 @@
             </connections>
         </tableViewCell>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

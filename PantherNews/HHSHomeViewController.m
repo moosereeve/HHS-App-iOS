@@ -40,6 +40,7 @@
 @property (nonatomic, strong)NSString *mArticleResultsKey;
 @property (nonatomic, strong)NSString *mArticlesErrorNotificationName;
 @property (nonatomic, strong)NSString *mArticlesMessageErrorKey;
+@property (nonatomic, weak) NSLayoutConstraint *contentHeightConstraint;
 
 @property (nonatomic) BOOL skipToday;
 
@@ -149,6 +150,16 @@
                                                                       multiplier:1.0
                                                                         constant:0];
     [self.view addConstraint:rightConstraint];
+    
+    /*self.contentHeightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView
+                                                                       attribute:NSLayoutAttributeHeight
+                                                                       relatedBy:0
+                                                                          toItem:nil
+                                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                                      multiplier:1.0
+                                                                        constant:800];
+    [self.view addConstraint:self.contentHeightConstraint];
+     */
     self.viewLoaded = YES;
     
 }
@@ -176,7 +187,7 @@
     [self fillDailyAnn];
     [self fillEvents];
     
-    if ([self.schedulesStore allArticles]>0 ) {
+    if (self.owner.splitViewController && [self.schedulesStore allArticles]>0 ) {
         [self sendToDetailPager:0 parentViewController:(HHSCategoryVC*)self.owner.schedulesTVC];
     }
     
@@ -435,17 +446,23 @@
         
         CGFloat newHeight = (CGFloat)[indexPaths count]*_eventsCellHeight +2*_eventsHeaderHeight;
         
-        CGRect ebframe = [self.eventsBox frame];
-        [self.eventsBox setFrame:CGRectMake(ebframe.origin.x,
-                                            ebframe.origin.y,
-                                            ebframe.size.width,
-                                            newHeight)];
-        
         CGRect tvframe = [self.eventsTable frame];
         [self.eventsTable setFrame:CGRectMake(tvframe.origin.x,
-                                       0,
-                                       ebframe.size.width,
-                                       newHeight)];
+                                       tvframe.origin.y,
+                                       tvframe.size.width-10,
+                                       tvframe.size.height+newHeight)];
+        
+        CGRect cvframe = [self.contentView frame];
+        [self.contentView setFrame:CGRectMake(cvframe.origin.x,
+                                              0,
+                                              cvframe.size.width,
+                                              cvframe.size.height+newHeight)];
+        
+        CGRect scframe = [self.scrollView frame];
+        self.scrollView.contentSize = CGSizeMake(scframe.size.width,
+                                              scframe.size.height+newHeight);
+
+        
     }
     [self hideIfReady];
 }

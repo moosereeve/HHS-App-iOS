@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HHSLunchVC">
@@ -16,20 +17,17 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tray.png" translatesAutoresizingMaskIntoConstraints="NO" id="pd8-Mg-klq">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="160" id="6Ei-ZL-LZZ"/>
+                        <constraint firstAttribute="height" constant="130" id="6Ei-ZL-LZZ"/>
                     </constraints>
                 </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="6Ho-Ft-p1R">
-                    <rect key="frame" x="0.0" y="160" width="320" height="408"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <rect key="frame" x="0.0" y="130" width="320" height="438"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lunch Menus" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TOk-sL-hVd">
-                    <rect key="frame" x="5" y="132" width="115" height="23"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="15" y="102" width="115" height="23"/>
                     <fontDescription key="fontDescription" type="system" pointSize="19"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
@@ -43,15 +41,18 @@
                 <constraint firstItem="6Ho-Ft-p1R" firstAttribute="top" secondItem="TOk-sL-hVd" secondAttribute="bottom" constant="5" id="Gew-Go-GfZ"/>
                 <constraint firstItem="6Ho-Ft-p1R" firstAttribute="top" secondItem="pd8-Mg-klq" secondAttribute="bottom" id="duA-QU-KPO"/>
                 <constraint firstAttribute="bottom" secondItem="6Ho-Ft-p1R" secondAttribute="bottom" id="iiZ-cF-IIH"/>
-                <constraint firstItem="TOk-sL-hVd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="5" id="mIZ-GV-8fd"/>
+                <constraint firstItem="TOk-sL-hVd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="mIZ-GV-8fd"/>
                 <constraint firstAttribute="trailing" secondItem="pd8-Mg-klq" secondAttribute="trailing" id="owe-HG-fML"/>
                 <constraint firstItem="pd8-Mg-klq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="syb-8z-EcN"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
     <resources>
         <image name="tray.png" width="800" height="400"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

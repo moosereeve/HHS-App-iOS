@@ -96,6 +96,8 @@
         self.iconView.image = _images[@"star"];
     }
     
+    [self updateFonts];
+    
     [HHSGradientBuilder buildGradient:self.headerView];
 
 

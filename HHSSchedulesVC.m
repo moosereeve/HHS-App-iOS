@@ -15,6 +15,8 @@
 @interface HHSSchedulesVC ()
 @property (nonatomic, strong) NSDictionary *images;
 @property (nonatomic) BOOL skipToday;
+@property (nonatomic) int cellHeight;
+@property (nonatomic) int headerHeight;
 
 @end
 
@@ -40,7 +42,8 @@
                     @"d" : d,
                     @"star" : star };
     }
-    
+    self.cellHeight = 50;
+    self.headerHeight = 30;
     self.skipToday = NO;
     
     return self;
@@ -214,6 +217,21 @@
     return cell;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSString *headerString = [[NSString alloc] init];
+    
+    if (section == 0) {
+        headerString = @"This week";
+    } else if (section == 1) {
+        headerString =  @"Next week";
+    } else if (section == 2) {
+        headerString = @"Later";
+    } else {
+        headerString = @"";
+    }
+    return headerString;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //HHSScheduleDetailsViewController *vc = [[HHSScheduleDetailsViewController alloc] init];
@@ -235,7 +253,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 20;
+    return self.headerHeight;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.cellHeight;
 }
 
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {

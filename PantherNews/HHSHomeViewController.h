@@ -46,4 +46,6 @@
 -(void) fillDailyAnn;
 -(void) fillLunch;
 
+-(void)sendToDetailPager:(int)index parentViewController:(HHSCategoryVC *)viewController;
+
 @end

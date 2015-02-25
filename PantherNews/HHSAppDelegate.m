@@ -13,6 +13,8 @@
 #import "HHSMenuController.h"
 #import "HHSDetailPager.h"
 #import "SWRevealViewController.h"
+#import "SHKConfiguration.h"
+#import "HHSSHKConfigurator.h"
 
 @interface HHSAppDelegate ()
 @property (nonatomic, strong) UISplitViewController *splitvc;
@@ -27,6 +29,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    
+    //Set up for notifications
+    UIUserNotificationType type = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:type categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
@@ -45,6 +52,10 @@
     
     revealController.delegate = (id)self;
     self.swViewController = revealController;
+    
+    //Setup ShareKit content sharing module
+    DefaultSHKConfigurator *configurator = [[HHSSHKConfigurator alloc] init];
+    [SHKConfiguration sharedInstanceWithConfigurator:configurator];
     
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)  {
         
@@ -91,9 +102,14 @@
     
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    //[_nvc goToNews:nil];
+    HHSHomeViewController *homeVC = (HHSHomeViewController*) _nvc.homeVC;
+    if ([_nvc.newsStore.allArticles count]>0) {
+        [homeVC sendToDetailPager:0 parentViewController:(HHSCategoryVC *)_nvc.newsTVC];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

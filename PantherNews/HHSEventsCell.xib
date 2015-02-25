@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -13,29 +14,24 @@
                 <rect key="frame" x="0.0" y="0.0" width="287" height="74"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sHq-yp-Twy">
-                        <rect key="frame" x="10" y="2" width="90" height="70"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="90" id="Q0j-Mn-AzR"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sHq-yp-Twy">
+                        <rect key="frame" x="20" y="2" width="27" height="70"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="171" translatesAutoresizingMaskIntoConstraints="NO" id="jMJ-EJ-epw">
-                        <rect key="frame" x="108" y="2" width="171" height="70"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="171" translatesAutoresizingMaskIntoConstraints="NO" id="jMJ-EJ-epw">
+                        <rect key="frame" x="62" y="2" width="217" height="70"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="sHq-yp-Twy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="CLB-ZN-G21"/>
+                    <constraint firstItem="sHq-yp-Twy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="CLB-ZN-G21"/>
                     <constraint firstAttribute="bottom" secondItem="sHq-yp-Twy" secondAttribute="bottom" constant="2" id="Ikp-9B-2Qv"/>
                     <constraint firstItem="sHq-yp-Twy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="Vjk-da-yQ1"/>
                     <constraint firstAttribute="bottom" secondItem="jMJ-EJ-epw" secondAttribute="bottom" constant="2" id="ZRc-Ma-P0t"/>
-                    <constraint firstItem="jMJ-EJ-epw" firstAttribute="leading" secondItem="sHq-yp-Twy" secondAttribute="trailing" constant="8" id="b8a-62-IoZ"/>
+                    <constraint firstItem="jMJ-EJ-epw" firstAttribute="leading" secondItem="sHq-yp-Twy" secondAttribute="trailing" constant="15" id="b8a-62-IoZ"/>
                     <constraint firstAttribute="trailing" secondItem="jMJ-EJ-epw" secondAttribute="trailing" constant="8" id="oQY-3v-QAt"/>
                     <constraint firstItem="jMJ-EJ-epw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="yEz-BT-vA1"/>
                 </constraints>
@@ -46,4 +42,9 @@
             </connections>
         </tableViewCell>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

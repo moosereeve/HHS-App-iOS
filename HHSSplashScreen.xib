@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="red_sea red.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="MTq-oG-AVb">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="h_logo_splash.png" translatesAutoresizingMaskIntoConstraints="NO" id="vme-wj-xYQ">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="0.70980392156862748" green="0.11764705882352941" blue="0.070588235294117646" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="vme-wj-xYQ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="21G-GA-kyc"/>
                 <constraint firstAttribute="trailing" secondItem="vme-wj-xYQ" secondAttribute="trailing" id="88J-OS-H6x"/>
+                <constraint firstItem="MTq-oG-AVb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="8dY-0M-kez"/>
+                <constraint firstAttribute="trailing" secondItem="MTq-oG-AVb" secondAttribute="trailing" id="Tqs-hG-LDP"/>
                 <constraint firstAttribute="bottom" secondItem="vme-wj-xYQ" secondAttribute="bottom" id="ocf-zg-ikE"/>
+                <constraint firstAttribute="bottom" secondItem="MTq-oG-AVb" secondAttribute="bottom" id="pW3-z7-WMC"/>
+                <constraint firstItem="MTq-oG-AVb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="wob-0U-04c"/>
                 <constraint firstItem="vme-wj-xYQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="x7f-Sd-M2Y"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="-1326" y="-2108"/>
         </view>
     </objects>
     <resources>
         <image name="h_logo_splash.png" width="256" height="286"/>
+        <image name="red_sea red.jpg" width="3264" height="2448"/>
     </resources>
 </document>

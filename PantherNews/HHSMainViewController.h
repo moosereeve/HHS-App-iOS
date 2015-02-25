@@ -60,4 +60,5 @@
 -(UIViewController *)viewControllerAtIndex:(int)index;
 -(void)jumpToPage:(int) index;
 -(void)refreshDataButtonPushed;
+-(IBAction)goToNews:(id)sender;
 @end

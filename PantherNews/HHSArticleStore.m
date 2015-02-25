@@ -19,6 +19,7 @@
 @property (nonatomic) NSMutableDictionary *privateItems;
 @property (nonatomic) NSMutableDictionary *tempItems;
 @property (nonatomic) int type;
+@property (nonatomic) BOOL triggersNotification;
 @property (nonatomic) BOOL sortNowToFuture;
 
 @property (nonatomic) NSOperationQueue *parseQueue;
@@ -35,6 +36,8 @@
 @property (nonatomic, strong)NSString *mArticlesErrorNotificationName;
 @property (nonatomic, strong)NSString *mArticlesMessageErrorKey;
 
+@property (nonatomic, strong)NSString *formerNewsKey;
+
 
 @end
 
@@ -50,8 +53,9 @@
 -(instancetype)initWithType:(int)type
                 parserNames:(NSDictionary *)parserNames
               feedUrlString:(NSString *)feedUrlString
-                       sortNowToFuture:(BOOL)sortOrder
-                     owner:(HHSMainViewController *)owner
+            sortNowToFuture:(BOOL)sortOrder
+       triggersNotification:(BOOL)triggersNotification
+                      owner:(HHSMainViewController *)owner
 {
     
     self = [super init];
@@ -61,6 +65,7 @@
         _parserElementNames = parserNames;
         _feedUrlString = feedUrlString;
         _sortNowToFuture = sortOrder;
+        _triggersNotification = triggersNotification;
         _downloadError = NO;
         _currentlyParsing = NO;
         
@@ -92,21 +97,21 @@
 - (NSArray *)allArticles
 {
     /*if ([self.privateItems count] <0) {   //if ([self.privateItems count] == 0) {
-        if ((self.type == [HHSArticleStore HHSArticleStoreTypeDailyAnns]) ||
-            (self.type == [HHSArticleStore HHSArticleStoreTypeNews])) {
-                [self getArticlesFromFeed];
-            } else {
-                [self getEventsFromFeed];
-            }
-        return nil;
-    } else {*/
-        NSArray *newArticles = [self.privateItems allValues] ;
-        
-        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:_sortNowToFuture];
-        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-        NSArray *sortedArray = [newArticles sortedArrayUsingDescriptors:descriptors];
-
-        return sortedArray;
+     if ((self.type == [HHSArticleStore HHSArticleStoreTypeDailyAnns]) ||
+     (self.type == [HHSArticleStore HHSArticleStoreTypeNews])) {
+     [self getArticlesFromFeed];
+     } else {
+     [self getEventsFromFeed];
+     }
+     return nil;
+     } else {*/
+    NSArray *newArticles = [self.privateItems allValues] ;
+    
+    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:_sortNowToFuture];
+    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+    NSArray *sortedArray = [newArticles sortedArrayUsingDescriptors:descriptors];
+    
+    return sortedArray;
     //}
 }
 
@@ -158,7 +163,7 @@
             
             //copy article key from found article
             resultArticle.articleKey = article.articleKey;
-    
+            
             //replace with new content
             resultArticle.title = articleToCheck.title;
             resultArticle.details = articleToCheck.details;
@@ -184,7 +189,7 @@
 {
     for (HHSArticle *article in self.privateItems) {
         [self.privateItems removeObjectForKey:article.articleKey];
-    
+        
         NSString *key = article.articleKey;
         [[HHSImageStore sharedStore] deleteImageForKey:key];
     }
@@ -202,7 +207,7 @@
     NSString *documentDirectory = [documentDirectories firstObject];
     
     NSString *pathComponent = [NSString stringWithFormat:@"articles%d.archive", self.type];
-
+    
     return [documentDirectory stringByAppendingPathComponent:pathComponent];
 }
 
@@ -252,17 +257,17 @@
         lastDate = dateArray[0];
         NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         NSDateComponents *lastDateComp = [cal components:(NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:lastDate];
-        int lastYear =   [lastDateComp year];
-        int lastMonth =  [lastDateComp month];
-        int lastDay =    [lastDateComp day];
+        int lastYear =   (int)[lastDateComp year];
+        int lastMonth =  (int)[lastDateComp month];
+        int lastDay =    (int)[lastDateComp day];
         int lastHour =   13; //[lastDateComp hour];
         int lastMinute = 35; //[lastDateComp minute];
         
         NSDate *today = [[NSDate alloc] init];
         NSDateComponents *todayComp = [cal components:(NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:today];
-        int todayYear =   [todayComp year];
-        int todayMonth =  [todayComp month];
-        int todayDay =    [todayComp day];
+        int todayYear =   (int)[todayComp year];
+        int todayMonth =  (int)[todayComp month];
+        int todayDay =    (int)[todayComp day];
         int todayHour =   16;//[todayComp hour];
         int todayMinute = 15;//[todayComp minute];
         
@@ -305,6 +310,13 @@
     _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, [self getType]];
     _mArticlesMessageErrorKey = [NSString stringWithFormat:@"%@%i", kArticlesMessageErrorKey, [self getType]];
     
+    NSArray *articles =  [self allArticles];
+    if ([articles count] >0) {
+        
+        _formerNewsKey = ((HHSArticle *) articles[0]).articleKey;
+    } else {
+        _formerNewsKey = nil;
+    }
     /*
      Use NSURLConnection to asynchronously download the data. This means the main thread will not be blocked - the application will remain responsive to the user.
      
@@ -506,7 +518,7 @@
     // back on the main thread, check for errors, if no errors start the parsing
     //
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
+    
     // here we check for any returned NSError from the server, "and" we also check for any http response errors
     if (error != nil) {
         [self handleError:error];
@@ -528,7 +540,7 @@
                 HHSJsonParseOperation *parseOperation = [[HHSJsonParseOperation alloc] initWithData: data elementNames:self.parserElementNames store:self];
                 [self.parseQueue addOperation:parseOperation];
             }
-                
+            
         }
         else {
             NSString *errorString =
@@ -586,11 +598,49 @@
     _downloadError = NO;
     _currentlyParsing = NO;
     
+    if (self.triggersNotification) {
+        NSArray *articles = [self allArticles];
+        if ([articles count]>0) {
+            HHSArticle *article = articles[0];
+            NSString *newNewsKey = article.articleKey;
+            if ([newNewsKey isEqualToString:_formerNewsKey]) {
+                [self sendNotification:article];
+                NSLog(@"Notification sent");
+            }
+            //TODO: this is a debug command
+            //[self sendNotification:article];
+            
+            
+        }
+    }
+    
     if (!_parsingInBackgroundFetch){
         //[_owner performSelectorOnMainThread:@selector(notifyStoreIsReady:) withObject:self waitUntilDone:NO];
         [_owner notifyStoreIsReady:self];
+    } else {
     }
 }
+
+-(void) sendNotification:(HHSArticle *)article
+{
+    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+    if (localNotif == nil) {
+        return;
+    }
+    
+    NSDate *date = [[NSDate alloc] init];
+    
+    localNotif.fireDate = date;
+    localNotif.timeZone = [NSTimeZone defaultTimeZone];
+    
+    localNotif.alertBody = article.title;
+    localNotif.alertAction = @"Read article";
+    localNotif.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] +1;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+    
+}
+
 
 /**
  Our NSNotification callback from the running NSOperation when a parsing error has occurred

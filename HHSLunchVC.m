@@ -16,6 +16,8 @@
 @interface HHSLunchVC ()
 @property (nonatomic, strong) NSDictionary *images;
 @property (nonatomic) BOOL skipToday;
+@property (nonatomic) int cellHeight;
+@property (nonatomic) int headerHeight;
 
 @end
 
@@ -28,6 +30,9 @@
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Lunch Menus";
         self.skipToday = NO;
+        
+        self.headerHeight = 30;
+        self.cellHeight = 50;
     }
     
     return self;
@@ -134,6 +139,25 @@
     [self.tableView endUpdates];
     [self.activityView stopAnimating];
     
+    /*
+     CGFloat newHeight = (CGFloat)[indexPaths count]*self.cellHeight +numSections*self.headerHeight;
+    
+    CGRect tvframe = [self.tableView frame];
+    [self.tableView setFrame:CGRectMake(tvframe.origin.x,
+                                          tvframe.origin.y,
+                                          tvframe.size.width-10,
+                                          tvframe.size.height+newHeight)];
+    
+    CGRect cvframe = [self.contentView frame];
+    [self.contentView setFrame:CGRectMake(cvframe.origin.x,
+                                          0,
+                                          cvframe.size.width,
+                                          cvframe.size.height+newHeight)];
+    
+    CGRect scframe = [self.scrollView frame];
+    self.scrollView.contentSize = CGSizeMake(scframe.size.width,
+                                             scframe.size.height+newHeight);
+    */
     if (self.owner.currentView == self) {
         [self.owner hideWaiting];
         [self sendToDetailPager:0 parentViewController:self];
@@ -186,6 +210,21 @@
     return cell;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSString *headerString = [[NSString alloc] init];
+    
+    if (section == 0) {
+        headerString = @"This week";
+    } else if (section == 1) {
+        headerString =  @"Next week";
+    } else if (section == 2) {
+        headerString = @"Later";
+    } else {
+        headerString = @"";
+    }
+    return headerString;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //HHSLunchDetailsViewController *vc = [[HHSLunchDetailsViewController alloc] init];
@@ -207,7 +246,17 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 20;
+    return self.headerHeight;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.headerHeight;
+    
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return self.cellHeight;
 }
 
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {

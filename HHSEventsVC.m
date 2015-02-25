@@ -191,9 +191,9 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 10, tableView.frame.size.width, 18)];
     /* Create custom view to display section header... */
     UILabel *label;
-    label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 18)];
-
+    label = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, tableView.frame.size.width, 18)];
     [label setFont:[UIFont boldSystemFontOfSize:16]];
+    
     [view setBackgroundColor:[UIColor whiteColor]];
     //NSString *string =@"";
     /* Section header is in 0th index... */
@@ -210,6 +210,11 @@
     
     [label setText:dateString];
     [view addSubview:label];
+    
+    /*NSDictionary *dict = @{@"label":label};
+    NSArray *constraints =
+    [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[label]-10-|" options:(0) metrics:nil views:dict];
+    [view addConstraints:constraints];*/
     //label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];    //[view setBackgroundColor:[UIColor colorWithRed:166/255.0 green:177/255.0 blue:186/255.0 alpha:1.0]]; //your background color...
     return view;
 }

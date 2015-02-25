@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "HHSArticle.h"
+#import "SHK.h"
 
 @interface HHSNewsDetailsViewController : UIViewController
 
 @property (nonatomic, strong) HHSArticle *article;
 @property (nonatomic) int articleNumber;
+@property (nonatomic, weak) IBOutlet UIButton *shareButton;
+
+-(IBAction)share:(id)sender;
 
 @end
