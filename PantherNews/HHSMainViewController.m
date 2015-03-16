@@ -20,6 +20,7 @@
 #import "HHSDetailPager.h"
 #import "SWRevealViewController.h"
 #import "HHSSocialViewController.h"
+#import "HHSAboutViewController.h"
 
 @interface HHSMainViewController ()
 @property (nonatomic, strong) HHSMainPager *pager;
@@ -342,7 +343,8 @@
 
 -(void)refreshStores
 {
-    [self refreshDataButtonPushed];
+    //[self refreshDataButtonPushed];
+    [_homeVC beginRefreshingView];
 }
 
 -(void)refreshViews
@@ -515,13 +517,13 @@
     }
     
     index++;
-    if (index >6) {
-        returnVC = nil;
-        self.currentPagerIndex = 6;
-    } else {
-        returnVC =[self viewControllerAtIndex:index];
-        self.currentPagerIndex = index;
+    if (index >7) {
+        index = 0;
     }
+    
+    returnVC =[self viewControllerAtIndex:index];
+    self.currentPagerIndex = index;
+    
     
     return returnVC;
     
@@ -539,12 +541,12 @@
     
     index--;
     if (index <0) {
-        returnVC = nil;
-        self.currentPagerIndex = 0;
-    } else {
-        returnVC =[self viewControllerAtIndex:index];
-        self.currentPagerIndex = index;
+        index = 7;
     }
+    
+    returnVC =[self viewControllerAtIndex:index];
+    self.currentPagerIndex = index;
+    
     
     return returnVC;
     
@@ -576,13 +578,16 @@
         case 6:
             tvc = [[HHSSocialViewController alloc] init];
             break;
+        case 7:
+            tvc = [[HHSAboutViewController alloc] init];
+            break;
     }
     
     return tvc;
 }
 
 -(NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
-    return 7;
+    return 8;
 }
 -(NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
     return self.currentPagerIndex;

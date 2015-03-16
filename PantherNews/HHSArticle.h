@@ -15,9 +15,11 @@
 @property (nonatomic, copy) NSString *details;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, copy) NSString *articleKey;
+@property (nonatomic, copy) UIImage *image;
 @property (nonatomic, strong) UIImage *thumbnail;
 
 +(instancetype) randomArticle;
 -(void) setThumbnailFromImage:(UIImage *)image;
+-(void) setImageFromImage:(UIImage *)image;
 
 @end

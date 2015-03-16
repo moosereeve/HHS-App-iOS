@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6D02A1881AADD45F00014546 /* HHSAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D02A1861AADD45F00014546 /* HHSAboutViewController.m */; };
+		6D02A1891AADD45F00014546 /* HHSAboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D02A1871AADD45F00014546 /* HHSAboutViewController.xib */; };
+		6D02A1BC1AADDE2E00014546 /* ic-info-40.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D02A1BA1AADDE2E00014546 /* ic-info-40.png */; };
+		6D02A1BD1AADDE2E00014546 /* ic-info-256.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D02A1BB1AADDE2E00014546 /* ic-info-256.png */; };
 		6D067E3A1A1E63DF00998072 /* HHSJsonParseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D067E391A1E63DF00998072 /* HHSJsonParseOperation.m */; };
-		6D1575CB1954CF2E007AAE8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D1575CA1954CF2E007AAE8C /* Foundation.framework */; };
-		6D1575CD1954CF2E007AAE8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D1575CC1954CF2E007AAE8C /* CoreGraphics.framework */; };
-		6D1575CF1954CF2E007AAE8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D1575CE1954CF2E007AAE8C /* UIKit.framework */; };
 		6D1575D51954CF2E007AAE8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6D1575D31954CF2E007AAE8C /* InfoPlist.strings */; };
 		6D1575D71954CF2E007AAE8C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D1575D61954CF2E007AAE8C /* main.m */; };
 		6D1575DB1954CF2E007AAE8C /* HHSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D1575DA1954CF2E007AAE8C /* HHSAppDelegate.m */; };
@@ -110,7 +111,6 @@
 		6D7B06661A9BB0C300F3C80C /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B06651A9BB0C300F3C80C /* AddressBook.framework */; };
 		6D7B06681A9BB0CF00F3C80C /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B06671A9BB0CF00F3C80C /* ImageIO.framework */; };
 		6D7B066A1A9BB0D600F3C80C /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B06691A9BB0D600F3C80C /* SafariServices.framework */; };
-		6D7B06811A9BB10B00F3C80C /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B066B1A9BB10B00F3C80C /* SafariServices.framework */; };
 		6D7B06821A9BB10B00F3C80C /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B066C1A9BB10B00F3C80C /* libxml2.dylib */; };
 		6D7B06831A9BB10B00F3C80C /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B066D1A9BB10B00F3C80C /* CoreMedia.framework */; };
 		6D7B06841A9BB10B00F3C80C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B066E1A9BB10B00F3C80C /* MobileCoreServices.framework */; };
@@ -128,7 +128,6 @@
 		6D7B06901A9BB10B00F3C80C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B067A1A9BB10B00F3C80C /* Foundation.framework */; };
 		6D7B06911A9BB10B00F3C80C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B067B1A9BB10B00F3C80C /* CoreGraphics.framework */; };
 		6D7B06921A9BB10B00F3C80C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B067C1A9BB10B00F3C80C /* MessageUI.framework */; };
-		6D7B06931A9BB10B00F3C80C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B067D1A9BB10B00F3C80C /* Security.framework */; };
 		6D7B06941A9BB10B00F3C80C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B067E1A9BB10B00F3C80C /* SystemConfiguration.framework */; };
 		6D7B06951A9BB10B00F3C80C /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B067F1A9BB10B00F3C80C /* CoreFoundation.framework */; };
 		6D7B07401A9CA24900F3C80C /* HHSSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B073F1A9CA24900F3C80C /* HHSSHKConfigurator.m */; };
@@ -137,15 +136,12 @@
 		6D7B07EA1A9CB10D00F3C80C /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B07E01A9CB10D00F3C80C /* DropboxSDK.framework */; };
 		6D7B07EB1A9CB10E00F3C80C /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B07E11A9CB10D00F3C80C /* FacebookSDK.framework */; };
 		6D7B07EC1A9CB10E00F3C80C /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B07E21A9CB10D00F3C80C /* GoogleOpenSource.framework */; };
-		6D7B07ED1A9CB10E00F3C80C /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6D7B07E31A9CB10D00F3C80C /* GooglePlus.bundle */; };
 		6D7B07EE1A9CB10E00F3C80C /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B07E41A9CB10D00F3C80C /* GooglePlus.framework */; };
 		6D7B07EF1A9CB10E00F3C80C /* LiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B07E51A9CB10D00F3C80C /* LiveSDK.framework */; };
 		6D7B07F01A9CB10E00F3C80C /* Pinterest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7B07E71A9CB10D00F3C80C /* Pinterest.framework */; };
-		6D7B07F11A9CB10E00F3C80C /* PinterestSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6D7B07E91A9CB10D00F3C80C /* PinterestSDKResources.bundle */; };
 		6D7B07F51A9CB12E00F3C80C /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D7B07F21A9CB12E00F3C80C /* GTMOAuth2ViewTouch.xib */; };
-		6D7BFDDA1A9B7DE800F3C80C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7BFDD91A9B7DE800F3C80C /* SystemConfiguration.framework */; };
 		6D7BFDDC1A9B7DF700F3C80C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7BFDDB1A9B7DF700F3C80C /* Security.framework */; };
-		6D7BFDDE1A9B7E0200F3C80C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D7BFDDD1A9B7E0200F3C80C /* MessageUI.framework */; };
+		6D87B1A51A9DFE480037EF20 /* ic_like.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D87B1A41A9DFE480037EF20 /* ic_like.png */; };
 		6D9C78E71A8EF08500B1AC71 /* HHSMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C78E51A8EF08500B1AC71 /* HHSMenuController.m */; };
 		6D9C78E81A8EF08500B1AC71 /* HHSMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D9C78E61A8EF08500B1AC71 /* HHSMenuController.xib */; };
 		6D9C78EC1A8FA76400B1AC71 /* hamburger.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D9C78EB1A8FA76400B1AC71 /* hamburger.png */; };
@@ -542,6 +538,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6D02A1851AADD45E00014546 /* HHSAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HHSAboutViewController.h; path = PantherNews/HHSAboutViewController.h; sourceTree = "<group>"; };
+		6D02A1861AADD45F00014546 /* HHSAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HHSAboutViewController.m; path = PantherNews/HHSAboutViewController.m; sourceTree = "<group>"; };
+		6D02A1871AADD45F00014546 /* HHSAboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HHSAboutViewController.xib; path = PantherNews/HHSAboutViewController.xib; sourceTree = "<group>"; };
+		6D02A1BA1AADDE2E00014546 /* ic-info-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic-info-40.png"; sourceTree = "<group>"; };
+		6D02A1BB1AADDE2E00014546 /* ic-info-256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic-info-256.png"; sourceTree = "<group>"; };
 		6D067E381A1E63DF00998072 /* HHSJsonParseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSJsonParseOperation.h; sourceTree = "<group>"; };
 		6D067E391A1E63DF00998072 /* HHSJsonParseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHSJsonParseOperation.m; sourceTree = "<group>"; };
 		6D1575C71954CF2E007AAE8C /* Holliston High School.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Holliston High School.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -714,6 +715,7 @@
 		6D7BFDD91A9B7DE800F3C80C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		6D7BFDDB1A9B7DF700F3C80C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		6D7BFDDD1A9B7E0200F3C80C /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		6D87B1A41A9DFE480037EF20 /* ic_like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_like.png; sourceTree = "<group>"; };
 		6D9C78E41A8EF08500B1AC71 /* HHSMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSMenuController.h; sourceTree = "<group>"; };
 		6D9C78E51A8EF08500B1AC71 /* HHSMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHSMenuController.m; sourceTree = "<group>"; };
 		6D9C78E61A8EF08500B1AC71 /* HHSMenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HHSMenuController.xib; sourceTree = "<group>"; };
@@ -756,7 +758,6 @@
 				6D7B066A1A9BB0D600F3C80C /* SafariServices.framework in Frameworks */,
 				6D7B06681A9BB0CF00F3C80C /* ImageIO.framework in Frameworks */,
 				6D7B068C1A9BB10B00F3C80C /* CFNetwork.framework in Frameworks */,
-				6D7B06811A9BB10B00F3C80C /* SafariServices.framework in Frameworks */,
 				6D7B06831A9BB10B00F3C80C /* CoreMedia.framework in Frameworks */,
 				6D7B06661A9BB0C300F3C80C /* AddressBook.framework in Frameworks */,
 				6D7B06941A9BB10B00F3C80C /* SystemConfiguration.framework in Frameworks */,
@@ -770,7 +771,6 @@
 				6D7B06921A9BB10B00F3C80C /* MessageUI.framework in Frameworks */,
 				6D7B068E1A9BB10B00F3C80C /* CoreLocation.framework in Frameworks */,
 				6D7B07EF1A9CB10E00F3C80C /* LiveSDK.framework in Frameworks */,
-				6D7BFDDE1A9B7E0200F3C80C /* MessageUI.framework in Frameworks */,
 				6D7B06861A9BB10B00F3C80C /* StoreKit.framework in Frameworks */,
 				6D7B03FB1A9BA93300F3C80C /* Pinterest.framework in Frameworks */,
 				6D7B068A1A9BB10B00F3C80C /* Accounts.framework in Frameworks */,
@@ -785,20 +785,15 @@
 				6D7B07EB1A9CB10E00F3C80C /* FacebookSDK.framework in Frameworks */,
 				6D7B03F51A9BA93300F3C80C /* DropboxSDK.framework in Frameworks */,
 				6D7B06821A9BB10B00F3C80C /* libxml2.dylib in Frameworks */,
-				6D7BFDDA1A9B7DE800F3C80C /* SystemConfiguration.framework in Frameworks */,
 				6D7B07EA1A9CB10D00F3C80C /* DropboxSDK.framework in Frameworks */,
-				6D1575CD1954CF2E007AAE8C /* CoreGraphics.framework in Frameworks */,
 				6D7B03F91A9BA93300F3C80C /* GooglePlus.framework in Frameworks */,
 				6D7B07EC1A9CB10E00F3C80C /* GoogleOpenSource.framework in Frameworks */,
 				6D7B03F61A9BA93300F3C80C /* FacebookSDK.framework in Frameworks */,
-				6D7B06931A9BB10B00F3C80C /* Security.framework in Frameworks */,
 				6D7B03FA1A9BA93300F3C80C /* LiveSDK.framework in Frameworks */,
-				6D1575CF1954CF2E007AAE8C /* UIKit.framework in Frameworks */,
 				6D7B06841A9BB10B00F3C80C /* MobileCoreServices.framework in Frameworks */,
 				6D7B068D1A9BB10B00F3C80C /* Twitter.framework in Frameworks */,
 				6D7B03F71A9BA93300F3C80C /* GoogleOpenSource.framework in Frameworks */,
 				6D7B06891A9BB10B00F3C80C /* Social.framework in Frameworks */,
-				6D1575CB1954CF2E007AAE8C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -877,6 +872,9 @@
 				6DF0EC1C1A9D49A800452014 /* HHSSocialViewController.h */,
 				6DF0EC1D1A9D49A800452014 /* HHSSocialViewController.m */,
 				6DF0EC1E1A9D49A800452014 /* HHSSocialViewController.xib */,
+				6D02A1851AADD45E00014546 /* HHSAboutViewController.h */,
+				6D02A1861AADD45F00014546 /* HHSAboutViewController.m */,
+				6D02A1871AADD45F00014546 /* HHSAboutViewController.xib */,
 			);
 			name = TableViews;
 			path = ..;
@@ -994,6 +992,7 @@
 		6D1575D11954CF2E007AAE8C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6D87B1A41A9DFE480037EF20 /* ic_like.png */,
 				6DF0EC251A9D4EF100452014 /* youtube.png */,
 				6DF0EC261A9D4EF100452014 /* twitter.png */,
 				6DF0EC271A9D4EF100452014 /* instagram.png */,
@@ -1077,6 +1076,8 @@
 		6D52B4BC1959C0520021A2BB /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				6D02A1BA1AADDE2E00014546 /* ic-info-40.png */,
+				6D02A1BB1AADDE2E00014546 /* ic-info-256.png */,
 				6D9C78EB1A8FA76400B1AC71 /* hamburger.png */,
 				6DF12AC81989D4C00055B989 /* panther.png */,
 				6D52B503195A4F220021A2BB /* star-50.png */,
@@ -1257,7 +1258,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = HHS;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Holliston High School";
 				TargetAttributes = {
 					6D1575C61954CF2E007AAE8C = {
@@ -1712,7 +1713,10 @@
 				6D6222B51A913ABE008F4AC1 /* red_sea red.jpg in Resources */,
 				6DB730341957B53300B55798 /* ic_announcements.png in Resources */,
 				6D52B4FF195A21A60021A2BB /* c.png in Resources */,
+				6D02A1891AADD45F00014546 /* HHSAboutViewController.xib in Resources */,
+				6D02A1BD1AADDE2E00014546 /* ic-info-256.png in Resources */,
 				6D743BC81A8D57BE00C260EC /* star_sm.png in Resources */,
+				6D87B1A51A9DFE480037EF20 /* ic_like.png in Resources */,
 				6D52B509195A4F220021A2BB /* d-50.png in Resources */,
 				6D52B4ED1959C5880021A2BB /* hhs-icon-50.png in Resources */,
 				6D52B4F41959C5880021A2BB /* hhs-icon-72.png in Resources */,
@@ -1733,7 +1737,6 @@
 				6D52B4F51959C5880021A2BB /* hhs-icon-72@2x.png in Resources */,
 				6D743BC11A8D57BE00C260EC /* c_sm.png in Resources */,
 				6D15762A19564BA4007AAE8C /* HHSDailyAnnDetailsViewController.xib in Resources */,
-				6D7B07ED1A9CB10E00F3C80C /* GooglePlus.bundle in Resources */,
 				6D52B4F21959C5880021A2BB /* hhs-icon-60.png in Resources */,
 				6D743BBF1A8D57BE00C260EC /* books.png in Resources */,
 				6D1575D51954CF2E007AAE8C /* InfoPlist.strings in Resources */,
@@ -1751,13 +1754,13 @@
 				6D743BBD1A8D57BE00C260EC /* b_lg.png in Resources */,
 				6DB730381957B53300B55798 /* ic_refresh.png in Resources */,
 				6D743BC91A8D57BE00C260EC /* tray.png in Resources */,
-				6D7B07F11A9CB10E00F3C80C /* PinterestSDKResources.bundle in Resources */,
 				6D52B500195A21A60021A2BB /* d.png in Resources */,
 				6D799BF81A9033D9008BB926 /* HHSSchedulesVC.xib in Resources */,
 				6D743BC41A8D57BE00C260EC /* dance.png in Resources */,
 				6D52B50C195A4F220021A2BB /* a-50.png in Resources */,
 				6D52B4F31959C5880021A2BB /* hhs-icon-60@2x.png in Resources */,
 				6D743C5E1A8E712B00C260EC /* HHSNewsVC.xib in Resources */,
+				6D02A1BC1AADDE2E00014546 /* ic-info-40.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1796,6 +1799,7 @@
 				6D067E3A1A1E63DF00998072 /* HHSJsonParseOperation.m in Sources */,
 				6D743C541A8E665C00C260EC /* HHSCategoryVC.m in Sources */,
 				6D15763C195664EA007AAE8C /* HHSNewsDetailsViewController.m in Sources */,
+				6D02A1881AADD45F00014546 /* HHSAboutViewController.m in Sources */,
 				6D743C671A8E715100C260EC /* HHSLunchVC.m in Sources */,
 				6D743BAB1A8D3E1E00C260EC /* HHSDetailPager.m in Sources */,
 				6D799BE71A8FDD12008BB926 /* SWRevealViewController.m in Sources */,
@@ -1854,7 +1858,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thomas Reeve (RX94B6QP5T)";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1873,7 +1877,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "ADDE392A-859E-4A23-8CF8-656B51F5505E";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1894,7 +1898,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Thomas Reeve (RX94B6QP5T)";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1906,7 +1910,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				PROVISIONING_PROFILE = "ADDE392A-859E-4A23-8CF8-656B51F5505E";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1917,7 +1921,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Thomas Reeve (9LD7974WE2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thomas Reeve (RX94B6QP5T)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1938,7 +1942,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "Holliston High School";
-				PROVISIONING_PROFILE = "8BF23342-CFFC-4A53-9BC4-09657FCB16E7";
+				PROVISIONING_PROFILE = "58d83cb8-c414-453c-b95f-7d9b566705fe";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "Submodules/**";
 				WRAPPER_EXTENSION = app;
@@ -1950,7 +1954,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Thomas Reeve (9LD7974WE2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Thomas Reeve (RX94B6QP5T)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1971,7 +1975,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "Holliston High School";
-				PROVISIONING_PROFILE = "8BF23342-CFFC-4A53-9BC4-09657FCB16E7";
+				PROVISIONING_PROFILE = "58d83cb8-c414-453c-b95f-7d9b566705fe";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "Submodules/**";
 				WRAPPER_EXTENSION = app;

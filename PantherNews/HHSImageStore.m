@@ -77,10 +77,12 @@
         if (image) {
             [self setImage:image forKey:key];
             [article setThumbnailFromImage:image];
+            [article setImageFromImage:image];
         }
     } else{
         image = testImage;
         [article setThumbnailFromImage:image];
+        [article setImageFromImage:image];
 
     }
     

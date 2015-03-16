@@ -97,6 +97,7 @@
     [aCoder encodeObject:self.date forKey:@"date"];
     [aCoder encodeObject:self.articleKey forKey:@"articleKey"];
     [aCoder encodeObject:self.details forKey:@"details"];
+    [aCoder encodeObject:self.image forKey:@"image"];
     [aCoder encodeObject:self.thumbnail forKey:@"thumbnail"];
     
 }
@@ -111,6 +112,7 @@
         _date = [aDecoder decodeObjectForKey:@"date"];
         _articleKey = [aDecoder decodeObjectForKey:@"articleKey"];
         _details = [aDecoder decodeObjectForKey:@"details"];
+        _image = [aDecoder decodeObjectForKey:@"image"];
         _thumbnail = [aDecoder decodeObjectForKey:@"thumbnail"];
         
     }
@@ -122,15 +124,12 @@
     CGSize origImageSize = image.size;
     
     //THe rectangel of the thumbnail
-    CGRect newRect = CGRectMake(0, 0, 400, 400);
+    CGRect newRect = CGRectMake(0, 0, 40, 40);
     
     //Figure out a scaling ratio to make sure we maintain the same aspect ratio
     float ratio = MAX(newRect.size.width / origImageSize.width,
                       newRect.size.height / origImageSize.height);
     
-    //Create a transparent bitmap context with a scaling factor
-    //equal to that of the screen
-    UIGraphicsBeginImageContextWithOptions(newRect.size, NO, 0.0);
     
     //Create a path that is a rounded rectangle
     //UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:newRect cornerRadius:5.0];
@@ -145,6 +144,10 @@
     projectRect.origin.x = (newRect.size.width - projectRect.size.width) / 2.0;
     projectRect.origin.y = (newRect.size.height - projectRect.size.height) / 2.0;
     
+    //Create a transparent bitmap context with a scaling factor
+    //equal to that of the screen
+    UIGraphicsBeginImageContextWithOptions(newRect.size, NO, 0.0);
+    
     //Draw the image on it
     [image drawInRect:projectRect];
     
@@ -154,6 +157,12 @@
     
     //Cleanup image context resrouces; we're done
     UIGraphicsEndImageContext();
+    
+}
+
+- (void)setImageFromImage:(UIImage *)image
+{
+    self.image = image;
     
 }
 

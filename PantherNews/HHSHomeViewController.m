@@ -299,7 +299,8 @@
         self.newsTitle.text = article.title;
         //self.newsTitle.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
-        self.newsImage.image = article.thumbnail;
+        self.newsImage.image = article.image;
+
         
     }
     [self hideIfReady];
@@ -438,29 +439,29 @@
         
         [self.eventsTable endUpdates];
         
-        [self.eventsTable reloadData];
-        
-        //[self.eventsStore saveChanges];
-        
-        //[self.activityView stopAnimating];
-        
         CGFloat newHeight = (CGFloat)[indexPaths count]*_eventsCellHeight +2*_eventsHeaderHeight;
         
-        CGRect tvframe = [self.eventsTable frame];
-        [self.eventsTable setFrame:CGRectMake(tvframe.origin.x,
-                                       tvframe.origin.y,
-                                       tvframe.size.width-10,
-                                       tvframe.size.height+newHeight)];
-        
         CGRect cvframe = [self.contentView frame];
+        CGRect tvframe = [self.eventsTable frame];
+        CGRect scframe = [self.scrollView frame];
+        CGRect ebframe = [self.eventsBox frame];
+        
+        [self.eventsTable setFrame:CGRectMake(tvframe.origin.x,
+                                              0,
+                                              cvframe.size.width-20,
+                                              //not a typo - resize to contentview, minus padding
+                                              newHeight)];
+        
         [self.contentView setFrame:CGRectMake(cvframe.origin.x,
                                               0,
                                               cvframe.size.width,
-                                              cvframe.size.height+newHeight)];
+                                              ebframe.origin.y+newHeight+50)];
         
-        CGRect scframe = [self.scrollView frame];
+
         self.scrollView.contentSize = CGSizeMake(scframe.size.width,
-                                              scframe.size.height+newHeight);
+                                              ebframe.origin.y+newHeight+50);
+        
+        [self.eventsTable reloadData];
 
         
     }
@@ -677,6 +678,21 @@
     }
 }
 
+- (void)beginRefreshingView {
+    
+    [self.refreshControl beginRefreshing];
+    
+    if (self.scrollView.contentOffset.y == 0) {
+        
+        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^(void){
+            
+            self.scrollView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
+            
+        } completion:^(BOOL finished){
+            
+        }];
+    }
+}
 
 
 

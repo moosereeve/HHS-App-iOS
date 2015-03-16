@@ -76,10 +76,22 @@
     [[self revealViewController] revealToggleAnimated:YES];
 }
 
+- (IBAction)goToSocial:(id)sender
+{
+    [self.mainViewController jumpToPage:6];
+    [[self revealViewController] revealToggleAnimated:YES];
+}
+
 - (IBAction)goToWebsite:(id)sender
 {
     NSURL *url = [[NSURL alloc] initWithString:@"http://hhs.holliston.k12.ma.us"];
     [[UIApplication sharedApplication] openURL:url];
+    [[self revealViewController] revealToggleAnimated:YES];
+}
+
+- (IBAction)goToAbout:(id)sender
+{
+    [self.mainViewController jumpToPage:7];
     [[self revealViewController] revealToggleAnimated:YES];
 }
 

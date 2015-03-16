@@ -47,5 +47,6 @@
 -(void) fillLunch;
 
 -(void)sendToDetailPager:(int)index parentViewController:(HHSCategoryVC *)viewController;
+-(void)beginRefreshingView;
 
 @end
