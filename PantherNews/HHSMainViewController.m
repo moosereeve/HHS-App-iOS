@@ -29,6 +29,7 @@
 @property (nonatomic, strong) UIPopoverController *currentPopover;
 @property (nonatomic, strong) UIAlertView *alert;
 @property BOOL errorShowing;
+@property (nonatomic, strong) NSString *apiKey;
 
 @end
 
@@ -40,6 +41,10 @@
     
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        
+        NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Keys" ofType:@"plist" ]];
+        self.apiKey = [dictionary objectForKey:@"apiKey"];
+        
         
         [self setUpSchedules];
         [self setUpNews];
@@ -113,7 +118,7 @@
                                   @"details" : @"description",
                                   @"keepHtmlTags" : @""};
     
-    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/sulsp2f8e4npqtmdp469o8tmro%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyBsDse7YteqjWWEJpvAzxt3ZVToXSfjTEY";
+    NSString *feedUrlString = [NSString stringWithFormat:@"%@%@", @"https://www.googleapis.com/calendar/v3/calendars/sulsp2f8e4npqtmdp469o8tmro%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=", self.apiKey];
     
     //initialize stores
     _schedulesStore = [[HHSArticleStore alloc]
@@ -146,7 +151,7 @@
                                   @"keepHtmlTags" : @""};
     
     
-    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_gsfpbqnefkm59ul6gbofte1s2k%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyBsDse7YteqjWWEJpvAzxt3ZVToXSfjTEY";
+    NSString *feedUrlString = [NSString stringWithFormat:@"%@%@", @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_gsfpbqnefkm59ul6gbofte1s2k%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=", self.apiKey];
     
     //initialize stores
     _eventsStore = [[HHSArticleStore alloc]
@@ -236,7 +241,7 @@
                                   @"keepHtmlTags" : @""};
     
     
-    NSString *feedUrlString = @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_c2d4uic3gbsg7r9vv9qo8a949g%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=AIzaSyBsDse7YteqjWWEJpvAzxt3ZVToXSfjTEY";
+    NSString *feedUrlString =  [NSString stringWithFormat:@"%@%@", @"https://www.googleapis.com/calendar/v3/calendars/holliston.k12.ma.us_c2d4uic3gbsg7r9vv9qo8a949g%40group.calendar.google.com/events?maxResults=30&orderBy=startTime&singleEvents=true&key=", self.apiKey];
     
     //initialize stores
     _lunchStore = [[HHSArticleStore alloc]

@@ -32,6 +32,7 @@
 		6D1576331956636A007AAE8C /* HHSNewsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D1576311956636A007AAE8C /* HHSNewsCell.xib */; };
 		6D15763C195664EA007AAE8C /* HHSNewsDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D15763A195664EA007AAE8C /* HHSNewsDetailsViewController.m */; };
 		6D15763D195664EA007AAE8C /* HHSNewsDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D15763B195664EA007AAE8C /* HHSNewsDetailsViewController.xib */; };
+		6D27699E1AC1D0C100E87AD9 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6D27699D1AC1D0C100E87AD9 /* Keys.plist */; };
 		6D2CE02419D092C6006F462E /* ic_lunch.png in Resources */ = {isa = PBXBuildFile; fileRef = 6D2CE02319D092C6006F462E /* ic_lunch.png */; };
 		6D2CE02E19D09766006F462E /* HHSLunchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2CE02C19D09766006F462E /* HHSLunchCell.m */; };
 		6D2CE02F19D09766006F462E /* HHSLunchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D2CE02D19D09766006F462E /* HHSLunchCell.xib */; };
@@ -586,6 +587,7 @@
 		6D157639195664EA007AAE8C /* HHSNewsDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HHSNewsDetailsViewController.h; path = PantherNews/HHSNewsDetailsViewController.h; sourceTree = "<group>"; };
 		6D15763A195664EA007AAE8C /* HHSNewsDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HHSNewsDetailsViewController.m; path = PantherNews/HHSNewsDetailsViewController.m; sourceTree = "<group>"; };
 		6D15763B195664EA007AAE8C /* HHSNewsDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HHSNewsDetailsViewController.xib; path = PantherNews/HHSNewsDetailsViewController.xib; sourceTree = "<group>"; };
+		6D27699D1AC1D0C100E87AD9 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		6D2CE02319D092C6006F462E /* ic_lunch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_lunch.png; sourceTree = "<group>"; };
 		6D2CE02B19D09766006F462E /* HHSLunchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HHSLunchCell.h; sourceTree = "<group>"; };
 		6D2CE02C19D09766006F462E /* HHSLunchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HHSLunchCell.m; sourceTree = "<group>"; };
@@ -977,6 +979,7 @@
 				6DB7302A1957B37E00B55798 /* HHSSplashScreen.xib */,
 				6D743C6D1A8EA3A200C260EC /* HHSMainViewController.h */,
 				6D743C6E1A8EA3A200C260EC /* HHSMainViewController.m */,
+				6D27699D1AC1D0C100E87AD9 /* Keys.plist */,
 				6D9C78E41A8EF08500B1AC71 /* HHSMenuController.h */,
 				6D9C78E51A8EF08500B1AC71 /* HHSMenuController.m */,
 				6D9C78E61A8EF08500B1AC71 /* HHSMenuController.xib */,
@@ -1758,6 +1761,7 @@
 				6D799BF81A9033D9008BB926 /* HHSSchedulesVC.xib in Resources */,
 				6D743BC41A8D57BE00C260EC /* dance.png in Resources */,
 				6D52B50C195A4F220021A2BB /* a-50.png in Resources */,
+				6D27699E1AC1D0C100E87AD9 /* Keys.plist in Resources */,
 				6D52B4F31959C5880021A2BB /* hhs-icon-60@2x.png in Resources */,
 				6D743C5E1A8E712B00C260EC /* HHSNewsVC.xib in Resources */,
 				6D02A1BC1AADDE2E00014546 /* ic-info-40.png in Resources */,

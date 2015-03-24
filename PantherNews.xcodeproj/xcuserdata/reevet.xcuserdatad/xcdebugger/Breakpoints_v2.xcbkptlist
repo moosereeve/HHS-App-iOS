@@ -512,11 +512,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PantherNews/HHSMainViewController.m"
-            timestampString = "447604263.064787"
+            timestampString = "448910099.49122"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "579"
-            endingLineNumber = "579"
+            startingLineNumber = "584"
+            endingLineNumber = "584"
             landmarkName = "-viewControllerAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -528,11 +528,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PantherNews/HHSMainViewController.m"
-            timestampString = "447604263.064787"
+            timestampString = "448910099.49122"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "292"
+            endingLineNumber = "292"
             landmarkName = "-goToHome:"
             landmarkType = "5">
          </BreakpointContent>
