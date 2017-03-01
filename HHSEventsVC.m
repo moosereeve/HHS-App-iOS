@@ -19,9 +19,9 @@
 
 @implementation HHSEventsVC
 
-- (id)initWithStore:(HHSArticleStore *)store
+- (id)initWithStore:(HHSCalendarStore *)store
 {
-    self = [super initWithStore:store];
+    self = [super initWithStore:(HHSArticleStore *)store];
     if (self) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Events";
@@ -62,7 +62,7 @@
     
     [super reloadArticlesFromStore];
     
-    if ((articles == nil) || !(self.viewLoaded) || (self.articleStore.downloadError)) {
+    if ((articles == nil) || !(self.isViewLoaded) || (self.articleStore.downloadError)) {
         return;
     }
     
@@ -80,7 +80,7 @@
         if(lastArticle){
             
             NSCalendar *lastcal = [NSCalendar currentCalendar];
-            NSDateComponents *lastcomponents = [lastcal components:NSDayCalendarUnit fromDate:lastArticle.date];
+            NSDateComponents *lastcomponents = [lastcal components:NSCalendarUnitDay fromDate:lastArticle.date];
             currentDay = (int)[lastcomponents day];
             numRows++;
         }
@@ -93,7 +93,7 @@
     for (HHSArticle *art in articles) {
         NSDate *date=art.date;
         NSCalendar *cal = [NSCalendar currentCalendar];
-        NSDateComponents *components = [cal components:NSDayCalendarUnit fromDate:date];
+        NSDateComponents *components = [cal components:NSCalendarUnitDay fromDate:date];
         int thisDay = (int)[components day];
         
         if(thisDay != currentDay) {

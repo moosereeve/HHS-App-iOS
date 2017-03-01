@@ -8,12 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "HHSArticle.h"
+
 @class HHSMainViewController;
 
 @interface HHSArticleStore : NSObject
 
 @property (nonatomic, readonly, copy) NSDictionary *Articles;
 @property BOOL downloadError;
+@property (nonatomic, strong)NSString *formerNewsKey;
+@property (nonatomic, strong)NSURL *feedUrl;
+@property (nonatomic, strong)NSString *feedUrlString;
+@property (nonatomic) NSDictionary *parserElementNames;
 
 -(instancetype)initWithType:(int)type
                 parserNames:(NSDictionary *)parserNames
@@ -29,10 +34,9 @@
 -(HHSArticle *)findArticle:(HHSArticle *)articleToCheck;
 -(void)removeItem:(HHSArticle *)item;
 
+-(id)setupParse:(NSData *)data;
 -(void)getArticlesFromFeed;
--(void)getEventsFromFeed;
 -(void)getArticlesInBackground;
--(void)getEventsInBackground;
 -(void)parsingDone;
 +(BOOL)needsUpdating;
 
@@ -41,5 +45,6 @@
 +(int)HHSArticleStoreTypeNews;
 +(int)HHSArticleStoreTypeDailyAnns;
 +(int)HHSArticleStoreTypeLunch;
+
 
 @end

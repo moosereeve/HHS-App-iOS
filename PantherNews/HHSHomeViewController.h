@@ -10,6 +10,8 @@
 
 #import <UIKit/UIKit.h>
 #import "HHSArticleStore.h"
+#import "HHSCalendarStore.h"
+#import "HHSNewsStore.h"
 #import "HHSCategoryVC.h"
 
 @interface HHSHomeViewController : UIViewController <UITableViewDelegate, UISplitViewControllerDelegate>
@@ -17,13 +19,13 @@
 @property (nonatomic) int pagerIndex;
 @property (nonatomic) UIPopoverController *popoverController;
 @property (nonatomic, weak) HHSMainViewController *owner;
-@property BOOL viewLoaded;
+@property BOOL isViewLoaded;
 
-@property (nonatomic, weak) HHSArticleStore *schedulesStore;
-@property (nonatomic, weak) HHSArticleStore *newsStore;
-@property (nonatomic, weak) HHSArticleStore *eventsStore;
+@property (nonatomic, weak) HHSCalendarStore *schedulesStore;
+@property (nonatomic, weak) HHSNewsStore *newsStore;
+@property (nonatomic, weak) HHSCalendarStore *eventsStore;
 @property (nonatomic, weak) HHSArticleStore *dailyAnnStore;
-@property (nonatomic, weak) HHSArticleStore *lunchStore;
+@property (nonatomic, weak) HHSCalendarStore *lunchStore;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *schedTitle;

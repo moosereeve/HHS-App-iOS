@@ -64,7 +64,7 @@
     
     [super reloadArticlesFromStore];
     
-    if ((articles == nil) || !(self.viewLoaded) || (self.articleStore.downloadError)) {
+    if ((articles == nil) || !(self.isViewLoaded) || (self.articleStore.downloadError)) {
         return;
     }
     

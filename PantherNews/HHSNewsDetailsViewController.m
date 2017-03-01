@@ -8,9 +8,6 @@
 
 #import "HHSNewsDetailsViewController.h"
 #import "HHSArticle.h"
-#import "SHK.h"
-#import "SHKItem.h"
-#import "SHKActionSheet.h"
 
 @interface HHSNewsDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UIWebView *detailsWebView;
@@ -159,29 +156,16 @@
     return detailsHTML;
 }
 
-- (void)didReceiveMemoryWarning
+-(IBAction)shareButtonPressed:(id)sender
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)updateFonts
-{
-    /*self.dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    self.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    self.detailsTextView.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    */
-}
-
-- (IBAction)share:(id)sender
-{
-    SHKItem *item = [SHKItem URL:_article.url title:_article.title contentType:SHKURLContentTypeWebpage];
+    NSLog(@"shareButtonPressed");
+    NSString *textToShare = [NSString stringWithFormat:@"HHS News: %@ - %@", self.article.title, self.article.url];
+    NSArray *activityItems = @[textToShare, self.article.image];
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:activityItems
+                                                                             applicationActivities:nil];
+    activityVC.excludedActivityTypes = @[UIActivityTypeAssignToContact, UIActivityTypePostToFlickr, UIActivityTypePostToVimeo, UIActivityTypeSaveToCameraRoll];
+    [self presentViewController:activityVC animated:true completion:nil];
     
-    [SHK setRootViewController:self.parentViewController];
-    
-    SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
-    
-    [actionSheet showInView:self.view];
 }
 
 @end

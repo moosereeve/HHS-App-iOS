@@ -89,6 +89,13 @@
     [[self revealViewController] revealToggleAnimated:YES];
 }
 
+- (IBAction)goToSports:(id)sender
+{
+    NSURL *url = [[NSURL alloc] initWithString:@"http://hhsathletics.holliston.k12.ma.us/schedules"];
+    [[UIApplication sharedApplication] openURL:url];
+    [[self revealViewController] revealToggleAnimated:YES];
+}
+
 - (IBAction)goToAbout:(id)sender
 {
     [self.mainViewController jumpToPage:7];

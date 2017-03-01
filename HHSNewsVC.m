@@ -20,9 +20,9 @@
 
 @implementation HHSNewsVC
 
-- (id)initWithStore:(HHSArticleStore *)store
+- (id)initWithStore:(HHSNewsStore *)store
 {
-    self = [super initWithStore:store];    if (self) {
+    self = [super initWithStore:(HHSArticleStore *)store];    if (self) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"School News";
         
@@ -63,7 +63,7 @@
     
     [super reloadArticlesFromStore];
     
-    if ((articles == nil) || !(self.viewLoaded) || (self.articleStore.downloadError)) {
+    if ((articles == nil) || !(self.isViewLoaded) || (self.articleStore.downloadError)) {
         return;
     }
     
@@ -83,6 +83,7 @@
     [self.articlesList addObjectsFromArray:articles];
     
     [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    [self.activityView stopAnimating];
     
     if (self.owner.currentView == self) {
         [self.owner hideWaiting];

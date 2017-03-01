@@ -10,11 +10,11 @@
 #import "HHSMainViewController.h"
 #import "HHSHomeViewController.h"
 #import "HHSArticleStore.h"
+#import "HHSNewsStore.h"
 #import "HHSMenuController.h"
 #import "HHSDetailPager.h"
 #import "SWRevealViewController.h"
-#import "SHKConfiguration.h"
-#import "HHSSHKConfigurator.h"
+#import "GAI.h"
 
 @interface HHSAppDelegate ()
 @property (nonatomic, strong) UISplitViewController *splitvc;
@@ -53,10 +53,6 @@
     revealController.delegate = (id)self;
     self.swViewController = revealController;
     
-    //Setup ShareKit content sharing module
-    DefaultSHKConfigurator *configurator = [[HHSSHKConfigurator alloc] init];
-    [SHKConfiguration sharedInstanceWithConfigurator:configurator];
-    
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)  {
         
         HHSDetailPager *detailPager = [[HHSDetailPager alloc] init];
@@ -86,6 +82,18 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    // Optional: automatically send uncaught exceptions to Google Analytics.
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    
+    // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+    [GAI sharedInstance].dispatchInterval = 20;
+    
+    // Optional: set Logger to VERBOSE for debug information.
+    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+    
+    // Initialize tracker. Replace with your tracking ID.
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-61105823-3"];
     return YES;
 }
 
@@ -114,8 +122,11 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     BOOL needsUpdating = [HHSArticleStore needsUpdating];
+    
     if (needsUpdating) {
         [_nvc refreshStores];
     } else {
@@ -123,6 +134,7 @@
         [_nvc notifyStoreIsReady:_nvc.newsStore];
         [_nvc notifyStoreIsReady:_nvc.eventsStore];
         [_nvc notifyStoreIsReady:_nvc.dailyAnnStore];
+        [_nvc notifyStoreIsReady:_nvc.lunchStore];
     }
     
     NSLog(@"%@%@", @"Needs Updating? ", needsUpdating ? @"YES" : @"NO");

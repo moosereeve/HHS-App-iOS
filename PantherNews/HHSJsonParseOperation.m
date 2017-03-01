@@ -93,15 +93,35 @@
         
         article.title = [event objectForKey:_kTitleElementName];
         article.url = [event objectForKey:_kLinkElementName];
-        NSDictionary *dateDict= [event objectForKey:_kDateElementName];
-        for (NSString *key in dateDict) {
-            NSRange range = [key rangeOfString:@"date"];
-            if (range.location != NSNotFound) {
+        id dateValue = [event objectForKey:_kDateElementName];
+        if ([dateValue isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dateDict= [event objectForKey:_kDateElementName];
+            for (NSString *key in dateDict) {
+              NSRange range = [key rangeOfString:@"date"];
+              if (range.location != NSNotFound) {
                 NSString *dateString = [dateDict objectForKey:key];
                 article.date = [self makeDateFromString:dateString];
+              }
             }
+        } else {
+            NSString *dateString1 = [event objectForKey:_kDateElementName];
+            article.date = [self makeDateFromString:dateString1];
         }
         article.details = [event objectForKey:_kDetailsElementName];
+        NSArray *imageArray = [event objectForKey:@"images"];
+        if ([imageArray count]>0) {
+            NSDictionary *imageDict = imageArray[0];
+            for (NSString *key in imageDict) {
+                NSRange range = [key rangeOfString:@"url"];
+                if (range.location != NSNotFound) {
+                    NSString *imageUrlString = [imageDict objectForKey:key];
+                    
+                    if([imageUrlString length]>0){
+                        [[HHSImageStore sharedStore] setImageWithUrlString:imageUrlString forArticle:article];
+                    }
+                }
+            }
+        }
         
         [self.currentArticleStore addTempArticle:article];
         

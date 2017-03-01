@@ -13,6 +13,8 @@
 
 #import <UIKit/UIKit.h>
 @class HHSArticleStore;
+@class HHSCalendarStore;
+@class HHSNewsStore;
 @class HHSSchedulesVC;
 @class HHSDailyAnnVC;
 @class HHSEventsVC;
@@ -21,8 +23,9 @@
 @class HHSCategoryVC;
 @class HHSHomeViewController;
 #import "SWRevealViewController.h"
+#import "GAITrackedViewController.h"
 
-@interface HHSMainViewController : UIViewController
+@interface HHSMainViewController : GAITrackedViewController
 <UIPageViewControllerDataSource, UISplitViewControllerDelegate>
 
 @property (nonatomic, strong) SWRevealViewController *swViewController;
@@ -35,11 +38,11 @@
 @property (nonatomic) BOOL dailyAnnDownloaded;
 @property (nonatomic) BOOL lunchDownloaded;
 
-@property (nonatomic, strong) HHSArticleStore *schedulesStore;
-@property (nonatomic, strong) HHSArticleStore *eventsStore;
-@property (nonatomic, strong) HHSArticleStore *newsStore;
+@property (nonatomic, strong) HHSCalendarStore *schedulesStore;
+@property (nonatomic, strong) HHSCalendarStore *eventsStore;
+@property (nonatomic, strong) HHSNewsStore *newsStore;
 @property (nonatomic, strong) HHSArticleStore *dailyAnnStore;
-@property (nonatomic, strong) HHSArticleStore *lunchStore;
+@property (nonatomic, strong) HHSCalendarStore *lunchStore;
 
 @property (nonatomic, strong) HHSHomeViewController *homeVC;
 @property (nonatomic, strong) HHSSchedulesVC *schedulesTVC;

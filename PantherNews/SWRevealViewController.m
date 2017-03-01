@@ -207,9 +207,9 @@ static CGFloat scaledValue( CGFloat v1, CGFloat min2, CGFloat max2, CGFloat min1
     
     // setup front view shadow path if needed (front view loaded and not removed)
     UIViewController *frontViewController = _c.frontViewController;
-    BOOL viewLoaded = frontViewController != nil && frontViewController.isViewLoaded;
+    BOOL isViewLoaded = frontViewController != nil && frontViewController.isViewLoaded;
     BOOL viewNotRemoved = position > FrontViewPositionLeftSideMostRemoved && position < FrontViewPositionRightMostRemoved;
-    CGRect shadowBounds = viewLoaded && viewNotRemoved  ? _frontView.bounds : CGRectZero;
+    CGRect shadowBounds = isViewLoaded && viewNotRemoved  ? _frontView.bounds : CGRectZero;
     
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:shadowBounds];
     _frontView.layer.shadowPath = shadowPath.CGPath;

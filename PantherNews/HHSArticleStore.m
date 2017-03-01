@@ -11,7 +11,7 @@
 #import "HHSImageStore.h"
 #import "HHSCategoryVC.h"
 #import "HHSHomeViewController.h"
-#import "APLParseOperation.h"
+#import "HHSXmlParseOperation.h"
 #import "HHSJsonParseOperation.h"
 
 @interface HHSArticleStore ()
@@ -23,8 +23,6 @@
 @property (nonatomic) BOOL sortNowToFuture;
 
 @property (nonatomic) NSOperationQueue *parseQueue;
-@property (nonatomic, strong) NSString *feedUrlString;
-@property (nonatomic) NSDictionary *parserElementNames;
 @property BOOL parsingInBackgroundFetch;
 @property BOOL currentlyParsing;
 
@@ -35,8 +33,6 @@
 @property (nonatomic, strong)NSString *mArticleResultsKey;
 @property (nonatomic, strong)NSString *mArticlesErrorNotificationName;
 @property (nonatomic, strong)NSString *mArticlesMessageErrorKey;
-
-@property (nonatomic, strong)NSString *formerNewsKey;
 
 
 @end
@@ -64,10 +60,17 @@
         _owner = owner;
         _parserElementNames = parserNames;
         _feedUrlString = feedUrlString;
+        _feedUrl = [[NSURL alloc] initWithString:self.feedUrlString];
+
         _sortNowToFuture = sortOrder;
         _triggersNotification = triggersNotification;
         _downloadError = NO;
         _currentlyParsing = NO;
+        
+        _mAddArticlesNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [self getType]];
+        _mArticleResultsKey = [NSString stringWithFormat:@"%@%i", kArticleResultsKey, [self getType]];
+        _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, [self getType]];
+        _mArticlesMessageErrorKey = [NSString stringWithFormat:@"%@%i", kArticlesMessageErrorKey, [self getType]];
         
         NSString *path = [self articleArchivePath];
         _privateItems = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
@@ -76,12 +79,7 @@
         //If the array hadn't been saved previously, crete one
         if (!_privateItems) {
             _privateItems = [[NSMutableDictionary alloc] init];
-            if ((_type == [HHSArticleStore HHSArticleStoreTypeDailyAnns]) ||
-                (_type == [HHSArticleStore HHSArticleStoreTypeNews])) {
-                [self getArticlesFromFeed];
-            } else {
-                [self getEventsFromFeed];
-            }
+            [self getArticlesFromFeed];
         }
     }
     return self;
@@ -96,15 +94,6 @@
 
 - (NSArray *)allArticles
 {
-    /*if ([self.privateItems count] <0) {   //if ([self.privateItems count] == 0) {
-     if ((self.type == [HHSArticleStore HHSArticleStoreTypeDailyAnns]) ||
-     (self.type == [HHSArticleStore HHSArticleStoreTypeNews])) {
-     [self getArticlesFromFeed];
-     } else {
-     [self getEventsFromFeed];
-     }
-     return nil;
-     } else {*/
     NSArray *newArticles = [self.privateItems allValues] ;
     
     NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:_sortNowToFuture];
@@ -112,16 +101,12 @@
     NSArray *sortedArray = [newArticles sortedArrayUsingDescriptors:descriptors];
     
     return sortedArray;
-    //}
 }
 
 - (HHSArticle *)newArticle
 {
     HHSArticle *item = [[HHSArticle alloc] init];
-    
-    //[self.privateItems  addObject:item];
     self.privateItems[item.articleKey] = item;
-    
     return item;
 }
 
@@ -137,13 +122,10 @@
 
 -(void)populateStoreWith:(NSArray *)articleList
 {
-    //NSDictionary *backupOfItems = [[NSDictionary alloc] initWithDictionary:self.privateItems copyItems:YES];
-    
     [self.privateItems removeAllObjects];
     for (HHSArticle *article in articleList) {
         [self addArticle:article];
     }
-    
     [self saveStore];
     
 }
@@ -155,9 +137,6 @@
     for (NSString *key in [self.privateItems allKeys]) {
         
         HHSArticle *article = self.privateItems[key];
-        
-        //NSString *u1 = article.url.absoluteString;
-        //NSString *u2 = articleToCheck.url.absoluteString;
         
         if ([article.url.absoluteString isEqualToString:articleToCheck.url.absoluteString]){
             
@@ -255,8 +234,8 @@
         update = YES;
     } else if ((dateArray != nil) && ([dateArray count]>0)) {
         lastDate = dateArray[0];
-        NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *lastDateComp = [cal components:(NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:lastDate];
+        NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        NSDateComponents *lastDateComp = [cal components:(NSCalendarUnitMinute | NSCalendarUnitHour | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:lastDate];
         int lastYear =   (int)[lastDateComp year];
         int lastMonth =  (int)[lastDateComp month];
         int lastDay =    (int)[lastDateComp day];
@@ -264,7 +243,7 @@
         int lastMinute = 35; //[lastDateComp minute];
         
         NSDate *today = [[NSDate alloc] init];
-        NSDateComponents *todayComp = [cal components:(NSMinuteCalendarUnit | NSHourCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:today];
+        NSDateComponents *todayComp = [cal components:(NSCalendarUnitMinute | NSCalendarUnitHour | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:today];
         int todayYear =   (int)[todayComp year];
         int todayMonth =  (int)[todayComp month];
         int todayDay =    (int)[todayComp day];
@@ -305,37 +284,10 @@
     _tempItems = [[NSMutableDictionary alloc] init];
     _parsingInBackgroundFetch = NO;
     
-    _mAddArticlesNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [self getType]];
-    _mArticleResultsKey = [NSString stringWithFormat:@"%@%i", kArticleResultsKey, [self getType]];
-    _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, [self getType]];
-    _mArticlesMessageErrorKey = [NSString stringWithFormat:@"%@%i", kArticlesMessageErrorKey, [self getType]];
-    
-    NSArray *articles =  [self allArticles];
-    if ([articles count] >0) {
-        
-        _formerNewsKey = ((HHSArticle *) articles[0]).articleKey;
-    } else {
-        _formerNewsKey = nil;
-    }
-    /*
-     Use NSURLConnection to asynchronously download the data. This means the main thread will not be blocked - the application will remain responsive to the user.
-     
-     IMPORTANT! The main thread of the application should never be blocked!
-     Also, avoid synchronous network access on any thread.
-     */
-    
-    NSURL *urlFeed = [[NSURL alloc] initWithString:self.feedUrlString];
     NSURLRequest *articleURLRequest =
-    [NSURLRequest requestWithURL:urlFeed];
+    [NSURLRequest requestWithURL:self.feedUrl];
     
-    // send the async request (note that the completion block will be called on the main thread)
-    //
-    // note: using the block-based "sendAsynchronousRequest" is preferred, and useful for
-    // small data transfers that are likely to succeed. If you doing large data transfers,
-    // consider using the NSURLConnectionDelegate-based APIs.
-    //
     [NSURLConnection sendAsynchronousRequest:articleURLRequest
-     // the NSOperationQueue upon which the handler block will be dispatched:
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                
@@ -343,204 +295,34 @@
                                
                            }];
     
-    // Start the status bar network activity indicator.
-    // We'll turn it off when the connection finishes or experiences an error.
-    //
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    self.parseQueue = [NSOperationQueue new];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(addParseResultsToStore:)
-                                                 name:_mAddArticlesNotificationName object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(articlesError:)
-                                                 name:_mArticlesErrorNotificationName object:nil];
 }
-
--(void)getEventsFromFeed
-{
-    if (_currentlyParsing == YES) {
-        return;
-    }
-    _currentlyParsing = YES;
-    _tempItems = [[NSMutableDictionary alloc] init];
-    _parsingInBackgroundFetch = NO;
-    
-    _mAddArticlesNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [self getType]];
-    _mArticleResultsKey = [NSString stringWithFormat:@"%@%i", kArticleResultsKey, [self getType]];
-    _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, [self getType]];
-    _mArticlesMessageErrorKey = [NSString stringWithFormat:@"%@%i", kArticlesMessageErrorKey, [self getType]];
-    
-    /*
-     Use NSURLConnection to asynchronously download the data. This means the main thread will not be blocked - the application will remain responsive to the user.
-     
-     IMPORTANT! The main thread of the application should never be blocked!
-     Also, avoid synchronous network access on any thread.
-     */
-    
-    NSDate *now = [[NSDate alloc] init];
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateFormat:@"yyyy-MM-dd'T'00'%3A'00'%3A'00-05'%3A'00"];
-    
-    NSString *feedStringWithDates = [NSString stringWithFormat:@"%@&timeMin=%@",self.feedUrlString, [df stringFromDate:now]];
-    NSURL *urlFeed = [[NSURL alloc] initWithString:feedStringWithDates];
-    NSURLRequest *articleURLRequest =
-    [NSURLRequest requestWithURL:urlFeed];
-    
-    // send the async request (note that the completion block will be called on the main thread)
-    //
-    // note: using the block-based "sendAsynchronousRequest" is preferred, and useful for
-    // small data transfers that are likely to succeed. If you doing large data transfers,
-    // consider using the NSURLConnectionDelegate-based APIs.
-    //
-    [NSURLConnection sendAsynchronousRequest:articleURLRequest
-     // the NSOperationQueue upon which the handler block will be dispatched:
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               
-                               [self handleUrlConnectCompletion:response data:data error:error];
-                               
-                           }];
-    
-    // Start the status bar network activity indicator.
-    // We'll turn it off when the connection finishes or experiences an error.
-    //
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    self.parseQueue = [NSOperationQueue new];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(addParseResultsToStore:)
-                                                 name:_mAddArticlesNotificationName object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(articlesError:)
-                                                 name:_mArticlesErrorNotificationName object:nil];
-}
-
 
 -(void)getArticlesInBackground{
     _tempItems = [[NSMutableDictionary alloc] init];
     _parsingInBackgroundFetch = YES;
     
-    _mAddArticlesNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [self getType]];
-    _mArticleResultsKey = [NSString stringWithFormat:@"%@%i", kArticleResultsKey, [self getType]];
-    _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, [self getType]];
-    _mArticlesMessageErrorKey = [NSString stringWithFormat:@"%@%i", kArticlesMessageErrorKey, [self getType]];
-    
-    /*
-     Use NSURLConnection to asynchronously download the data. This means the main thread will not be blocked - the application will remain responsive to the user.
-     
-     IMPORTANT! The main thread of the application should never be blocked!
-     Also, avoid synchronous network access on any thread.
-     */
-    
-    NSURL *urlFeed = [[NSURL alloc] initWithString:self.feedUrlString];
-    NSURLRequest *articleURLRequest = [NSURLRequest requestWithURL:urlFeed];
+    NSURLRequest *articleURLRequest = [NSURLRequest requestWithURL:self.feedUrl];
     NSURLResponse *response = nil;
     NSError *error = nil;
-    
-    // send the async request (note that the completion block will be called on the main thread)
-    //
-    // note: using the block-based "sendAsynchronousRequest" is preferred, and useful for
-    // small data transfers that are likely to succeed. If you doing large data transfers,
-    // consider using the NSURLConnectionDelegate-based APIs.
-    //
-    self.parseQueue = [NSOperationQueue new];
     
     NSData *data = [NSURLConnection sendSynchronousRequest:articleURLRequest returningResponse:&response error:&error];
     
     [self handleUrlConnectCompletion:response data:data error:error];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(addParseResultsToStore:)
-                                                 name:_mAddArticlesNotificationName object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(articlesError:)
-                                                 name:_mArticlesErrorNotificationName object:nil];
 }
-
--(void)getEventsInBackground{
-    _tempItems = [[NSMutableDictionary alloc] init];
-    _parsingInBackgroundFetch = YES;
-    
-    _mAddArticlesNotificationName = [NSString stringWithFormat:@"%@%i", kAddArticlesNotificationName, [self getType]];
-    _mArticleResultsKey = [NSString stringWithFormat:@"%@%i", kArticleResultsKey, [self getType]];
-    _mArticlesErrorNotificationName = [NSString stringWithFormat:@"%@%i", kArticlesErrorNotificationName, [self getType]];
-    _mArticlesMessageErrorKey = [NSString stringWithFormat:@"%@%i", kArticlesMessageErrorKey, [self getType]];
-    
-    /*
-     Use NSURLConnection to asynchronously download the data. This means the main thread will not be blocked - the application will remain responsive to the user.
-     
-     IMPORTANT! The main thread of the application should never be blocked!
-     Also, avoid synchronous network access on any thread.
-     */
-    
-    NSDate *now = [[NSDate alloc] init];
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateFormat:@"yyyy-MM-dd'T'00'%3A'00'%3A'00-05'%3A'00"];
-    
-    NSString *feedStringWithDates = [NSString stringWithFormat:@"%@&timeMin=%@",self.feedUrlString, [df stringFromDate:now]];
-    NSURL *urlFeed = [[NSURL alloc] initWithString:feedStringWithDates];
-    NSURLRequest *articleURLRequest = [NSURLRequest requestWithURL:urlFeed];
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    
-    // send the async request (note that the completion block will be called on the main thread)
-    //
-    // note: using the block-based "sendAsynchronousRequest" is preferred, and useful for
-    // small data transfers that are likely to succeed. If you doing large data transfers,
-    // consider using the NSURLConnectionDelegate-based APIs.
-    //
-    self.parseQueue = [NSOperationQueue new];
-    
-    NSData *data = [NSURLConnection sendSynchronousRequest:articleURLRequest returningResponse:&response error:&error];
-    
-    [self handleUrlConnectCompletion:response data:data error:error];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(addParseResultsToStore:)
-                                                 name:_mAddArticlesNotificationName object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(articlesError:)
-                                                 name:_mArticlesErrorNotificationName object:nil];
-}
-
 
 -(void)handleUrlConnectCompletion:(NSURLResponse *)response data:(NSData *)data error:(NSError *)error
 {
-    // back on the main thread, check for errors, if no errors start the parsing
-    //
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    // here we check for any returned NSError from the server, "and" we also check for any http response errors
     if (error != nil) {
         [self handleError:error];
     }
     else {
-        // check for any response errors
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
         if ((([httpResponse statusCode]/100) == 2) ) {
-            // Update the UI and start parsing the data,
-            // Spawn an NSOperation to parse the earthquake data so that the UI is not
-            // blocked while the application parses the XML data.
-            //
-            int storeType = self.type;
-            
-            if ((storeType == 3) || (storeType == 4)) {
-                APLParseOperation *parseOperation = [[APLParseOperation alloc] initWithData:data elementNames:self.parserElementNames store:self];
-                [self.parseQueue addOperation:parseOperation];
-            } else {
-                HHSJsonParseOperation *parseOperation = [[HHSJsonParseOperation alloc] initWithData: data elementNames:self.parserElementNames store:self];
-                [self.parseQueue addOperation:parseOperation];
-            }
-            
+            [self startParse:data];
         }
         else {
             NSString *errorString =
@@ -554,38 +336,30 @@
     }
 }
 
-#pragma mark network and xml
-- (void)removeObservers {
-    
-    // we are no longer interested in these notifications:
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:_mAddArticlesNotificationName
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:_mArticlesErrorNotificationName
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NSCurrentLocaleDidChangeNotification
-                                                  object:nil];
+-(void)startParse:(NSData *)data
+{
+    self.parseQueue = [NSOperationQueue new];
+    NSOperation *parseOperation = [self setupParse:data];
+    [self.parseQueue addOperation:parseOperation];
 }
+
+-(id)setupParse:(NSData *)data
+{
+    //can be overridden in subclass
+    HHSXmlParseOperation *parseOperation = [[HHSXmlParseOperation alloc] initWithData:data elementNames:self.parserElementNames store:self];
+    /*HHSJsonParseOperation *parseOperation = [[HHSJsonParseOperation alloc] initWithData:data elementNames:self.parserElementNames store:self];*/
+    return parseOperation;
+}
+
+#pragma mark network and xml
 
 #pragma mark handle parse results
 - (void)handleError:(NSError *)error {
     
     NSString *errorMessage = [error localizedDescription];
-    [self removeObservers];
     _downloadError = YES;
     [_owner notifyStoreDownloadError:self error:errorMessage];
     _currentlyParsing = NO;
-}
-
-- (void)addParseResultsToStore:(NSNotification *)notif {
-    
-    [self populateStoreWith:[[notif userInfo] valueForKey:_mArticleResultsKey]];
-    NSLog(@"%@%@", @"Store updated: ", _mArticleResultsKey);
-    [self removeObservers];
-    _downloadError = NO;
-    [_owner notifyStoreIsReady:self];
 }
 
 -(void)parsingDone
@@ -594,7 +368,7 @@
     _privateItems = [_tempItems copy];
     [_tempItems removeAllObjects];
     [self saveStore];
-    [self removeObservers];
+    
     _downloadError = NO;
     _currentlyParsing = NO;
     
@@ -609,8 +383,6 @@
             }
             //TODO: this is a debug command
             //[self sendNotification:article];
-            
-            
         }
     }
     
@@ -658,25 +430,10 @@
 
 #pragma mark constants
 
-+(int)HHSArticleStoreTypeSchedules
-{
-    return 1;
-}
-+(int)HHSArticleStoreTypeEvents
-{
-    return 2;
-}
-+(int)HHSArticleStoreTypeNews
-{
-    return 3;
-}
-+(int)HHSArticleStoreTypeDailyAnns
-{
-    return 4;
-}
-+(int)HHSArticleStoreTypeLunch
-{
-    return 5;
-}
++(int)HHSArticleStoreTypeSchedules { return 1; }
++(int)HHSArticleStoreTypeEvents { return 2; }
++(int)HHSArticleStoreTypeNews { return 3; }
++(int)HHSArticleStoreTypeDailyAnns { return 4; }
++(int)HHSArticleStoreTypeLunch { return 5; }
 
 @end

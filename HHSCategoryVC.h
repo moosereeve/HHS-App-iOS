@@ -25,7 +25,7 @@
 
 @property (nonatomic) UIPopoverController *popoverController;
 @property (nonatomic, weak) HHSMainViewController *owner;
-@property BOOL viewLoaded;
+@property BOOL isViewLoaded;
 
 //@property (nonatomic, copy) NSArray *articles;
 

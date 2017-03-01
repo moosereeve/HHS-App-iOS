@@ -23,9 +23,9 @@
 
 @implementation HHSLunchVC
 
-- (id)initWithStore:(HHSArticleStore *)store
+- (id)initWithStore:(HHSCalendarStore *)store
 {
-    self = [super initWithStore:store];
+    self = [super initWithStore:(HHSArticleStore *)store];
     if (self) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Lunch Menus";
@@ -69,7 +69,7 @@
     
     [super reloadArticlesFromStore];
     
-    if ((articles == nil) || !(self.viewLoaded) ) {
+    if ((articles == nil) || !(self.isViewLoaded) ) {
         return;
     }
     
@@ -115,7 +115,7 @@
         
         NSDate *date= art.date;
         NSCalendar *cal = [NSCalendar currentCalendar];
-        NSDateComponents *components = [cal components:NSWeekOfYearCalendarUnit fromDate:date];
+        NSDateComponents *components = [cal components:NSCalendarUnitWeekOfYear fromDate:date];
         int weekOfYear = (int)[components weekOfYear];
         
         if(weekOfYear != currentWeek) {

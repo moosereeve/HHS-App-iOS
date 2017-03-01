@@ -17,14 +17,15 @@
 @property (nonatomic) BOOL skipToday;
 @property (nonatomic) int cellHeight;
 @property (nonatomic) int headerHeight;
+@property (nonatomic) int startIndex;
 
 @end
 
 @implementation HHSSchedulesVC
 
-- (id)initWithStore:(HHSArticleStore *)store
+- (id)initWithStore:(HHSCalendarStore *)store
 {
-    self = [super initWithStore:store];
+    self = [super initWithStore:(HHSArticleStore *)store];
     if (self) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Schedules";
@@ -79,7 +80,7 @@
     
     NSMutableArray *articles = [[self.articleStore allArticles] mutableCopy];
     
-    if ((articles == nil) || !(self.viewLoaded) ) {
+    if ((articles == nil) || !(self.isViewLoaded) ) {
         return;
     }
     
@@ -91,22 +92,41 @@
      [self.tableView deleteSections:is withRowAnimation:UITableViewRowAnimationNone];
      }*/
     
+    NSDate *todayDate = [[NSDate alloc] init];
+    NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:todayDate];
+    NSInteger todayMonth = [todayComp month];
+    NSInteger todayDay = [todayComp day];
+    NSInteger todayHour = [todayComp hour];
+    NSInteger todayYear = [todayComp year];
+    
+    self.startIndex = 0;
+    
+    //work backward through the array to see find the earliest schedule, but not
+    //eariler than today
+    for (int ii= (int)([articles count]-1); ii>=0; ii--) {
+        HHSArticle *tempArticle = articles[ii];
+        NSDate *tempDate = tempArticle.date;
+        NSDateComponents *tempComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:tempDate];
+        NSInteger tempMonth = [tempComp month];
+        NSInteger tempDay = [tempComp day];
+        NSInteger tempYear = [tempComp year];
+        
+        if ((tempYear >= todayYear) && (tempMonth >= todayMonth) && (tempDay >= todayDay)) {
+            self.startIndex = ii;
+        }
+    }
+    
     if ([articles count] >=2) {
-        NSDate *todayDate = [[NSDate alloc] init];
-        NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:todayDate];
-        NSInteger todayMonth = [todayComp month];
-        NSInteger todayDay = [todayComp day];
-        NSInteger todayHour = [todayComp hour];
         
         if (todayHour >=14) {
-            HHSArticle *firstArticle = (HHSArticle *) articles[0];
+            HHSArticle *firstArticle = (HHSArticle *) articles[self.startIndex];
             NSDate *firstDate = firstArticle.date;
             NSDateComponents *firstComp =[[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay fromDate:firstDate] ;
             NSInteger firstMonth = [firstComp month];
             NSInteger firstDay = [firstComp day];
             
             if ((todayMonth == firstMonth) && (todayDay == firstDay)) {
-                [articles removeObjectAtIndex:0];
+                self.startIndex = self.startIndex +1;
                 self.skipToday = YES;
             }
         }
@@ -120,11 +140,12 @@
     
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     
-    for (HHSArticle *art in articles) {
+    for (int ii=self.startIndex; ii<[articles count]; ii++) {
+        HHSArticle *art = articles[ii];
         
         NSDate *date= art.date;
         NSCalendar *cal = [NSCalendar currentCalendar];
-        NSDateComponents *components = [cal components:NSWeekOfYearCalendarUnit fromDate:date];
+        NSDateComponents *components = [cal components:NSCalendarUnitWeekOfYear fromDate:date];
         int weekOfYear = (int)[components weekOfYear];
         
         if(weekOfYear != currentWeek) {
@@ -178,10 +199,8 @@
     int section = (int)indexPath.section;
     int row = (int)indexPath.row;
     
-    // Get the specific earthquake for this row.
     HHSArticle *article = self.articlesList[section][row];
     
-    //Configure the cell with the BNRItem
     cell.titleLabel.text = article.title;
     //cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     
@@ -235,7 +254,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //HHSScheduleDetailsViewController *vc = [[HHSScheduleDetailsViewController alloc] init];
-    int index = 0;
+    int index = self.startIndex;
     for (int j=0; j<=indexPath.section; j++) {
         for (int i=0; i<[self.articlesList[j] count]; i++) {
             if ((j==indexPath.section) && (i==indexPath.row)) {

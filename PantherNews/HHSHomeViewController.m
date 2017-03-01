@@ -8,8 +8,10 @@
 
 #import "HHSHomeViewController.h"
 #import "HHSArticleStore.h"
+#import "HHSCalendarStore.h"
+#import "HHSNewsStore.h"
 #import "HHSArticle.h"
-#import "APLParseOperation.h"
+#import "HHSXmlParseOperation.h"
 #import "HHSEventsCell.h"
 #import "HHSImageStore.h"
 #import "HHSCategoryVC.h"
@@ -31,6 +33,8 @@
 @property (nonatomic, weak) HHSArticle *dailyAnnArticle;
 @property (nonatomic) NSMutableArray *eventsArticles;
 @property (nonatomic, weak) HHSArticle *lunchArticle;
+
+@property (nonatomic) int scheduleStartIndex;
 
 @property (nonatomic, strong) UITableView *eventsTable;
 @property int eventsCellHeight;
@@ -56,7 +60,7 @@
     if (self) {
         UINavigationItem *navItem = self.navigationItem;
         navItem.title = @"Home";
-        self.viewLoaded = NO;
+        self.isViewLoaded = NO;
         
         self.eventsHeaderHeight = 30;
         self.eventsCellHeight = 50;
@@ -113,6 +117,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view from its nib.
     self.eventsTable = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
     //self.eventsTable.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
@@ -137,7 +142,7 @@
                                                                        attribute:NSLayoutAttributeLeading
                                                                        relatedBy:0
                                                                           toItem:self.view
-                                                                       attribute:NSLayoutAttributeLeft
+                                                                       attribute:NSLayoutAttributeLeading
                                                                       multiplier:1.0
                                                                         constant:0];
     [self.view addConstraint:leftConstraint];
@@ -146,7 +151,7 @@
                                                                        attribute:NSLayoutAttributeTrailing
                                                                        relatedBy:0
                                                                           toItem:self.view
-                                                                       attribute:NSLayoutAttributeRight
+                                                                       attribute:NSLayoutAttributeTrailing
                                                                       multiplier:1.0
                                                                         constant:0];
     [self.view addConstraint:rightConstraint];
@@ -160,17 +165,13 @@
                                                                         constant:800];
     [self.view addConstraint:self.contentHeightConstraint];
      */
-    self.viewLoaded = YES;
+    self.isViewLoaded = YES;
     
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [self fillAll];
-    
-    //CGRect eventsFrame = eventsTable.frame;
-    //eventsFrame.size.height = 600;//eventsTable.contentSize.height;
-    //eventsTable.frame = eventsFrame;
 
 }
 
@@ -200,15 +201,34 @@
 
         NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
         NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-        NSArray *sortedArray = [articleList sortedArrayUsingDescriptors:descriptors];
+        NSMutableArray *sortedArray = [[NSMutableArray alloc] initWithArray:[articleList sortedArrayUsingDescriptors:descriptors]];
 
-        HHSArticle *article = sortedArray[0];
+        NSDate *todayDate = [[NSDate alloc] init];
+        NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:todayDate];
+        NSInteger todayMonth = [todayComp month];
+        NSInteger todayDay = [todayComp day];
+        NSInteger todayHour = [todayComp hour];
+        NSInteger todayYear = [todayComp year];
+
+        self.scheduleStartIndex = 0;
+        
+        //work backward through the array to see find the earliest schedule, but not
+        //eariler than today
+        for (int ii= (int)([sortedArray count]-1); ii>=0; ii--) {
+            HHSArticle *tempArticle = sortedArray[ii];
+            NSDate *tempDate = tempArticle.date;
+            NSDateComponents *tempComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:tempDate];
+            NSInteger tempMonth = [tempComp month];
+            NSInteger tempDay = [tempComp day];
+            NSInteger tempYear = [tempComp year];
+            
+            if ((tempYear >= todayYear) && (tempMonth >= todayMonth) && (tempDay >= todayDay)) {
+                self.scheduleStartIndex = ii;
+            }
+        }
+        
+        HHSArticle *article = sortedArray[self.scheduleStartIndex];
         if ([sortedArray count] >=2) {
-            NSDate *todayDate = [[NSDate alloc] init];
-            NSDateComponents *todayComp = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour fromDate:todayDate];
-            NSInteger todayMonth = [todayComp month];
-            NSInteger todayDay = [todayComp day];
-            NSInteger todayHour = [todayComp hour];
             
             if (todayHour >=14) {
                 NSDate *firstDate = article.date;
@@ -217,7 +237,7 @@
                 NSInteger firstDay = [firstComp day];
                 
                 if ((todayMonth == firstMonth) && (todayDay == firstDay)) {
-                    article = sortedArray[1];
+                    article = sortedArray[self.scheduleStartIndex+1];
                     self.skipToday = YES;
                 }
             }
@@ -391,7 +411,7 @@
             if(lastArticle){
                 
                 NSCalendar *lastcal = [NSCalendar currentCalendar];
-                NSDateComponents *lastcomponents = [lastcal components:NSDayCalendarUnit fromDate:lastArticle.date];
+                NSDateComponents *lastcomponents = [lastcal components:NSCalendarUnitDay fromDate:lastArticle.date];
                 currentDay = (int)[lastcomponents day];
                 numRows++;
             }
@@ -404,7 +424,7 @@
         for (HHSArticle *art in sortedArray) {
             NSDate *date=art.date;
             NSCalendar *cal = [NSCalendar currentCalendar];
-            NSDateComponents *components = [cal components:NSDayCalendarUnit fromDate:date];
+            NSDateComponents *components = [cal components:NSCalendarUnitDay fromDate:date];
             int thisDay = (int)[components day];
             
             if(thisDay != currentDay) {
@@ -487,7 +507,7 @@
 - (IBAction)scheduleButtonClicked:(id)sender {
     //HHSScheduleDetailsViewController *vc = [[HHSScheduleDetailsViewController alloc] init];
     
-    int index = 0;
+    int index = self.scheduleStartIndex;
     if (_skipToday) {
         index++;
     }
@@ -549,6 +569,12 @@
     }
     //cell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
+    NSString *details = article.details;
+    if (details == nil) {
+        cell.userInteractionEnabled = NO;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
     return cell;
 }
 
@@ -564,8 +590,13 @@
             index++;
         }
     }
-
-    [self sendToDetailPager:index parentViewController:(HHSCategoryVC*)self.owner.eventsTVC];
+    
+    HHSArticle *article = self.eventsArticles[index];
+    NSString *details = article.details;
+    
+    if (details != nil) {
+        [self sendToDetailPager:index parentViewController:(HHSCategoryVC*)self.owner.eventsTVC];
+    }
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

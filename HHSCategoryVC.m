@@ -8,7 +8,7 @@
 
 #import "HHSCategoryVC.h"
 #import "HHSArticleStore.h"
-#import "APLParseOperation.h"
+#import "HHSXmlParseOperation.h"
 #import "HHSMainViewController.h"
 #import "HHSHomeViewController.h"
 #import "HHSDetailPager.h"
@@ -38,7 +38,7 @@
         
         self.articlesList = [[NSMutableArray array] init];
         
-        _viewLoaded = NO;
+        _isViewLoaded  = NO;
     }
     return self;
 }
@@ -49,11 +49,11 @@
     
     _activityView=[[UIActivityIndicatorView alloc]     initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
-    if(([self.articlesList count] == 0)) {
+    /*if(([self.articlesList count] == 0)) {
         [self.owner showWaitingWithText:@"Loading..." buttonText:nil];
-    }
+    }*/
     
-    _viewLoaded = YES;
+    _isViewLoaded = YES;
     
     UITableViewController *tableViewController = [[UITableViewController alloc] init];
     tableViewController.tableView = self.tableView;
